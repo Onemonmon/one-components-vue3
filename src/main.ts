@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
+import "pro-components-vue3/lib/pro-components-vue3.css";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";

@@ -1,5 +1,5 @@
 <template>
-  <template v-if="formatConfig?.dot">
+  <template v-if="formatConfig.dot">
     <div
       v-for="item in displayValue"
       :key="item"
@@ -8,13 +8,13 @@
       <div
         class="pro-text-dot"
         :style="{
-          backgroundColor: formatConfig?.color,
+          backgroundColor: formatConfig.color,
           ...formatConfig.dot.style,
         }"
       />
       <div
-        :class="{ 'pro-text-value': true, ellipsis: formatConfig?.ellipsis }"
-        :style="{ color: formatConfig?.color }"
+        :class="{ 'pro-text-value': true, ellipsis: formatConfig.ellipsis }"
+        :style="{ color: formatConfig.color }"
       >
         {{ item }}
       </div>
@@ -22,8 +22,8 @@
   </template>
   <div
     v-else
-    :class="{ 'pro-text-item': true, ellipsis: formatConfig?.ellipsis }"
-    :style="{ color: formatConfig?.color }"
+    :class="{ 'pro-text-item': true, ellipsis: formatConfig.ellipsis }"
+    :style="{ color: formatConfig.color }"
   >
     {{ displayValue?.join(" ") }}
   </div>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
-import type { OptionNode, FormatConfig } from "./type";
+import type { OptionNodeType, FormatConfigType } from "./type";
 
 export default defineComponent({
   name: "ProText",
@@ -40,10 +40,11 @@ export default defineComponent({
       type: [String, Number, Boolean, Date, Array],
     },
     options: {
-      type: Array as PropType<OptionNode[]>,
+      type: Array as PropType<OptionNodeType[]>,
     },
     formatConfig: {
-      type: Object as PropType<FormatConfig>,
+      type: Object as PropType<FormatConfigType>,
+      default: () => ({}),
     },
   },
   setup(props) {

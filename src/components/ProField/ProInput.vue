@@ -7,7 +7,7 @@
 import { computed, defineComponent, PropType } from "vue";
 import ProText from "./ProText.vue";
 import { useModelValue } from "./hooks";
-import type { FormatConfig } from "./type";
+import type { ComponentSize, FormatConfigType } from "./type";
 
 export default defineComponent({
   name: "ProInput",
@@ -24,13 +24,14 @@ export default defineComponent({
       default: true,
     },
     formatConfig: {
-      type: Object as PropType<FormatConfig>,
+      type: Object as PropType<FormatConfigType>,
     },
   },
   setup(props, context) {
     const value = useModelValue<string | number>(props, context);
     const innerFieldProps = computed(() => ({
       placeholder: "请输入",
+      size: "small" as ComponentSize,
       clearable: true,
       ...props.fieldProps,
     }));

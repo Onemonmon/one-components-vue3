@@ -1,16 +1,18 @@
 <template>
-  <el-select
-    :loading="innerOptions.loading"
+  <el-radio-group
+    class="pro-radio"
     v-model="value"
     v-bind="innerFieldProps"
     v-if="editable"
   >
-    <el-option
-      v-bind="option"
+    <el-radio
+      v-bind="{ ...option, label: option.value }"
       v-for="option in innerOptions.options"
       :key="option.value"
-    />
-  </el-select>
+    >
+      {{ option.label }}
+    </el-radio>
+  </el-radio-group>
   <ProText
     :value="value"
     :options="innerOptions.options"
@@ -24,22 +26,22 @@ import { computed, defineComponent, PropType } from "vue";
 import ProText from "./ProText.vue";
 import { useModelValue, useOptions } from "./hooks";
 import type {
-  ComponentSize,
   FormatConfigType,
   OptionNodeType,
   RequestOptionsFunctionType,
+  RadioGroupPropsType,
+  ComponentSize,
 } from "./type";
 
-type ValueType = string | number | boolean | string[] | number[] | boolean[];
 export default defineComponent({
   name: "ProSelect",
   components: { ProText },
   props: {
     modelValue: {
-      type: [String, Number, Boolean, Array] as PropType<ValueType>,
+      type: [String, Number, Boolean, Array],
     },
     fieldProps: {
-      type: Object,
+      type: Object as PropType<RadioGroupPropsType>,
     },
     options: {
       type: Array as PropType<OptionNodeType[]>,
@@ -59,12 +61,9 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const value = useModelValue<ValueType>(props, context);
+    const value = useModelValue<any>(props, context);
     const innerFieldProps = computed(() => ({
-      placeholder: "请选择",
       size: "small" as ComponentSize,
-      clearable: true,
-      collapseTags: true,
       ...props.fieldProps,
     }));
     const innerOptions = useOptions(props);
@@ -73,4 +72,14 @@ export default defineComponent({
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="scss">
+.pro-radio {
+  min-height: 32px;
+  .el-radio {
+    margin-right: 10px;
+  }
+  .el-radio__label {
+    padding-left: 4px;
+  }
+}
+</style>
