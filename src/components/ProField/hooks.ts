@@ -1,6 +1,6 @@
 import { onMounted, reactive, ref, watch } from "vue";
 import type { Ref, SetupContext, UnwrapRef } from "vue";
-import type { OptionNodeType, RequestOptionsType } from "./type";
+import type { RequestOptionsType } from "./type";
 
 export function useModelValue<T>(
   props: Record<string, any>,

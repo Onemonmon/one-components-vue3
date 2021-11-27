@@ -38,7 +38,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import ProSelect from "@/components/ProField/ProSelect.vue";
-import { FormatConfigType } from "@/components/ProField/type";
+import { FormatConfigType, SelectPropsType } from "@/components/ProField/type";
 export default defineComponent({
   name: "Home",
   components: {
@@ -55,15 +55,28 @@ export default defineComponent({
       console.log("开始获取addressOptions，参数是：", params);
       await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
       return [
-        { label: `广东${params.id}`, value: "guangdong" },
-        { label: `福建${params.id}`, value: "fujian" },
-        { label: `上海${params.id}`, value: "shanghai" },
+        {
+          label: `广东${params.id}`,
+          value: "guangdong",
+          children: [
+            { label: "潮汕", value: "chaoshan" },
+            { label: "深圳", value: "shenzhen" },
+          ],
+        },
+        {
+          label: `福建${params.id}`,
+          value: "fujian",
+          children: [
+            { label: "泉州", value: "quanzhou" },
+            { label: "厦门", value: "xiamen", disabled: true },
+          ],
+        },
       ];
     }
-    const address = ref(["guangdong"]);
+    const address = ref(["shenzhen"]);
     const addressParams = reactive({ id: "xxx" });
     const editable = ref(true);
-    const fieldProps = reactive({
+    const fieldProps = reactive<SelectPropsType>({
       multiple: true,
       collapseTags: true,
     });

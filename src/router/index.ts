@@ -26,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "basic-radio",
     component: () => import("../views/BasicRadio.vue"),
   },
+  {
+    path: "/basic-form",
+    name: "basic-form",
+    component: () => import("../views/BasicForm.vue"),
+  },
 ];
 
 const router = createRouter({

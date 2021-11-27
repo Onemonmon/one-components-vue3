@@ -3,7 +3,8 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link to="/basic-select">basic-select</router-link> |
-    <router-link to="/basic-radio">basic-radio</router-link>
+    <router-link to="/basic-radio">basic-radio</router-link> |
+    <router-link to="/basic-form">basic-form</router-link>
   </div>
   <div id="main"><router-view /></div>
 </template>

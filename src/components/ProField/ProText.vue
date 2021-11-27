@@ -2,7 +2,7 @@
   <template v-if="formatConfig.dot">
     <div
       v-for="item in displayValue"
-      :key="item"
+      :key="`${item}`"
       class="pro-text-item pro-text-item-flex"
     >
       <div
@@ -33,11 +33,27 @@
 import { defineComponent, PropType, computed } from "vue";
 import type { OptionNodeType, FormatConfigType } from "./type";
 
+type ValueType = string | number | boolean | Date | undefined;
+
+function findlabelInValue(
+  result: string[],
+  values: ValueType[],
+  options: OptionNodeType[]
+) {
+  options.forEach((n) => {
+    values.includes(n.value) && result.push(n.text || n.label);
+    if (n.children && n.children.length) {
+      findlabelInValue(result, values, n.children);
+    }
+  });
+}
 export default defineComponent({
   name: "ProText",
   props: {
     value: {
-      type: [String, Number, Boolean, Date, Array],
+      type: [String, Number, Boolean, Date, Array] as PropType<
+        ValueType | ValueType[]
+      >,
     },
     options: {
       type: Array as PropType<OptionNodeType[]>,
@@ -49,15 +65,13 @@ export default defineComponent({
   },
   setup(props) {
     const displayValue = computed(() => {
-      const newValue: any = Array.isArray(props.value)
+      const newValue: ValueType[] = Array.isArray(props.value)
         ? props.value
         : [props.value];
       if (props.options) {
-        return (
-          props.options
-            .filter((n) => newValue.includes(n.value))
-            .map((n) => n.label || n.text) || []
-        );
+        const result: string[] = [];
+        findlabelInValue(result, newValue, props.options);
+        return result;
       }
       return newValue;
     });

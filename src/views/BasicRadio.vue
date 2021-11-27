@@ -1,10 +1,9 @@
 <template>
   <el-card>
-    <div style="width: 200px">
+    <div style="width: 300px">
       <ProRadio
         v-model="hobby"
         :options="hobbyOptions"
-        :field-props="fieldProps"
         :editable="editable"
         :format-config="formatConfig"
       />
@@ -15,7 +14,7 @@
     <el-button v-if="editable" @click="editHobby">修改爱好</el-button>
   </el-card>
   <el-card>
-    <div style="width: 200px">
+    <div style="width: 300px">
       <ProRadio
         v-model="address"
         :params="addressParams"
@@ -40,7 +39,7 @@ import { defineComponent, reactive, ref } from "vue";
 import ProRadio from "@/components/ProField/ProRadio.vue";
 import {
   FormatConfigType,
-  RadioGroupPropsType,
+  ProRadioFieldPropsType,
 } from "@/components/ProField/type";
 export default defineComponent({
   name: "Home",
@@ -66,8 +65,14 @@ export default defineComponent({
     const address = ref("guangdong");
     const addressParams = reactive({ id: "xxx" });
     const editable = ref(true);
-    const fieldProps = reactive<RadioGroupPropsType>({
-      size: "small",
+    const fieldProps = reactive<ProRadioFieldPropsType>({
+      radioGroupProps: {
+        textColor: "red",
+      },
+      radioProps: {
+        border: true,
+        type: "radioButton",
+      },
     });
     const formatConfig = reactive<FormatConfigType>({
       ellipsis: true,

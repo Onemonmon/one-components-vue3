@@ -1,15 +1,26 @@
 <template>
   <el-select
     :loading="innerOptions.loading"
+    class="pro-select"
     v-model="value"
     v-bind="innerFieldProps"
     v-if="editable"
   >
-    <el-option
-      v-bind="option"
-      v-for="option in innerOptions.options"
-      :key="option.value"
-    />
+    <template v-for="option in innerOptions.options">
+      <el-option-group
+        :label="option.label"
+        :disabled="option.disabled"
+        :key="option.label"
+        v-if="option.children && option.children.length"
+      >
+        <el-option
+          v-bind="cOption"
+          :key="cOption.value"
+          v-for="cOption in option.children"
+        />
+      </el-option-group>
+      <el-option v-bind="option" v-else :key="option.value" />
+    </template>
   </el-select>
   <ProText
     :value="value"
@@ -28,6 +39,7 @@ import type {
   FormatConfigType,
   OptionNodeType,
   RequestOptionsFunctionType,
+  SelectPropsType,
 } from "./type";
 
 type ValueType = string | number | boolean | string[] | number[] | boolean[];
@@ -39,7 +51,7 @@ export default defineComponent({
       type: [String, Number, Boolean, Array] as PropType<ValueType>,
     },
     fieldProps: {
-      type: Object,
+      type: Object as PropType<SelectPropsType>,
     },
     options: {
       type: Array as PropType<OptionNodeType[]>,
@@ -73,4 +85,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="scss" scoped>
+.pro-select {
+  width: 100%;
+}
+</style>

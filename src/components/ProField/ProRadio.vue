@@ -2,16 +2,21 @@
   <el-radio-group
     class="pro-radio"
     v-model="value"
-    v-bind="innerFieldProps"
+    v-bind="innerFieldProps.radioGroupProps"
     v-if="editable"
   >
-    <el-radio
-      v-bind="{ ...option, label: option.value }"
+    <component
+      v-bind="{ ...option, label: option.value, ...innerFieldProps.radioProps }"
       v-for="option in innerOptions.options"
       :key="option.value"
+      :is="
+        innerFieldProps.radioProps.type === 'radioButton'
+          ? 'el-radio-button'
+          : 'el-radio'
+      "
     >
       {{ option.label }}
-    </el-radio>
+    </component>
   </el-radio-group>
   <ProText
     :value="value"
@@ -29,19 +34,22 @@ import type {
   FormatConfigType,
   OptionNodeType,
   RequestOptionsFunctionType,
-  RadioGroupPropsType,
   ComponentSize,
+  ProRadioFieldPropsType,
 } from "./type";
+
+type ValueType = string | number | boolean;
 
 export default defineComponent({
   name: "ProSelect",
   components: { ProText },
   props: {
     modelValue: {
-      type: [String, Number, Boolean, Array],
+      type: [String, Number, Boolean] as PropType<ValueType>,
     },
     fieldProps: {
-      type: Object as PropType<RadioGroupPropsType>,
+      type: Object as PropType<ProRadioFieldPropsType>,
+      default: () => ({}),
     },
     options: {
       type: Array as PropType<OptionNodeType[]>,
@@ -61,10 +69,16 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const value = useModelValue<any>(props, context);
+    const value = useModelValue<ValueType>(props, context);
     const innerFieldProps = computed(() => ({
-      size: "small" as ComponentSize,
-      ...props.fieldProps,
+      radioGroupProps: {
+        size: "small" as ComponentSize,
+        ...props.fieldProps.radioGroupProps,
+      },
+      radioProps: {
+        type: "radio",
+        ...props.fieldProps.radioProps,
+      },
     }));
     const innerOptions = useOptions(props);
     return { value, innerFieldProps, innerOptions };
