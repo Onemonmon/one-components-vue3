@@ -8,6 +8,7 @@
         :params="params"
         :options="options"
         :fieldProps="fieldProps"
+        :formatConfig="formatConfig"
         :is="getComponentByValueType(valueType)"
       />
     </slot>
@@ -22,7 +23,10 @@ import ProRadio from "../ProField/ProRadio.vue";
 import ProDatePicker from "../ProField/ProDatePicker.vue";
 import { getComponentByValueType } from "../utils";
 import type { FormItemPropsType } from "./type";
-import type { ProRadioFieldPropsType } from "../ProField/type";
+import type {
+  FormatConfigType,
+  ProRadioFieldPropsType,
+} from "../ProField/type";
 import type {
   ProValueType,
   RequestOptionsFunctionType,
@@ -48,6 +52,9 @@ export default defineComponent({
     editable: {
       type: Boolean,
       default: true,
+    },
+    formatConfig: {
+      type: Object as PropType<FormatConfigType>,
     },
     options: {
       type: Array as PropType<OptionNodeType[]>,

@@ -140,8 +140,8 @@ export type DatePickerPropsType = {
   format?: string;
   popperClass?: string;
   rangeSeparator?: string;
-  defaultValue?: Date;
-  defaultTime?: Date[];
+  defaultValue?: Date | Date[];
+  defaultTime?: Date | Date[];
   valueFormat?: string;
   unlinkPanels?: boolean;
   prefixIcon?: string;

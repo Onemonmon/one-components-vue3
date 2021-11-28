@@ -6,7 +6,10 @@ import type {
   InputPropsType,
   SelectPropsType,
 } from "../element-type";
-import type { ProRadioFieldPropsType } from "../ProField/type";
+import type {
+  FormatConfigType,
+  ProRadioFieldPropsType,
+} from "../ProField/type";
 import type { ProValueType, RequestOptionsWithParamsType } from "../type";
 
 export type FormItemPropsType = {
@@ -45,6 +48,7 @@ export type PureProFormItemPropsType = RequestOptionsWithParamsType & {
     | DatePickerPropsType;
   formProps?: FormItemPropsType;
   editable?: boolean;
+  formatConfig?: FormatConfigType;
 };
 
 export type ProFormItemPropsTypeWithSpan = PureProFormItemPropsType & {

@@ -93,6 +93,9 @@ export default defineComponent({
             prop: "born",
             label: "出生日期",
             valueType: "date",
+            fieldProps: {
+              defaultValue: new Date("2021-11-10"),
+            },
             span: 4,
           },
           {
@@ -100,6 +103,7 @@ export default defineComponent({
             label: "闹钟",
             fieldProps: {
               type: "datetimerange",
+              defaultValue: [new Date("2021-11-10"), new Date("2021-11-11")],
             },
             valueType: "date",
             span: 8,
@@ -124,6 +128,14 @@ export default defineComponent({
           radioProps: {
             type: "radioButton",
           },
+        },
+        formatConfig: {
+          dot: {
+            style: {
+              backgroundColor: "orange",
+            },
+          },
+          color: "lightblue",
         },
         valueType: "radio",
       },

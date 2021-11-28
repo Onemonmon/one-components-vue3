@@ -17,6 +17,7 @@ import { defineComponent, reactive, ref } from "vue";
 import ProDatePicker from "@/components/ProField/ProDatePicker.vue";
 import type { FormatConfigType } from "@/components/ProField/type";
 import type { DatePickerPropsType } from "@/components/element-type";
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -43,7 +44,7 @@ export default defineComponent({
       disabledDate(date) {
         const time = new Date(date).getTime();
         const nowTime = new Date().getTime();
-        return time < nowTime;
+        return time >= nowTime;
       },
     });
     const formatConfig = reactive<FormatConfigType>({
