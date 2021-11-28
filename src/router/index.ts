@@ -21,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "basic-form",
     component: () => import("../views/BasicForm.vue"),
   },
+  {
+    path: "/basic-modal-form",
+    name: "basic-modal-form",
+    component: () => import("../views/BasicModalForm.vue"),
+  },
 ];
 
 const router = createRouter({

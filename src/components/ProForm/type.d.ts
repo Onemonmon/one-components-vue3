@@ -4,13 +4,18 @@ import type {
   ComponentSize,
   DatePickerPropsType,
   InputPropsType,
+  ModalPropsType,
   SelectPropsType,
 } from "../element-type";
 import type {
   FormatConfigType,
   ProRadioFieldPropsType,
 } from "../ProField/type";
-import type { ProValueType, RequestOptionsWithParamsType } from "../type";
+import type {
+  ProButtonPropsType,
+  ProValueType,
+  RequestOptionsWithParamsType,
+} from "../type";
 
 export type FormItemPropsType = {
   labelWidth?: string | number;
@@ -64,8 +69,19 @@ export type ProFormPropsType = {
   formProps?: FormPropsType;
   columns?: ProFormItemPropsType[];
   span?: number;
-  submitButtonProps?: ButtonPropsType | false;
-  resetButtonProps?: ButtonPropsType | false;
+  formRef?: (formRef: Ref<any>) => void;
+  submitButtonProps?: ProButtonPropsType | false;
+  resetButtonProps?: ProButtonPropsType | false;
   onFinish?: (values: any) => Promise<void>;
   onReset?: (e: MouseEvent) => void;
+};
+
+export type ProModalFormPropsType = {
+  modelValue?: boolean;
+  modalProps?: ModalPropsType;
+  formProps?: ProFormPropsType;
+  submitButtonProps?: ProButtonPropsType;
+  cancelButtonProps?: ProButtonPropsType;
+  onFinish?: (values: any) => Promise<void>;
+  onVisibleChange?: (visible: boolean) => void;
 };

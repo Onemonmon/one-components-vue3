@@ -1,52 +1,37 @@
 <template>
-  <el-card>
-    <ProForm
-      :form-ref="(ref) => (formRef = ref)"
-      :initial-values="initialValues"
-      :columns="columns"
-      :editable="editable"
-      :reset-button-props="false"
-      :submit-button-props="{ text: '保存' }"
-      :form-props="{}"
-      :span="6"
-      :on-finish="handleSubmit"
-    />
-  </el-card>
-  <el-card style="width: 300px">
-    <el-button type="primary" plain @click="addressParams.id += 'x'">
-      修改addressParams
-    </el-button>
-    <el-button type="primary" plain @click="changeInitialValues">
-      修改initialValues
-    </el-button>
-    <el-button type="primary" plain @click="editable = !editable">
-      修改表单编辑状态
-    </el-button>
-  </el-card>
-  <el-card>
-    <p>姓名：{{ initialValues.name }}</p>
-    <p>地址：{{ initialValues.address }}</p>
-  </el-card>
+  <ProModalForm
+    v-model="visible"
+    :modal-props="{ title: 'Modal 表单' }"
+    :form-props="{
+      span: 12,
+      columns,
+      initialValues,
+      formRef: (ref) => (formRef = ref),
+    }"
+    :onFinish="handleSubmit"
+  >
+    <template #trigger><el-button>内部新建表单</el-button></template>
+  </ProModalForm>
+  <el-button @click="visible = true">外部新建表单</el-button>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
-import ProForm from "@/components/ProForm/ProForm.vue";
+import ProModalForm from "@/components/ProForm/ProModalForm.vue";
 import type { ProFormItemPropsType } from "@/components/ProForm/type";
 import { ElMessage } from "element-plus";
 export default defineComponent({
   name: "Home",
   components: {
-    ProForm,
+    ProModalForm,
   },
   setup() {
-    const editable = ref<boolean>(true);
-    async function getAddressOptions(params: any) {
-      console.log("开始获取addressOptions，参数是：", params);
+    async function getAddressOptions() {
+      console.log("开始获取addressOptions");
       await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
       return [
         {
-          label: `广东${params.id}`,
+          label: `广东`,
           value: "guangdong",
           children: [
             { label: "潮汕", value: "chaoshan" },
@@ -54,7 +39,7 @@ export default defineComponent({
           ],
         },
         {
-          label: `福建${params.id}`,
+          label: `福建`,
           value: "fujian",
           children: [
             { label: "泉州", value: "quanzhou" },
@@ -63,7 +48,6 @@ export default defineComponent({
         },
       ];
     }
-    const addressParams = reactive({ id: "xxx" });
     const columns = reactive<ProFormItemPropsType[]>([
       {
         prop: "msg",
@@ -99,7 +83,6 @@ export default defineComponent({
             fieldProps: {
               defaultValue: new Date("2021-11-10"),
             },
-            span: 4,
           },
           {
             prop: "clock",
@@ -109,7 +92,6 @@ export default defineComponent({
               defaultValue: [new Date("2021-11-10"), new Date("2021-11-11")],
             },
             valueType: "date",
-            span: 8,
           },
         ],
       },
@@ -147,18 +129,18 @@ export default defineComponent({
         label: "地址",
         valueType: "select",
         request: getAddressOptions,
-        params: addressParams,
         fieldProps: {
           multiple: true,
         },
       },
     ]);
+    const visible = ref<boolean>(false);
+    const formRef = ref();
     const initialValues = reactive<any>({
       name: "张三",
       address: [],
       hobby: "1",
     });
-    const formRef = ref();
     async function handleSubmit(values: any) {
       console.log("开始提交表单数据：", values, formRef);
       await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
@@ -167,17 +149,12 @@ export default defineComponent({
         type: "success",
       });
     }
-    function changeInitialValues() {
-      initialValues.address = ["shenzhen"];
-    }
     return {
       formRef,
-      editable,
+      visible,
       columns,
       initialValues,
-      addressParams,
       handleSubmit,
-      changeInitialValues,
     };
   },
 });

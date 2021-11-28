@@ -1,3 +1,4 @@
+import { DialogProps } from "element-plus";
 import type { CSSProperties } from "vue";
 
 export type ButtonType =
@@ -155,4 +156,23 @@ export type DatePickerPropsType = {
   disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[];
   disabledDate?: (date: Date) => boolean;
   arrowControl?: boolean;
+};
+
+export type ModalPropsType = {
+  title?: string;
+  width?: string | number;
+  fullscreen?: boolean;
+  top?: string;
+  modal?: boolean;
+  appendToBody?: boolean;
+  lockScroll?: boolean;
+  customClass?: string;
+  openDelay?: number;
+  closeDelay?: number;
+  closeOnClickModal?: boolean;
+  closeOnPressEscape?: boolean;
+  showClose?: boolean;
+  beforeClose?: (...args: any[]) => void;
+  center?: boolean;
+  destroyOnClose?: boolean;
 };

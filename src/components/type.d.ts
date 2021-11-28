@@ -1,3 +1,5 @@
+import { ButtonPropsType } from "./element-type";
+
 export interface OptionNodeType {
   label: string;
   text?: string;
@@ -22,4 +24,8 @@ export type RequestOptionsWithParamsType = {
   options?: OptionNodeType[];
   params?: Record<string, any>;
   request?: RequestOptionsFunctionType;
+};
+
+export type ProButtonPropsType = ButtonPropsType & {
+  text?: string;
 };
