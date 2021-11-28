@@ -2,6 +2,8 @@ import type { FormItemRule } from "element-plus/es/components/form/src/form.type
 import type {
   ButtonPropsType,
   ComponentSize,
+  DatePickerPropsType,
+  InputPropsType,
   SelectPropsType,
 } from "../element-type";
 import type { ProRadioFieldPropsType } from "../ProField/type";
@@ -18,7 +20,6 @@ export type FormItemPropsType = {
 };
 
 export type FormPropsType = {
-  // inline?: boolean;
   rules?: Record<string, FormItemRule | FormItemRule[]>;
   labelPosition?: "left" | "right" | "top";
   labelWidth?: string | number;
@@ -37,7 +38,11 @@ export type PureProFormItemPropsType = RequestOptionsWithParamsType & {
   prop: string;
   label?: string;
   valueType?: ProValueType;
-  fieldProps?: SelectPropsType | ProRadioFieldPropsType;
+  fieldProps?:
+    | InputPropsType
+    | SelectPropsType
+    | ProRadioFieldPropsType
+    | DatePickerPropsType;
   formProps?: FormItemPropsType;
   editable?: boolean;
 };
@@ -54,6 +59,7 @@ export type ProFormPropsType = {
   initialValues?: Record<string, any>;
   formProps?: FormPropsType;
   columns?: ProFormItemPropsType[];
+  span?: number;
   submitButtonProps?: ButtonPropsType | false;
   resetButtonProps?: ButtonPropsType | false;
   onFinish?: (values: any) => Promise<void>;

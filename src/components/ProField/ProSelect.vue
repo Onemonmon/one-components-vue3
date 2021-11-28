@@ -81,8 +81,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-.pro-select {
-  width: 100%;
-}
-</style>
+<style lang="scss" scoped></style>

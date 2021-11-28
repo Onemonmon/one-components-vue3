@@ -10,9 +10,13 @@ export type RequestOptionsFunctionType = (
   params?: Record<string, any>
 ) => Promise<OptionNodeType[]>;
 
-export type ProValueType = "select" | "radio" | "text";
+export type ProValueType = "select" | "radio" | "text" | "date";
 
-export type ProFieldComponentType = "ProSelect" | "ProRadio" | "ProInput";
+export type ProFieldComponentType =
+  | "ProSelect"
+  | "ProRadio"
+  | "ProInput"
+  | "ProDatePicker";
 
 export type RequestOptionsWithParamsType = {
   options?: OptionNodeType[];

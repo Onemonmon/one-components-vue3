@@ -8,7 +8,7 @@ import { computed, defineComponent, PropType } from "vue";
 import ProText from "./ProText.vue";
 import { useModelValue } from "./hooks";
 import type { FormatConfigType } from "./type";
-import type { ComponentSize } from "../element-type";
+import type { ComponentSize, InputPropsType } from "../element-type";
 
 export default defineComponent({
   name: "ProInput",
@@ -18,7 +18,7 @@ export default defineComponent({
       type: [String, Number],
     },
     fieldProps: {
-      type: Object,
+      type: Object as PropType<InputPropsType>,
     },
     editable: {
       type: Boolean,

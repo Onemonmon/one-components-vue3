@@ -1,4 +1,4 @@
-import type { ComponentSize } from "./ProField/type";
+import type { CSSProperties } from "vue";
 
 export type ButtonType =
   | "default"
@@ -11,6 +11,17 @@ export type ButtonType =
   | "";
 
 export type ComponentSize = "small" | "large" | "medium" | "mini";
+
+export type DatePickerType =
+  | "year"
+  | "month"
+  | "date"
+  | "week"
+  | "datetime"
+  | "datetimerange"
+  | "daterange"
+  | "monthrange"
+  | "time";
 
 export type ButtonPropsType = {
   size?: ComponentSize;
@@ -38,7 +49,6 @@ export type FormItemPropsType = {
 };
 
 export type FormPropsType = {
-  // inline?: boolean;
   rules?: Record<string, FormItemRule | FormItemRule[]>;
   labelPosition?: "left" | "right" | "top";
   labelWidth?: string | number;
@@ -95,4 +105,54 @@ export type SelectPropsType = {
   automaticDropdown?: boolean;
   clearIcon?: string;
   fitInputWidth?: boolean;
+};
+
+export type InputPropsType = {
+  type?: "text" | "textarea";
+  maxlength?: string | number;
+  showWordLimit?: boolean;
+  placeholder?: string;
+  clearable?: boolean;
+  showPassword?: boolean;
+  disabled?: boolean;
+  size?: ComponentSize;
+  prefixIcon?: string;
+  suffixIcon?: string;
+  rows?: number;
+  autosize?: boolean | { minRows?: number; maxRows?: number };
+  resize?: "none" | "both" | "horizontal" | "vertical";
+  label?: string;
+  tabindex?: string | number;
+  validateEvent?: boolean;
+  inputStyle?: CSSProperties;
+};
+
+export type DatePickerPropsType = {
+  readonly?: boolean;
+  disabled?: boolean;
+  size?: ComponentSize;
+  editable?: boolean;
+  clearable?: boolean;
+  placeholder?: string;
+  startPlaceholder?: string;
+  endPlaceholder?: string;
+  type?: DatePickerType;
+  format?: string;
+  popperClass?: string;
+  rangeSeparator?: string;
+  defaultValue?: Date;
+  defaultTime?: Date[];
+  valueFormat?: string;
+  unlinkPanels?: boolean;
+  prefixIcon?: string;
+  clearIcon?: string;
+  validateEvent?: boolean;
+  shortcuts?: { text: string; value: Date | (() => Date) }[];
+  disabledDate?: (date: Date) => boolean;
+  isRange?: boolean;
+  disabledHours?: () => number[];
+  disabledMinutes?: (selectedHour: number) => number[];
+  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[];
+  disabledDate?: (date: Date) => boolean;
+  arrowControl?: boolean;
 };

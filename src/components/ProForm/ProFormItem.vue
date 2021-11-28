@@ -19,6 +19,7 @@ import { defineComponent, PropType } from "vue";
 import ProInput from "../ProField/ProInput.vue";
 import ProSelect from "../ProField/ProSelect.vue";
 import ProRadio from "../ProField/ProRadio.vue";
+import ProDatePicker from "../ProField/ProDatePicker.vue";
 import { getComponentByValueType } from "../utils";
 import type { FormItemPropsType } from "./type";
 import type { ProRadioFieldPropsType } from "../ProField/type";
@@ -27,11 +28,11 @@ import type {
   RequestOptionsFunctionType,
   OptionNodeType,
 } from "../type";
-import type { SelectPropsType } from "../element-type";
+import type { DatePickerPropsType, SelectPropsType } from "../element-type";
 
 export default defineComponent({
   name: "ProFormItem",
-  components: { ProInput, ProSelect, ProRadio },
+  components: { ProInput, ProSelect, ProRadio, ProDatePicker },
   props: {
     model: {
       type: Object,
@@ -61,7 +62,9 @@ export default defineComponent({
       type: String as PropType<ProValueType>,
     },
     fieldProps: {
-      type: Object as PropType<SelectPropsType | ProRadioFieldPropsType>,
+      type: Object as PropType<
+        SelectPropsType | ProRadioFieldPropsType | DatePickerPropsType
+      >,
     },
     formProps: {
       type: Object as PropType<FormItemPropsType>,

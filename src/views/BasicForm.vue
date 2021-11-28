@@ -6,6 +6,7 @@
       :columns="columns"
       :editable="editable"
       :form-props="{}"
+      :span="6"
       :on-finish="handleSubmit"
     />
   </el-card>
@@ -74,7 +75,6 @@ export default defineComponent({
                 message: "请输入姓名！",
               },
             },
-            span: 8,
           },
           {
             prop: "age",
@@ -85,7 +85,24 @@ export default defineComponent({
                 message: "请输入年龄！",
               },
             },
-            span: 12,
+            fieldProps: {
+              clearable: false,
+            },
+          },
+          {
+            prop: "born",
+            label: "出生日期",
+            valueType: "date",
+            span: 4,
+          },
+          {
+            prop: "clock",
+            label: "闹钟",
+            fieldProps: {
+              type: "datetimerange",
+            },
+            valueType: "date",
+            span: 8,
           },
         ],
       },
@@ -114,7 +131,6 @@ export default defineComponent({
         prop: "address",
         label: "地址",
         valueType: "select",
-        span: 6,
         request: getAddressOptions,
         params: addressParams,
         fieldProps: {

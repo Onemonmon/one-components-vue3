@@ -7,6 +7,7 @@ export function getComponentByValueType(
     select: "ProSelect",
     radio: "ProRadio",
     text: "ProInput",
+    date: "ProDatePicker",
   };
   return components[valueType];
 }

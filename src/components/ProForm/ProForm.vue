@@ -8,7 +8,7 @@
     <template v-for="(column, index) in columns">
       <el-row :key="index" v-if="column.children && column.children.length">
         <el-col
-          :span="item.span"
+          :span="item.span || span"
           v-for="item in column.children"
           :key="item.prop"
         >
@@ -25,7 +25,7 @@
         </el-col>
       </el-row>
       <el-row :key="column.prop" v-else>
-        <el-col :span="column.span">
+        <el-col :span="column.span || span">
           <ProFormItem
             :model="model"
             v-bind="{
@@ -78,6 +78,9 @@ export default defineComponent({
     formProps: {
       type: Object as PropType<FormPropsType>,
       default: () => ({}),
+    },
+    span: {
+      type: Number,
     },
     submitButtonProps: {
       type: [Object, Boolean] as PropType<ButtonPropsType | false>,
@@ -177,10 +180,16 @@ export default defineComponent({
 $deep: "::v-deep";
 .pro-form {
   .el-form-item {
-    #{$deep} .el-form-item__content {
-      display: flex;
-      align-items: center;
-      line-height: unset;
+    #{$deep} {
+      .el-form-item__content {
+        display: flex;
+        align-items: center;
+        line-height: unset;
+      }
+      .pro-date-picker,
+      .pro-select {
+        width: 100%;
+      }
     }
   }
 }
