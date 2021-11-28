@@ -9,6 +9,7 @@
     "build-com": "vue-cli-service build --target lib --name pro-components-vue3 --dest pro-components-vue3/lib ./src/components/index.js"
   },
   "dependencies": {
+    "@element-plus/icons": "^0.0.11",
     "core-js": "^3.6.5",
     "element-plus": "^1.2.0-beta.3",
     "pro-components-vue3": "^1.0.0",

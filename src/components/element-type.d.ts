@@ -1,5 +1,4 @@
-import { DialogProps } from "element-plus";
-import type { CSSProperties } from "vue";
+import type { CSSProperties, Component } from "vue";
 
 export type ButtonType =
   | "default"
@@ -33,7 +32,7 @@ export type ButtonPropsType = {
   loading?: boolean;
   autofocus?: boolean;
   disabled?: boolean;
-  icon?: string;
+  icon?: string | Component;
   autoInsert?: boolean;
   nativeType?: "button" | "submit" | "reset";
   autoInsertSpace?: boolean;
@@ -104,7 +103,7 @@ export type SelectPropsType = {
   defaultFirstOption?: boolean;
   popperAppendToBody?: boolean;
   automaticDropdown?: boolean;
-  clearIcon?: string;
+  clearIcon?: string | Component;
   fitInputWidth?: boolean;
 };
 
@@ -117,8 +116,8 @@ export type InputPropsType = {
   showPassword?: boolean;
   disabled?: boolean;
   size?: ComponentSize;
-  prefixIcon?: string;
-  suffixIcon?: string;
+  prefixIcon?: string | Component;
+  suffixIcon?: string | Component;
   rows?: number;
   autosize?: boolean | { minRows?: number; maxRows?: number };
   resize?: "none" | "both" | "horizontal" | "vertical";
@@ -145,8 +144,8 @@ export type DatePickerPropsType = {
   defaultTime?: Date | Date[];
   valueFormat?: string;
   unlinkPanels?: boolean;
-  prefixIcon?: string;
-  clearIcon?: string;
+  prefixIcon?: string | Component;
+  clearIcon?: string | Component;
   validateEvent?: boolean;
   shortcuts?: { text: string; value: Date | (() => Date) }[];
   disabledDate?: (date: Date) => boolean;

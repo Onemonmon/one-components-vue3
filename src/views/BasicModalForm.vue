@@ -1,6 +1,5 @@
 <template>
   <ProModalForm
-    v-model="visible"
     :modal-props="{ title: 'Modal 表单' }"
     :form-props="{
       span: 12,
@@ -10,9 +9,10 @@
     }"
     :onFinish="handleSubmit"
   >
-    <template #trigger><el-button>内部新建表单</el-button></template>
+    <template #trigger>
+      <el-button :icon="Plus">内部新建表单</el-button>
+    </template>
   </ProModalForm>
-  <el-button @click="visible = true">外部新建表单</el-button>
 </template>
 
 <script lang="ts">
@@ -20,6 +20,8 @@ import { defineComponent, reactive, ref } from "vue";
 import ProModalForm from "@/components/ProForm/ProModalForm.vue";
 import type { ProFormItemPropsType } from "@/components/ProForm/type";
 import { ElMessage } from "element-plus";
+import { Plus } from "@element-plus/icons";
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -134,7 +136,6 @@ export default defineComponent({
         },
       },
     ]);
-    const visible = ref<boolean>(false);
     const formRef = ref();
     const initialValues = reactive<any>({
       name: "张三",
@@ -151,10 +152,10 @@ export default defineComponent({
     }
     return {
       formRef,
-      visible,
       columns,
       initialValues,
       handleSubmit,
+      Plus,
     };
   },
 });
