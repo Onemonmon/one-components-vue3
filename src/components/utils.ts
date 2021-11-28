@@ -1,9 +1,9 @@
-import type { ValueType, ProFieldComponentType } from "./type";
+import type { ProValueType, ProFieldComponentType } from "./type";
 
 export function getComponentByValueType(
-  valueType: ValueType = "text"
+  valueType: ProValueType = "text"
 ): ProFieldComponentType {
-  const components: Record<ValueType, ProFieldComponentType> = {
+  const components: Record<ProValueType, ProFieldComponentType> = {
     select: "ProSelect",
     radio: "ProRadio",
     text: "ProInput",

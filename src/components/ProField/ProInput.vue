@@ -7,7 +7,8 @@
 import { computed, defineComponent, PropType } from "vue";
 import ProText from "./ProText.vue";
 import { useModelValue } from "./hooks";
-import type { ComponentSize, FormatConfigType } from "./type";
+import type { FormatConfigType } from "./type";
+import type { ComponentSize } from "../element-type";
 
 export default defineComponent({
   name: "ProInput",

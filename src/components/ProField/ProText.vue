@@ -31,7 +31,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
-import type { OptionNodeType, FormatConfigType } from "./type";
+import type { FormatConfigType } from "./type";
+import type { OptionNodeType } from "../type";
 
 type ValueType = string | number | boolean | Date | undefined;
 

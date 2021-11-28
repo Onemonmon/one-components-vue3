@@ -1,22 +1,25 @@
 <template>
-  <div style="display: flex">
-    <el-card style="width: 300px">
-      <ProForm
-        ref="formRef"
-        :initial-values="initialValues"
-        :columns="columns"
-        :on-finish="handleSubmit"
-      />
-    </el-card>
-    <el-card style="width: 300px">
-      <el-button type="primary" plain @click="addressParams.id += 'x'">
-        修改addressParams
-      </el-button>
-      <el-button type="primary" plain @click="changeInitialValues">
-        修改initialValues
-      </el-button>
-    </el-card>
-  </div>
+  <el-card>
+    <ProForm
+      ref="formRef"
+      :initial-values="initialValues"
+      :columns="columns"
+      :editable="editable"
+      :form-props="{}"
+      :on-finish="handleSubmit"
+    />
+  </el-card>
+  <el-card style="width: 300px">
+    <el-button type="primary" plain @click="addressParams.id += 'x'">
+      修改addressParams
+    </el-button>
+    <el-button type="primary" plain @click="changeInitialValues">
+      修改initialValues
+    </el-button>
+    <el-button type="primary" plain @click="editable = !editable">
+      修改表单编辑状态
+    </el-button>
+  </el-card>
   <el-card>
     <p>姓名：{{ initialValues.name }}</p>
     <p>地址：{{ initialValues.address }}</p>
@@ -24,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import ProForm from "@/components/ProForm/ProForm.vue";
 import type { ProFormItemPropsType } from "@/components/ProForm/type";
 import { ElMessage } from "element-plus";
@@ -34,6 +37,7 @@ export default defineComponent({
     ProForm,
   },
   setup() {
+    const editable = ref<boolean>(true);
     async function getAddressOptions(params: any) {
       console.log("开始获取addressOptions，参数是：", params);
       await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
@@ -59,27 +63,40 @@ export default defineComponent({
     const addressParams = reactive({ id: "xxx" });
     const columns = reactive<ProFormItemPropsType[]>([
       {
-        prop: "name",
-        label: "姓名",
-        rules: {
-          required: true,
-          message: "请输入姓名！",
-        },
-      },
-      {
-        prop: "age",
-        label: "年龄",
-        rules: {
-          required: true,
-          message: "请输入年龄！",
-        },
+        prop: "msg",
+        children: [
+          {
+            prop: "name",
+            label: "姓名",
+            formProps: {
+              rules: {
+                required: true,
+                message: "请输入姓名！",
+              },
+            },
+            span: 8,
+          },
+          {
+            prop: "age",
+            label: "年龄",
+            formProps: {
+              rules: {
+                required: true,
+                message: "请输入年龄！",
+              },
+            },
+            span: 12,
+          },
+        ],
       },
       {
         prop: "hobby",
         label: "爱好",
-        rules: {
-          required: true,
-          message: "请选择爱好！",
+        formProps: {
+          rules: {
+            required: true,
+            message: "请选择爱好！",
+          },
         },
         options: [
           { label: "抽烟", value: "1" },
@@ -97,6 +114,7 @@ export default defineComponent({
         prop: "address",
         label: "地址",
         valueType: "select",
+        span: 6,
         request: getAddressOptions,
         params: addressParams,
         fieldProps: {
@@ -121,6 +139,7 @@ export default defineComponent({
       initialValues.address = ["shenzhen"];
     }
     return {
+      editable,
       columns,
       initialValues,
       addressParams,

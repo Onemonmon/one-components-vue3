@@ -38,7 +38,8 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import ProSelect from "@/components/ProField/ProSelect.vue";
-import { FormatConfigType, SelectPropsType } from "@/components/ProField/type";
+import type { FormatConfigType } from "@/components/ProField/type";
+import type { SelectPropsType } from "@/components/element-type";
 export default defineComponent({
   name: "Home",
   components: {

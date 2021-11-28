@@ -34,13 +34,9 @@
 import { computed, defineComponent, PropType } from "vue";
 import ProText from "./ProText.vue";
 import { useModelValue, useOptions } from "./hooks";
-import type {
-  ComponentSize,
-  FormatConfigType,
-  OptionNodeType,
-  RequestOptionsFunctionType,
-  SelectPropsType,
-} from "./type";
+import type { FormatConfigType } from "./type";
+import type { OptionNodeType, RequestOptionsFunctionType } from "../type";
+import type { ComponentSize, SelectPropsType } from "../element-type";
 
 type ValueType = string | number | boolean | string[] | number[] | boolean[];
 export default defineComponent({

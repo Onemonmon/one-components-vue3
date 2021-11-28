@@ -1,27 +1,42 @@
 <template>
-  <el-form ref="formRef" v-bind="innerFormProps" :model="model">
-    <el-form-item
-      v-bind="columnProps"
-      v-for="{
-        valueType,
-        request,
-        params,
-        options,
-        fieldProps,
-        ...columnProps
-      } in columns"
-      :key="columnProps.prop"
-    >
-      <component
-        v-model="model[columnProps.prop]"
-        :request="request"
-        :params="params"
-        :options="options"
-        :fieldProps="fieldProps"
-        :is="getComponentByValueType(valueType)"
-      />
-    </el-form-item>
-    <el-form-item>
+  <el-form
+    class="pro-form"
+    ref="formRef"
+    v-bind="innerFormProps"
+    :model="model"
+  >
+    <template v-for="(column, index) in columns">
+      <el-row :key="index" v-if="column.children && column.children.length">
+        <el-col
+          :span="item.span"
+          v-for="item in column.children"
+          :key="item.prop"
+        >
+          <ProFormItem
+            :model="model"
+            v-bind="{
+              ...item,
+              editable:
+                editable &&
+                column.editable !== false &&
+                item.editable !== false,
+            }"
+          />
+        </el-col>
+      </el-row>
+      <el-row :key="column.prop" v-else>
+        <el-col :span="column.span">
+          <ProFormItem
+            :model="model"
+            v-bind="{
+              ...column,
+              editable: editable && column.editable !== false,
+            }"
+          />
+        </el-col>
+      </el-row>
+    </template>
+    <el-form-item v-if="innerEditable">
       <el-button
         v-bind="innerSubmitButtonProps"
         @click="handleSubmit"
@@ -40,16 +55,13 @@
 
 <script lang="ts">
 import { computed, watch, defineComponent, PropType, ref } from "vue";
-import ProInput from "../ProField/ProInput.vue";
-import ProSelect from "../ProField/ProSelect.vue";
-import ProRadio from "../ProField/ProRadio.vue";
-import { getComponentByValueType } from "../utils";
+import ProFormItem from "./ProFormItem.vue";
 import type { FormPropsType, ProFormItemPropsType } from "./type";
 import type { ButtonPropsType } from "../element-type";
 
 export default defineComponent({
   name: "ProForm",
-  components: { ProInput, ProSelect, ProRadio },
+  components: { ProFormItem },
   props: {
     initialValues: {
       type: Object,
@@ -57,9 +69,15 @@ export default defineComponent({
     },
     columns: {
       type: Array as PropType<ProFormItemPropsType[]>,
+      default: () => [],
+    },
+    editable: {
+      type: Boolean,
+      default: true,
     },
     formProps: {
       type: Object as PropType<FormPropsType>,
+      default: () => ({}),
     },
     submitButtonProps: {
       type: [Object, Boolean] as PropType<ButtonPropsType | false>,
@@ -79,9 +97,11 @@ export default defineComponent({
   setup(props) {
     const model = ref({ ...props.initialValues });
     const innerFormProps = computed<FormPropsType>(() => ({
-      labelWidth: "30%",
+      labelWidth: "100px",
       scrollToError: true,
       ...props.formProps,
+      hideRequiredAsterisk:
+        !innerEditable.value || props.formProps.hideRequiredAsterisk, // 不可编辑时，隐藏标签旁的红色星号
     }));
     const submitButtonLoading = ref<boolean>(false);
     const innerSubmitButtonProps = computed<ButtonPropsType>(() => ({
@@ -95,10 +115,27 @@ export default defineComponent({
       size: "small",
       ...props.submitButtonProps,
     }));
+    // 判断表单是否可编辑
+    const innerEditable = computed(() => {
+      let isColumnsEditable = false;
+      props.columns.forEach((n) => {
+        if (n.editable !== false) {
+          isColumnsEditable = true;
+        }
+        if (n.children && n.children.length) {
+          n.children.forEach((m) => {
+            if (m.editable !== false) {
+              isColumnsEditable = true;
+            }
+          });
+        }
+      });
+      return props.editable && isColumnsEditable;
+    });
     // 监听初始值变化，当该变化的字段还没有值时，则为其赋初始值
     watch(
       () => props.initialValues,
-      (val) => val && (model.value = { ...val }),
+      (val) => val && (model.value = { ...model.value, ...val }),
       { deep: true }
     );
     // 表单实例对象
@@ -127,8 +164,8 @@ export default defineComponent({
       innerFormProps,
       innerSubmitButtonProps,
       innerResetButtonProps,
+      innerEditable,
       formRef,
-      getComponentByValueType,
       handleSubmit,
       handleReset,
     };
@@ -136,4 +173,15 @@ export default defineComponent({
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="scss" scoped>
+$deep: "::v-deep";
+.pro-form {
+  .el-form-item {
+    #{$deep} .el-form-item__content {
+      display: flex;
+      align-items: center;
+      line-height: unset;
+    }
+  }
+}
+</style>

@@ -6,5 +6,12 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
 
-createApp(App).use(ElementPlus).use(store).use(router).mount("#app");
+createApp(App)
+  .use(ElementPlus, {
+    locale: zhCn,
+  })
+  .use(store)
+  .use(router)
+  .mount("#app");

@@ -30,13 +30,9 @@
 import { computed, defineComponent, PropType } from "vue";
 import ProText from "./ProText.vue";
 import { useModelValue, useOptions } from "./hooks";
-import type {
-  FormatConfigType,
-  OptionNodeType,
-  RequestOptionsFunctionType,
-  ComponentSize,
-  ProRadioFieldPropsType,
-} from "./type";
+import type { ProRadioFieldPropsType, FormatConfigType } from "./type";
+import type { OptionNodeType, RequestOptionsFunctionType } from "../type";
+import type { ComponentSize } from "../element-type";
 
 type ValueType = string | number | boolean;
 
