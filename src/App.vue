@@ -1,30 +1,21 @@
+<script setup lang="ts">
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import HelloWorld from './components/HelloWorld.vue'
+</script>
+
 <template>
-  <div id="nav">
-    <router-link to="/basic-select">basic-select</router-link> |
-    <router-link to="/basic-radio">basic-radio</router-link> |
-    <router-link to="/basic-date-picker">basic-date-picker</router-link> |
-    <router-link to="/basic-form">basic-form</router-link> |
-    <router-link to="/basic-modal-form">basic-modal-form</router-link>
-  </div>
-  <div id="main"><router-view /></div>
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
 </template>
 
-<style lang="scss">
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-#main {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #eee;
+  margin-top: 60px;
 }
 </style>
