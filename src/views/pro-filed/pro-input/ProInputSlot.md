@@ -1,3 +1,6 @@
+### 插槽
+
+```vue
 <script lang="ts" setup>
 import { ref } from "vue";
 
@@ -10,3 +13,4 @@ const inputValue = ref("我是一个粉刷匠");
     <template #append>.com</template>
   </pro-input>
 </template>
+```

@@ -1,3 +1,8 @@
+### 按钮样式
+
+颜色属性只能在 button 类型的单选里生效
+
+```vue
 <script lang="ts" setup>
 import { ref } from "vue";
 import type { OptionNodeType } from "one-components-vue3";
@@ -13,7 +18,14 @@ const options: OptionNodeType[] = [
 <template>
   <pro-radio
     v-model="inputValue"
+    type="button"
     :options="options"
-    :field-props="{ radio: { border: true } }"
+    :field-props="{
+      radioGroup: {
+        fill: 'green',
+        textColor: 'orange',
+      },
+    }"
   />
 </template>
+```

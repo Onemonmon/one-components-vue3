@@ -1,3 +1,6 @@
+### 格式化
+
+```vue
 <script lang="ts" setup>
 import { FormatType } from "@components/shared/src/type";
 import { OptionNodeType } from "one-components-vue3";
@@ -33,3 +36,4 @@ const options: OptionNodeType[] = [
     <pro-text :value="inputValue2" :formatConfig="{ formatType }" />
   </el-space>
 </template>
+```

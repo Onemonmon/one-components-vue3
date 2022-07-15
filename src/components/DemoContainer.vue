@@ -1,16 +1,30 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import { Expand, Fold, DocumentCopy } from "@element-plus/icons-vue";
-// import Md from "../views/pro-filed/pro-select/ProSelectBasic.md";
+import { ref, computed, onMounted } from "vue";
+import { Expand, Fold, DocumentCopy, CaretTop } from "@element-plus/icons-vue";
+import ClipboardJS from "clipboard";
+import { ElMessage } from "element-plus";
 
-defineProps<{
+const props = defineProps<{
   title: string;
   description?: string;
+  code: string;
 }>();
+
 const codeExpand = ref(false);
-const handleExpandCode = () => {
-  codeExpand.value = !codeExpand.value;
-};
+const realCode = computed(() => decodeURIComponent(props.code));
+/**
+ * 复制源代码
+ */
+const id = Math.floor((Math.random() + 1) * 1000000);
+onMounted(() => {
+  const clipboard = new ClipboardJS(`#copy-icon-${id}`, {
+    text: () => realCode.value,
+  });
+  clipboard.on("success", (e) => {
+    e.clearSelection();
+    ElMessage({ message: "复制成功", type: "success" });
+  });
+});
 </script>
 
 <template>
@@ -22,24 +36,30 @@ const handleExpandCode = () => {
       <div class="demo-code">
         <div class="demo-code-tool">
           <el-tooltip content="复制代码" placement="bottom">
-            <el-icon><DocumentCopy /></el-icon>
+            <el-icon :id="`copy-icon-${id}`">
+              <DocumentCopy />
+            </el-icon>
           </el-tooltip>
           <el-tooltip content="查看源代码" placement="bottom">
-            <el-icon @click="handleExpandCode">
+            <el-icon @click="codeExpand = !codeExpand">
               <Expand v-show="!codeExpand" />
               <Fold v-show="codeExpand" />
             </el-icon>
           </el-tooltip>
         </div>
-        <el-collapse-transition>
-          <el-scrollbar
-            :max-height="400"
-            class="demo-code-content"
-            v-show="codeExpand"
-          >
-            <Md />
+        <el-collapse-transition v-if="realCode">
+          <el-scrollbar :max-height="400" v-show="codeExpand">
+            <highlightjs :code="realCode" />
           </el-scrollbar>
         </el-collapse-transition>
+        <div
+          class="demo-code-fold"
+          @click="codeExpand = false"
+          v-if="realCode && codeExpand"
+        >
+          <el-icon><CaretTop /></el-icon>
+          <span>隐藏源代码</span>
+        </div>
       </div>
     </div>
   </div>
@@ -89,10 +109,21 @@ const handleExpandCode = () => {
           }
         }
       }
-
-      .demo-code-content {
-        padding: 0 20px;
-        background-color: #f5f7f5;
+      .demo-code-fold {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 44px;
+        border-top: 1px solid #eee;
+        color: #909399;
+        cursor: pointer;
+        .el-icon {
+          margin-right: 6px;
+          font-size: 20px;
+        }
+        &:hover {
+          color: var(--el-color-primary);
+        }
       }
     }
   }

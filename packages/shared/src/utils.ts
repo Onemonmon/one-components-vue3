@@ -15,3 +15,6 @@ export const hasOwn = (target: object, key: string) =>
   Object.prototype.hasOwnProperty.call(target, key);
 
 export const extend = Object.assign;
+
+export const getRandomNumber = (length = 6) =>
+  Math.floor((Math.random() + 1) * Math.pow(10, length));

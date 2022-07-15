@@ -1,3 +1,6 @@
+### 选项分组
+
+```vue
 <script lang="ts" setup>
 import { ref } from "vue";
 import type { OptionNodeType } from "one-components-vue3";
@@ -19,3 +22,4 @@ const options: OptionNodeType[] = [
 <template>
   <pro-select v-model="inputValue" type="group" :options="options" />
 </template>
+```

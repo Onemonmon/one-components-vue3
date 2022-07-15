@@ -1,3 +1,8 @@
+### 自动请求选项数据
+
+params 发生改变后，会再次触发 request
+
+```vue
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import type { OptionNodeType } from "one-components-vue3";
@@ -35,3 +40,4 @@ const getOptions = async ({ id }: ParamsType) => {
     <pro-radio v-model="inputValue" :params="params" :request="getOptions" />
   </el-space>
 </template>
+```

@@ -118,7 +118,6 @@ const formatByType = (text: number) => {
   display: flex;
   align-items: center;
   font-size: 14px;
-  line-height: 20px;
 
   .dot {
     display: block;

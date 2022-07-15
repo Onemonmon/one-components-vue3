@@ -1,3 +1,8 @@
+### 输入框类型
+
+type=number 时将会使用 el-input-number 组件以及对应的 fieldProps
+
+```vue
 <script lang="ts" setup>
 import { ref } from "vue";
 
@@ -27,3 +32,4 @@ const inputValue2 = ref("我是一个粉刷匠");
     }"
   />
 </template>
+```

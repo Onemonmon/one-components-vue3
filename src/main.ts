@@ -4,5 +4,14 @@ import router from "./router";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import ProComponents from "../packages";
+import "highlight.js/styles/vs2015.css";
+// import "highlight.js/styles/atom-one-dark.css";
+import "highlight.js/lib/common";
+import hljsVuePlugin from "@highlightjs/vue-plugin";
 
-createApp(App).use(router).use(ElementPlus).use(ProComponents).mount("#app");
+createApp(App)
+  .use(router)
+  .use(ElementPlus)
+  .use(ProComponents)
+  .use(hljsVuePlugin)
+  .mount("#app");

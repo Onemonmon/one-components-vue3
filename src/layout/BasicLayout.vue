@@ -13,7 +13,7 @@ const handleMenuClick = ({ index }: MenuItemRegistered) => {
 
 <template>
   <el-container>
-    <el-header>Pro Components</el-header>
+    <el-header class="layout-header">Pro Components</el-header>
     <el-container class="middle-layout-container">
       <el-aside width="240px">
         <el-menu default-active="2" class="el-menu-vertical-demo">
@@ -41,6 +41,11 @@ const handleMenuClick = ({ index }: MenuItemRegistered) => {
 </template>
 
 <style lang="scss" scoped>
+.layout-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
 .middle-layout-container {
   height: calc(100vh - 60px);
   .aside-title {
