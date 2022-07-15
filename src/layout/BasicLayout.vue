@@ -14,8 +14,8 @@ const handleMenuClick = ({ index }: MenuItemRegistered) => {
 <template>
   <el-container>
     <el-header>Pro Components</el-header>
-    <el-container>
-      <el-aside width="200px">
+    <el-container class="middle-layout-container">
+      <el-aside width="240px">
         <el-menu default-active="2" class="el-menu-vertical-demo">
           <template v-for="menu in menus">
             <h3 class="aside-title">{{ menu.name }}</h3>
@@ -28,15 +28,23 @@ const handleMenuClick = ({ index }: MenuItemRegistered) => {
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main><router-view /></el-main>
+        <el-main>
+          <el-scrollbar>
+            <router-view />
+          </el-scrollbar>
+        </el-main>
         <el-footer>Footer</el-footer>
       </el-container>
+      <el-aside width="240px"> 右侧导航栏 </el-aside>
     </el-container>
   </el-container>
 </template>
 
 <style lang="scss" scoped>
-.aside-title {
-  padding-left: 12px;
+.middle-layout-container {
+  height: calc(100vh - 60px);
+  .aside-title {
+    padding-left: 12px;
+  }
 }
 </style>

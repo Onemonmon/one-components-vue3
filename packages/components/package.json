@@ -1,0 +1,6 @@
+{
+  "name": "@components/pro-field",
+  "version": "1.0.0",
+  "description": "表单项组件",
+  "main": "index.js"
+}

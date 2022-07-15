@@ -1,0 +1,57 @@
+<script lang="ts" setup>
+import { computed } from "vue";
+import { useModelValue, SelectPropsType } from "@components/shared/src";
+import { ProText } from "../../pro-text";
+import proSelectProps, { ProSelectValueType } from "./ProSelect";
+import { useOptions } from "../../hooks";
+
+const props = defineProps(proSelectProps);
+const emits = defineEmits(["update:modelValue"]);
+const innerValue = useModelValue<ProSelectValueType>({ props, emits });
+const innerFieldProps = computed<SelectPropsType>(() => ({
+  placeholder: "请选择",
+  clearable: true,
+  collapseTags: true,
+  collapseTagsTooltip: true,
+  ...props.fieldProps,
+}));
+const requestOptions = useOptions(props);
+</script>
+
+<template>
+  <el-select
+    class="pro-select-container"
+    v-model="innerValue"
+    v-bind="innerFieldProps"
+    :loading="requestOptions.loading"
+    v-if="editable"
+  >
+    <el-option-group
+      :key="group.label"
+      :label="group.label"
+      v-for="group in requestOptions.options"
+      v-if="type === 'group'"
+    >
+      <el-option
+        v-bind="option"
+        :key="option.value"
+        v-for="option in group.children"
+      />
+    </el-option-group>
+    <template v-else>
+      <el-option
+        v-bind="option"
+        :key="option.value"
+        v-for="option in requestOptions.options"
+      />
+    </template>
+  </el-select>
+  <pro-text
+    :value="innerValue"
+    :options="requestOptions.options"
+    :format-config="formatConfig"
+    v-else
+  />
+</template>
+
+<style lang="scss" scoped></style>
