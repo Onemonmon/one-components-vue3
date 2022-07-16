@@ -4,7 +4,7 @@ import {
   RadioPropsType,
   WithOtherAttrs,
   FormatConfigType,
-  propsHasOption,
+  propsHasOptions,
   extend,
 } from "@components/shared/src";
 
@@ -15,44 +15,47 @@ export type ProRadioFieldPropsType = {
   radioGroup?: RadioGroupPropsType;
 };
 
-const proRadioProps = extend(propsHasOption, {
-  /**
-   * v-model
-   */
-  modelValue: {
-    type: [String, Number] as PropType<ProRadioValueType>,
+const proRadioProps = extend(
+  {
+    /**
+     * v-model
+     */
+    modelValue: {
+      type: [String, Number] as PropType<ProRadioValueType>,
+    },
+    /**
+     * radio 或 radio-button
+     */
+    type: {
+      type: String as PropType<"radio" | "button">,
+      default: "radio",
+    },
+    /**
+     * el-radio 内置的props
+     */
+    fieldProps: {
+      type: Object as PropType<ProRadioFieldPropsType>,
+      default: () => ({
+        radio: {},
+        radioGroup: {},
+      }),
+    },
+    /**
+     * 是否可编辑
+     */
+    editable: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * 只读态的配置，editable = false 时生效
+     */
+    formatConfig: {
+      type: Object as PropType<FormatConfigType>,
+    },
   },
-  /**
-   * radio 或 radio-button
-   */
-  type: {
-    type: String as PropType<"radio" | "button">,
-    default: "radio",
-  },
-  /**
-   * el-radio 内置的props
-   */
-  fieldProps: {
-    type: Object as PropType<ProRadioFieldPropsType>,
-    default: () => ({
-      radio: {},
-      radioGroup: {},
-    }),
-  },
-  /**
-   * 是否可编辑
-   */
-  editable: {
-    type: Boolean,
-    default: true,
-  },
-  /**
-   * 只读态的配置，editable = false 时生效
-   */
-  formatConfig: {
-    type: Object as PropType<FormatConfigType>,
-  },
-});
+  propsHasOptions
+);
 
 export type ProRadioPropsType = Partial<
   WithOtherAttrs<ExtractPropTypes<typeof proRadioProps>>

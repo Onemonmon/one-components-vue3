@@ -9,29 +9,34 @@ const routes: RouteRecordRaw[] = [
     component: BasicLayout,
     children: [
       {
-        path: "/pro-filed",
-        name: "表单组件",
+        path: "/pro-components",
+        name: "高级组件",
         component: DemoLayout,
         children: [
           {
+            path: "/pro-table",
+            name: "ProTable 高级表格",
+            component: () => import("@/views/pro-table/Index.vue"),
+          },
+          {
             path: "/pro-field/pro-input",
             name: "ProInput 输入框",
-            component: () => import("@/views/pro-filed/pro-input/Index.vue"),
+            component: () => import("@/views/pro-field/pro-input/Index.vue"),
           },
           {
             path: "/pro-field/pro-radio",
             name: "ProRadio 单选",
-            component: () => import("@/views/pro-filed/pro-radio/Index.vue"),
+            component: () => import("@/views/pro-field/pro-radio/Index.vue"),
           },
           {
             path: "/pro-field/pro-select",
             name: "ProSelect 选择框",
-            component: () => import("@/views/pro-filed/pro-select/Index.vue"),
+            component: () => import("@/views/pro-field/pro-select/Index.vue"),
           },
           {
             path: "/pro-field/pro-text",
             name: "ProText 文本",
-            component: () => import("@/views/pro-filed/pro-text/Index.vue"),
+            component: () => import("@/views/pro-field/pro-text/Index.vue"),
           },
         ],
       },

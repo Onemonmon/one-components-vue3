@@ -1,7 +1,8 @@
 import { App } from "vue";
-import { ProInput, ProRadio, ProSelect, ProText } from "./components";
+import { ProTable, ProInput, ProRadio, ProSelect, ProText } from "./components";
 
 const components: Record<string, any> = {
+  ProTable,
   ProInput,
   ProRadio,
   ProSelect,

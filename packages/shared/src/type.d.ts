@@ -6,6 +6,11 @@ import type { CSSProperties } from "vue";
 export type FormatType = "digit" | "percent" | "money";
 
 /**
+ * 可选组件类型
+ */
+export type ValueType = "text" | "select" | "radio" | "checkbox" | "datePicker";
+
+/**
  * 只读态的配置
  */
 export type FormatConfigType = {
@@ -56,3 +61,8 @@ export type OptionNodeType = {
   value: any;
   children?: OptionNodeType[];
 };
+
+/**
+ * 数据类型
+ */
+export type Data = Record<string, any>;

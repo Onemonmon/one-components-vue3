@@ -1,4 +1,7 @@
 import {
+  ElTable,
+  ElTableColumn,
+  ElPagination,
   ElInput,
   ElInputNumber,
   ElRadio,
@@ -11,6 +14,15 @@ export type WithOtherAttrs<T> = T &
     style?: CSSCounterStyleRule;
     className?: string;
   };
+
+export type TablePropsType = InstanceType<typeof ElTable>["$props"];
+
+export type TableColumnPropsType = Omit<
+  InstanceType<typeof ElTableColumn>["$props"],
+  "prop"
+> & { prop: string };
+
+export type ElPaginationPropsType = InstanceType<typeof ElPagination>["$props"];
 
 export type InputPropsType = InstanceType<typeof ElInput>["$props"];
 

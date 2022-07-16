@@ -4,7 +4,7 @@ import type { OptionNodeType } from "./type";
 /**
  * 带有获取选项功能的入参
  */
-export const propsHasOption = {
+export const propsHasOptions = {
   /**
    * 选项数据
    */
@@ -27,4 +27,4 @@ export const propsHasOption = {
   },
 };
 
-export type PropsHasOptionType = ExtractPropTypes<typeof propsHasOption>;
+export type PropsHasOptionType = ExtractPropTypes<typeof propsHasOptions>;
