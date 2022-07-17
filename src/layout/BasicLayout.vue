@@ -33,7 +33,7 @@ const handleMenuClick = ({ index }: MenuItemRegistered) => {
             <router-view />
           </el-scrollbar>
         </el-main>
-        <el-footer>Footer</el-footer>
+        <!-- <el-footer>Footer</el-footer> -->
       </el-container>
       <el-aside width="240px"> 右侧导航栏 </el-aside>
     </el-container>

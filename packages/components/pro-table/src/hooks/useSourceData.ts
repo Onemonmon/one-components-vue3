@@ -1,4 +1,10 @@
-import { hasOwn } from "@components/shared/src";
+import {
+  getRandomKey,
+  getValueByComplexKey,
+  hasOwn,
+  isArray,
+} from "@components/shared/src";
+import cloneDeep from "lodash/cloneDeep";
 import {
   computed,
   effectScope,
@@ -41,14 +47,34 @@ const useSourceData = (props: ProTablePropsType) => {
     }
     return { ...props.params, ...pageParams };
   };
+  // 获取$rowKey
+  const getRowKey = (row: any) => {
+    const rowKey = props.tableProps && props.tableProps.rowKey;
+    if (rowKey) {
+      let rowKeyValue: string;
+      if (typeof rowKey === "function") {
+        rowKeyValue = rowKey(row);
+      } else {
+        rowKeyValue = getValueByComplexKey(row, rowKey);
+      }
+      return rowKeyValue;
+    }
+    return getRandomKey();
+  };
+  // 设置$rowKey
+  const setRowKey = (data: any[] = []) => {
+    data.forEach((n) => (n.$rowKey = getRowKey(n)));
+    return data;
+  };
   // 处理原生表格数据 tableProps.data
   watch(
     () => props.tableProps && props.tableProps.data,
     (val) => {
-      if (val) {
-        rawSourceData.value = val;
-        sourceData.data = getTableDataByRange(val, 0, pageParams.pageSize);
-        sourceData.total = val.length;
+      const data = (rawSourceData.value = cloneDeep(val));
+      if (data && isArray(data)) {
+        setRowKey(data);
+        sourceData.data = getTableDataByRange(data, 0, pageParams.pageSize);
+        sourceData.total = data.length;
       }
     },
     { immediate: true }
@@ -62,7 +88,8 @@ const useSourceData = (props: ProTablePropsType) => {
     sourceData.loading = true;
     try {
       const res = await props.request(requestParams);
-      sourceData.data = res.data || [];
+      setRowKey(res.data);
+      sourceData.data = res.data;
       sourceData.total = res.total || 0;
     } finally {
       sourceData.loading = false;
@@ -70,18 +97,16 @@ const useSourceData = (props: ProTablePropsType) => {
   };
   watch(
     () => props.params,
-    (val) => {
-      getTableDataByParams();
-    },
+    () => getTableDataByParams(),
     { immediate: true, deep: true }
   );
   // 分页改变 1.重新获取远程数据 2.重新切割本地数据
-  watch(pageParams, (val) => {
-    if (rawSourceData.value) {
+  watch(pageParams, ({ pageNum, pageSize }) => {
+    if (rawSourceData.value && isArray(rawSourceData.value)) {
       sourceData.data = getTableDataByRange(
         rawSourceData.value,
-        0 + (val.pageNum - 1) * val.pageSize,
-        val.pageSize
+        0 + (pageNum - 1) * pageSize,
+        pageSize
       );
     } else {
       getTableDataByParams();

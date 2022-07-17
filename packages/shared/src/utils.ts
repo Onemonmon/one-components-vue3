@@ -1,3 +1,4 @@
+import { markRaw } from "vue";
 import type { Data, ValueType } from "./type";
 
 export const isObject = (target: any) =>
@@ -48,6 +49,26 @@ export const getValueByComplexKey = (
     return value;
   }
   return rawValue[key];
+};
+
+export const setValueByComplexKey = (
+  rawValue: Data,
+  key: string,
+  value: any,
+  splitSign: string = "."
+) => {
+  const keys = key.split(splitSign);
+  const keysLength = keys.length;
+  if (keysLength > 1) {
+    let i;
+    for (i = 0; i < keysLength - 1; i++) {
+      rawValue = rawValue[keys[i]];
+    }
+    rawValue[keys[i]] = value;
+  } else {
+    rawValue[key] = value;
+  }
+  return true;
 };
 
 export const extend = Object.assign;

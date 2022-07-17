@@ -7,6 +7,7 @@ import {
   ElRadio,
   ElRadioGroup,
   ElSelect,
+  ElButton,
 } from "element-plus";
 
 export type WithOtherAttrs<T> = T &
@@ -33,3 +34,5 @@ export type RadioPropsType = InstanceType<typeof ElRadio>["$props"];
 export type RadioGroupPropsType = InstanceType<typeof ElRadioGroup>["$props"];
 
 export type SelectPropsType = InstanceType<typeof ElSelect>["$props"];
+
+export type ButtonPropsType = InstanceType<typeof ElButton>["$props"];

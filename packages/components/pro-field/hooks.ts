@@ -10,6 +10,14 @@ export const useOptions = (props: PropsHasOptionType) => {
     options: props.options,
   });
   /**
+   * 监听options改变
+   */
+  watch(
+    () => props.options,
+    (val) => (requestOptions.options = val),
+    { deep: true }
+  );
+  /**
    * params改变会重新触发request
    */
   watch(

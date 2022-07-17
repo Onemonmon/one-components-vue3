@@ -43,6 +43,9 @@ const displayValues = computed((n) => {
     findLabelInValue(result, newValue, props.options);
     newValue = result;
   }
+  if (isTextEmpty(newValue)) {
+    return props.formatConfig.defaultEmptyText || default_empty_text;
+  }
   return newValue
     .map((n) => formatText(n))
     .join(props.formatConfig.textSpacer || " ");
@@ -53,12 +56,9 @@ const displayValues = computed((n) => {
  *  2. 根据formatType格式化数据
  */
 const formatText = (text: ProTextValueType) => {
-  const { textFormat, defaultEmptyText, formatType } = props.formatConfig;
+  const { textFormat, formatType } = props.formatConfig;
   if (textFormat) {
     return textFormat(text);
-  }
-  if (isTextEmpty(text)) {
-    return defaultEmptyText || default_empty_text;
   }
   if (isNumber(text) && formatType) {
     return formatByType(text as number);
@@ -107,7 +107,7 @@ const formatByType = (text: number) => {
         backgroundColor: formatConfig.color,
         ...(formatConfig.dot !== true ? formatConfig.dot.style : {}),
       }"
-      v-if="formatConfig.dot"
+      v-if="formatConfig.dot && !isTextEmpty(value)"
     />
     {{ displayValues }}
   </div>

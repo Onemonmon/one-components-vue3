@@ -10,6 +10,41 @@ export type RequestTableDataFunction = (
   params?: any
 ) => Promise<{ data: any[]; total?: number }>;
 
+/**
+ * 表格编辑态配置
+ */
+export type EditableKeysType = (string | number)[];
+export type InnerEditableConfigType = {
+  /**
+   * 当前表格是否可编辑
+   */
+  editable: boolean;
+  /**
+   * 当前可编辑行的rowKey的Set集合
+   */
+  editableKeys: Set<EditableKeysType>;
+  /**
+   * editableKeys改变时触发
+   */
+  onEditableKeysChange: (editableKeys: EditableKeysType) => void;
+  /**
+   * 点击保存时触发
+   */
+  onSave: (row: any) => Promise<any> | any;
+  /**
+   * 当前可编辑行数据变化时触发
+   */
+  onValuesChange: (row: any, prop: string, value: any) => void;
+};
+export type EditableConfigType = Partial<
+  Omit<InnerEditableConfigType, "editableKeys">
+> & {
+  /**
+   * 当前可编辑行的rowKey的集合
+   */
+  editableKeys?: EditableKeysType;
+};
+
 const proTableProps = {
   /**
    * 表格列配置
@@ -40,8 +75,14 @@ const proTableProps = {
    * 表格分页配置，传入false则取消分页功能
    */
   paginationProps: {
-    type: [Object, Boolean] as PropType<false | ElPaginationPropsType>,
+    type: [Object, Boolean] as PropType<ElPaginationPropsType | false>,
     default: undefined,
+  },
+  /**
+   * 编辑表格配置
+   */
+  editableConfig: {
+    type: Object as PropType<EditableConfigType>,
   },
   /**
    * 是否可编辑
