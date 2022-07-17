@@ -8,6 +8,10 @@ import {
 
 export type ProSelectValueType = string | number | string[] | number[];
 
+export type ProSelectFieldPropsType = SelectPropsType & {
+  type?: "default" | "group";
+};
+
 const proSelectProps = {
   /**
    * v-model
@@ -16,17 +20,11 @@ const proSelectProps = {
     type: [String, Number, Array] as PropType<ProSelectValueType>,
   },
   /**
-   * 类型：default | group分组
-   */
-  type: {
-    type: String as PropType<"default" | "group">,
-    default: "default",
-  },
-  /**
    * el-select 内置的props
+   * type 类型：default | group分组
    */
   fieldProps: {
-    type: Object as PropType<SelectPropsType>,
+    type: Object as PropType<ProSelectFieldPropsType>,
     default: () => ({}),
   },
   /**

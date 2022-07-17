@@ -4,6 +4,7 @@ declare module "@vue/runtime-core" {
     ProTable: typeof import("./index")["ProTable"];
     ProInput: typeof import("./index")["ProInput"];
     ProRadio: typeof import("./index")["ProRadio"];
+    ProCheckbox: typeof import("./index")["ProCheckbox"];
     ProSelect: typeof import("./index")["ProSelect"];
     ProText: typeof import("./index")["ProText"];
   }

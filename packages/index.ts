@@ -4,6 +4,7 @@ import {
   ProTable,
   ProInput,
   ProRadio,
+  ProCheckbox,
   ProSelect,
   ProText,
 } from "./components";
@@ -13,6 +14,7 @@ const components: Record<string, any> = {
   ProTable,
   ProInput,
   ProRadio,
+  ProCheckbox,
   ProSelect,
   ProText,
 };

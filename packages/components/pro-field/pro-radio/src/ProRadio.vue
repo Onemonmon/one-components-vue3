@@ -9,6 +9,7 @@ const props = defineProps(proRadioProps);
 const emits = defineEmits(["update:modelValue"]);
 const innerValue = useModelValue<ProRadioValueType>({ props, emits });
 const innerFieldProps = computed<any>(() => ({
+  type: props.fieldProps.type,
   radio: props.fieldProps.radio,
   radioGroup: props.fieldProps.radioGroup,
 }));
@@ -25,7 +26,7 @@ const requestOptions = useOptions(props);
     <component
       v-bind="innerFieldProps.radio"
       :label="option.value"
-      :is="type === 'button' ? 'el-radio-button' : 'el-radio'"
+      :is="innerFieldProps.type === 'button' ? 'el-radio-button' : 'el-radio'"
       :key="option.value"
       v-for="option in requestOptions.options"
     >
@@ -40,4 +41,11 @@ const requestOptions = useOptions(props);
   />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pro-radio-container {
+  display: flex;
+  .el-radio {
+    margin-right: 24px;
+  }
+}
+</style>

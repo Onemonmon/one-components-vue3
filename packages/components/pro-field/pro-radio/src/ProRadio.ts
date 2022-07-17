@@ -10,6 +10,7 @@ import {
 export type ProRadioValueType = string | number | boolean;
 
 export type ProRadioFieldPropsType = {
+  type?: "radio" | "button";
   radio?: RadioPropsType;
   radioGroup?: RadioGroupPropsType;
 };
@@ -22,18 +23,12 @@ const proRadioProps = {
     type: [String, Number] as PropType<ProRadioValueType>,
   },
   /**
-   * radio 或 radio-button
-   */
-  type: {
-    type: String as PropType<"radio" | "button">,
-    default: "radio",
-  },
-  /**
    * el-radio 内置的props
    */
   fieldProps: {
     type: Object as PropType<ProRadioFieldPropsType>,
     default: () => ({
+      type: "radio",
       radio: {},
       radioGroup: {},
     }),

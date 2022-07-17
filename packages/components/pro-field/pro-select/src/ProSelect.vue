@@ -1,14 +1,18 @@
 <script lang="ts" setup>
 import { computed } from "vue";
-import { useModelValue, SelectPropsType } from "@components/shared/src";
+import { useModelValue } from "@components/shared/src";
 import { ProText } from "../../pro-text";
-import proSelectProps, { ProSelectValueType } from "./ProSelect";
+import proSelectProps, {
+  ProSelectValueType,
+  ProSelectFieldPropsType,
+} from "./ProSelect";
 import { useOptions } from "../../hooks";
 
 const props = defineProps(proSelectProps);
 const emits = defineEmits(["update:modelValue"]);
 const innerValue = useModelValue<ProSelectValueType>({ props, emits });
-const innerFieldProps = computed<SelectPropsType>(() => ({
+const innerFieldProps = computed<ProSelectFieldPropsType>(() => ({
+  type: "default",
   placeholder: "请选择",
   clearable: true,
   collapseTags: true,
@@ -30,7 +34,7 @@ const requestOptions = useOptions(props);
       :key="group.label"
       :label="group.label"
       v-for="group in requestOptions.options"
-      v-if="type === 'group'"
+      v-if="innerFieldProps.type === 'group'"
     >
       <el-option
         v-bind="option"

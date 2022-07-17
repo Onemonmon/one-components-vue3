@@ -1,13 +1,11 @@
-### 按钮样式
-
-颜色属性只能在 button 类型的单选里生效
+### 边框样式
 
 ```vue
 <script lang="ts" setup>
 import { ref } from "vue";
 import type { OptionNodeType } from "one-components-vue3";
 
-const inputValue = ref("01");
+const inputValue = ref(["01"]);
 const options: OptionNodeType[] = [
   { label: "抽烟", value: "01" },
   { label: "喝酒", value: "02" },
@@ -16,16 +14,10 @@ const options: OptionNodeType[] = [
 </script>
 
 <template>
-  <pro-radio
+  <pro-checkbox
     v-model="inputValue"
     :options="options"
-    :field-props="{
-      type: 'button',
-      radioGroup: {
-        fill: 'green',
-        textColor: 'orange',
-      },
-    }"
+    :field-props="{ checkbox: { border: true } }"
   />
 </template>
 ```

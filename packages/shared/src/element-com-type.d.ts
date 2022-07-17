@@ -7,6 +7,8 @@ import {
   ElRadio,
   ElRadioGroup,
   ElSelect,
+  ElCheckbox,
+  ElCheckboxGroup,
   ElButton,
 } from "element-plus";
 
@@ -32,6 +34,12 @@ export type InputNumberPropsType = InstanceType<typeof ElInputNumber>["$props"];
 export type RadioPropsType = InstanceType<typeof ElRadio>["$props"];
 
 export type RadioGroupPropsType = InstanceType<typeof ElRadioGroup>["$props"];
+
+export type CheckboxPropsType = InstanceType<typeof ElCheckbox>["$props"];
+
+export type CheckboxGroupPropsType = InstanceType<
+  typeof ElCheckboxGroup
+>["$props"];
 
 export type SelectPropsType = InstanceType<typeof ElSelect>["$props"];
 

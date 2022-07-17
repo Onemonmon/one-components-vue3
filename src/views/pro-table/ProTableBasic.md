@@ -15,7 +15,7 @@ const columns = computed(() => [
   {
     prop: "selection",
     type: "selection",
-    width: 40,
+    width: 50,
   },
   {
     prop: "index",
@@ -26,9 +26,8 @@ const columns = computed(() => [
   {
     prop: "name",
     label: "姓名",
-    formatConfig: {
-      textFormat: (text) => "我是" + text,
-    },
+    formatConfig: { textFormat: (text) => "我是" + text },
+    width: 140,
   },
   {
     prop: "address",
@@ -45,17 +44,14 @@ const columns = computed(() => [
         prop: "info.age",
         label: "年龄",
         editable: false,
-        width: 80,
+        sortable: true,
+        width: 100,
       },
       {
         prop: "info.money",
         label: "余额",
-        formatConfig: {
-          formatType: "money",
-        },
-        fieldProps: {
-          type: "number",
-        },
+        formatConfig: { formatType: "money" },
+        fieldProps: { type: "number" },
         width: 160,
       },
       {
@@ -65,18 +61,28 @@ const columns = computed(() => [
           { label: "男", value: "male" },
           { label: "女", value: "female" },
         ],
+        filters: [
+          { text: "男", value: "male" },
+          { text: "女", value: "female" },
+        ],
+        fieldProps: { type: "button" },
         valueType: "radio",
         width: 140,
+      },
+      {
+        prop: "info.hobby",
+        label: "爱好",
+        options: options.value,
+        fieldProps: { checkAll: true },
+        valueType: "checkbox",
+        width: 330,
       },
     ],
   },
   {
     prop: "major",
     label: "专业",
-    formatConfig: {
-      color: "green",
-      dot: true,
-    },
+    formatConfig: { color: "green", dot: true },
     options: options.value,
     valueType: "select",
     width: 120,
@@ -85,6 +91,7 @@ const columns = computed(() => [
     prop: "operations",
     type: "operations",
     label: "操作",
+    fixed: "right",
     operations: (row) => [
       {
         key: "detail",
@@ -123,7 +130,12 @@ const getTableData = async ({ id }) => {
         id: i,
         name: "张三" + i + id,
         address: "深圳" + i + id,
-        info: { age: 22 + i, gender: "female", money: 1314520 },
+        info: {
+          age: 22 + i,
+          gender: "female",
+          money: 1314520,
+          hobby: ["01", "02"],
+        },
         major: "01",
       }));
       resolve(data);
@@ -137,11 +149,6 @@ const getTableData = async ({ id }) => {
 
 onMounted(async () => {
   setTimeout(() => {
-    // options.value = [
-    //   { label: "抽烟", value: "01" },
-    //   { label: "喝酒", value: "02" },
-    //   { label: "烫头", value: "03" },
-    // ];
     // params.id = "002";
   }, 2000);
 });

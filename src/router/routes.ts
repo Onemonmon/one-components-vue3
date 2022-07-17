@@ -29,6 +29,11 @@ const routes: RouteRecordRaw[] = [
             component: () => import("@/views/pro-field/pro-radio/Index.vue"),
           },
           {
+            path: "/pro-field/pro-checkbox",
+            name: "ProCheckbox 复选",
+            component: () => import("@/views/pro-field/pro-checkbox/Index.vue"),
+          },
+          {
             path: "/pro-field/pro-select",
             name: "ProSelect 选择框",
             component: () => import("@/views/pro-field/pro-select/Index.vue"),

@@ -7,14 +7,14 @@ import type { PropsHasOptionType } from "@components/shared/src";
 export const useOptions = (props: PropsHasOptionType) => {
   const requestOptions = reactive({
     loading: false,
-    options: props.options,
+    options: props.options || [],
   });
   /**
    * 监听options改变
    */
   watch(
     () => props.options,
-    (val) => (requestOptions.options = val),
+    (val) => val && (requestOptions.options = val),
     { deep: true }
   );
   /**
@@ -23,7 +23,7 @@ export const useOptions = (props: PropsHasOptionType) => {
   watch(
     () => props.params,
     async (val) => {
-      if (props.request) {
+      if (props.request && !props.options) {
         try {
           requestOptions.loading = true;
           const res = await props.request(val);

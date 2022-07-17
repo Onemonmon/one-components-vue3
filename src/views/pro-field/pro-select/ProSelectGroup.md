@@ -20,6 +20,10 @@ const options: OptionNodeType[] = [
 </script>
 
 <template>
-  <pro-select v-model="inputValue" type="group" :options="options" />
+  <pro-select
+    v-model="inputValue"
+    :fieldProps="{ type: 'group' }"
+    :options="options"
+  />
 </template>
 ```

@@ -60,14 +60,23 @@ const innerEditableConfig = useEditable(props);
 <style lang="scss" scoped>
 .pro-table-container {
   .pro-table__body {
-    :deep(.el-table-column--selection) {
-      .cell {
-        line-height: 1;
-        font-size: 0;
+    :deep(.el-table) {
+      .el-table-column--selection {
+        .cell {
+          line-height: 1;
+          font-size: 0;
+        }
       }
-    }
-    :deep(.el-input-number) {
-      width: 100%;
+      .el-table__column-filter-trigger {
+        display: inline-flex;
+        vertical-align: -2px;
+      }
+      .caret-wrapper {
+        vertical-align: -3px;
+      }
+      .el-input-number {
+        width: 100%;
+      }
     }
   }
   .pro-table__footer {
@@ -79,6 +88,14 @@ const innerEditableConfig = useEditable(props);
         margin-right: 0;
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.el-table-filter__checkbox-group {
+  .el-checkbox__label {
+    line-height: unset;
   }
 }
 </style>
