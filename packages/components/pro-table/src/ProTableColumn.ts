@@ -51,6 +51,18 @@ const proTableCustomColumnProps = {
     type: String,
   },
   /**
+   * 在 Table 中不展示此列
+   */
+  hideInTable: {
+    type: Boolean,
+  },
+  /**
+   * 在 Table 中不展示此列，在列设置中选中后可展示
+   */
+  hideBySetting: {
+    type: Boolean,
+  },
+  /**
    * 子表头
    */
   children: {
@@ -87,6 +99,21 @@ export type ProTableColumnPropsType = WithOtherAttrs<
 >;
 
 const proTableColumnProps = {
+  /**
+   * 列prop，作为唯一key
+   */
+  prop: { type: String, required: true },
+  /**
+   * 列名
+   */
+  label: { type: String },
+  /**
+   * 在列设置中不展示此列
+   */
+  hideInSetting: {
+    type: Boolean,
+  },
+  // 以下属性需要单独为组件传入
   /**
    * el-table-column 的入参
    */

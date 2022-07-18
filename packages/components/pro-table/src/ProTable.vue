@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, useSlots, watch } from "vue";
 import ProTableColumn from "./ProTableColumn.vue";
 import proTableProps from "./ProTable";
+import ProTabaleToolbar from "./ProTabaleToolbar.vue";
 import useColumns from "./hooks/useColumns";
 import useSourceData from "./hooks/useSourceData";
 import useEditable from "./hooks/useEditable";
@@ -23,7 +24,8 @@ const { sourceData, pageParams, innerPaginationProps } = useSourceData(props);
 /**
  * 解析处理表格表头
  */
-const innerColumns = useColumns(props);
+const { innerColumns, flatColumns, settingKeys, defaultCheckedKeys } =
+  useColumns(props);
 /**
  * 处理编辑表格
  */
@@ -32,7 +34,17 @@ const innerEditableConfig = useEditable(props);
 
 <template>
   <div class="pro-table-container" v-if="innerColumns.length">
-    <div class="pro-table__header"></div>
+    <div class="pro-table__header">
+      <div class="pro-table__header-title">表格标题</div>
+      <div class="pro-table__header-toolbar">
+        <slot name="toolbar"></slot>
+        <pro-tabale-toolbar
+          :columns="innerColumns"
+          :settingKeys="settingKeys"
+          :defaultCheckedKeys="defaultCheckedKeys"
+        />
+      </div>
+    </div>
     <div class="pro-table__body" v-loading="sourceData.loading">
       <el-table v-bind="innerTableProps" :data="sourceData.data">
         <pro-table-column
@@ -40,7 +52,7 @@ const innerEditableConfig = useEditable(props);
           :pageParams="pageParams"
           :slots="slots"
           :editableConfig="innerEditableConfig"
-          :key="column.columnProps.prop"
+          :key="column.prop"
           v-for="column in innerColumns"
         />
       </el-table>
@@ -59,6 +71,23 @@ const innerEditableConfig = useEditable(props);
 
 <style lang="scss" scoped>
 .pro-table-container {
+  .pro-table__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+
+    &-title {
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    &-toolbar {
+      display: flex;
+      align-items: center;
+    }
+  }
   .pro-table__body {
     :deep(.el-table) {
       .el-table-column--selection {

@@ -8,7 +8,7 @@ import { useOptions } from "../../hooks";
 const props = defineProps(proCheckboxProps);
 const emits = defineEmits(["update:modelValue"]);
 const innerValue = useModelValue<ProCheckboxValueType>({ props, emits });
-const checkAllValue = reactive({ checked: false, indeterminate: false });
+const checkAllStatus = reactive({ checked: false, indeterminate: false });
 const innerFieldProps = computed<any>(() => ({
   type: props.fieldProps.type,
   checkAll: props.fieldProps.checkAll,
@@ -21,16 +21,16 @@ const allValue = computed(() => requestOptions.options.map((n) => n.value));
 watch(
   innerValue,
   (val) => {
-    checkAllValue.checked = val.length === requestOptions.options.length;
-    checkAllValue.indeterminate =
+    checkAllStatus.checked = val.length === requestOptions.options.length;
+    checkAllStatus.indeterminate =
       val.length > 0 && val.length < requestOptions.options.length;
   },
   { immediate: true }
 );
 // 全选
 const handleCheckAllChange = (value: any) => {
-  checkAllValue.checked = value;
-  checkAllValue.indeterminate = false;
+  checkAllStatus.checked = value;
+  checkAllStatus.indeterminate = false;
   innerValue.value = value ? allValue.value : [];
 };
 </script>
@@ -38,8 +38,8 @@ const handleCheckAllChange = (value: any) => {
 <template>
   <div class="pro-checkbox-container" v-if="editable">
     <el-checkbox
-      v-model="checkAllValue.checked"
-      :indeterminate="checkAllValue.indeterminate"
+      v-model="checkAllStatus.checked"
+      :indeterminate="checkAllStatus.indeterminate"
       :onChange="handleCheckAllChange"
       v-if="innerFieldProps.checkAll"
     >

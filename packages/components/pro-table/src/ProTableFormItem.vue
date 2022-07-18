@@ -9,6 +9,7 @@ import {
   setValueByComplexKey,
   FormatConfigType,
 } from "@components/shared/src";
+import isEqual from "lodash/isEqual";
 import type { ProFieldPropsType } from "@components/components/pro-field";
 import type { InnerEditableConfigType } from "./ProTable";
 
@@ -73,8 +74,11 @@ const rowProxy = new Proxy(props.row, {
     return getValueByComplexKey(target, key as string);
   },
   set(target, key, value) {
-    setValueByComplexKey(target, key as string, value);
-    props.editableConfig.onValuesChange(target, key as string, value);
+    const oldValue = getValueByComplexKey(target, key as string);
+    if (!isEqual(oldValue, value)) {
+      setValueByComplexKey(target, key as string, value);
+      props.editableConfig.onValuesChange(target, key as string, value);
+    }
     return true;
   },
 });

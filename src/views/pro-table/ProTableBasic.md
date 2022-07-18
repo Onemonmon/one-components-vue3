@@ -10,6 +10,7 @@ const options = ref([
   { label: "喝酒", value: "02" },
   { label: "烫头", value: "03" },
 ]);
+const hideInTable = ref(false);
 
 const columns = computed(() => [
   {
@@ -32,8 +33,8 @@ const columns = computed(() => [
   {
     prop: "address",
     label: "地址",
-    width: 120,
     columnDefaultSlotName: "address",
+    width: 120,
   },
   {
     prop: "info",
@@ -45,6 +46,7 @@ const columns = computed(() => [
         label: "年龄",
         editable: false,
         sortable: true,
+        hideBySetting: true,
         width: 100,
       },
       {
@@ -52,6 +54,7 @@ const columns = computed(() => [
         label: "余额",
         formatConfig: { formatType: "money" },
         fieldProps: { type: "number" },
+        hideInTable: hideInTable.value,
         width: 160,
       },
       {
@@ -150,6 +153,7 @@ const getTableData = async ({ id }) => {
 onMounted(async () => {
   setTimeout(() => {
     // params.id = "002";
+    hideInTable.value = true;
   }, 2000);
 });
 </script>
@@ -162,6 +166,10 @@ onMounted(async () => {
     :tableProps="tableProps"
     :editableConfig="editableConfig"
   >
+    <template #toolbar>
+      <el-button type="primary">重新获取数据</el-button>
+      <el-button type="primary">管理</el-button>
+    </template>
     <template #info>
       <el-tag type="success">信息</el-tag><el-tag type="success">信息</el-tag>
     </template>
