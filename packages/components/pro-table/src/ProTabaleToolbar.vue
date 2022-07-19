@@ -3,6 +3,7 @@ import { computed, nextTick, PropType, reactive, ref, unref, watch } from "vue";
 import { Refresh, Brush, Setting } from "@element-plus/icons-vue";
 import { ClickOutside as vClickOutside } from "element-plus";
 import type { ProTableColumnPropsType } from "./ProTableColumn";
+import type { ProTableInstance } from "./ProTable";
 
 const props = defineProps({
   /**
@@ -26,6 +27,7 @@ const props = defineProps({
     type: Array as PropType<string[]>,
   },
 });
+const emits = defineEmits(["reload-data", "clear"]);
 // 树实例
 const treeRef = ref();
 // 列设置触发按钮实例
@@ -86,10 +88,14 @@ const handleReset = () => {
 
 <template>
   <el-tooltip content="刷新" placement="top">
-    <el-icon class="toolbar-icon"><Refresh /></el-icon>
+    <el-icon class="toolbar-icon" @click="emits('reload-data')">
+      <Refresh />
+    </el-icon>
   </el-tooltip>
   <el-tooltip content="清除过滤条件" placement="top">
-    <el-icon class="toolbar-icon"><Brush /></el-icon>
+    <el-icon class="toolbar-icon" @click="emits('clear')">
+      <Brush />
+    </el-icon>
   </el-tooltip>
   <el-tooltip content="列设置" placement="top">
     <el-icon

@@ -48,7 +48,7 @@ onMounted(() => {
           </el-tooltip>
         </div>
         <el-collapse-transition v-if="realCode">
-          <el-scrollbar :max-height="400" v-show="codeExpand">
+          <el-scrollbar :max-height="800" v-show="codeExpand">
             <highlightjs :code="realCode" />
           </el-scrollbar>
         </el-collapse-transition>

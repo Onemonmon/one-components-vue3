@@ -1,4 +1,4 @@
-import type { ExtractPropTypes, PropType } from "vue";
+import type { ExtractPropTypes, PropType, Ref } from "vue";
 import type {
   ElPaginationPropsType,
   TablePropsType,
@@ -9,6 +9,24 @@ import type { ProTableColumnPropsType } from "./ProTableColumn";
 export type RequestTableDataFunction = (
   params?: any
 ) => Promise<{ data: any[]; total?: number }>;
+
+export type ProTableInstance = {
+  clearSelection: () => void;
+  getSelectionRows: () => any[];
+  toggleRowSelection: (row: any, selected: boolean) => void;
+  toggleAllSelection: () => void;
+  toggleRowExpansion: (row: any, expanded: boolean) => void;
+  setCurrentRow: (row: any) => void;
+  clearSort: () => void;
+  clearFilter: (columnKeys?: string[]) => void;
+  doLayout: () => void;
+  sort: (prop: string, order: string) => void;
+  scrollTo: (options: ScrollToOptions | number, yCoord?: number) => void;
+  setScrollTop: (top: number) => void;
+  setScrollLeft: (left: number) => void;
+  reloadData: () => Promise<void>;
+  clear: () => void;
+};
 
 /**
  * 表格编辑态配置
@@ -60,10 +78,22 @@ const proTableProps = {
     type: Function as PropType<RequestTableDataFunction>,
   },
   /**
+   * 当表头排序、过滤改变时触发request
+   */
+  requestOnColumnChange: {
+    type: Boolean,
+  },
+  /**
    * 请求表格数据的方法的入参，改变时会重新触发request
    */
   params: {
     type: Object,
+  },
+  /**
+   * 获取表格实例
+   */
+  getTableRef: {
+    type: Function as PropType<(ref: ProTableInstance) => void>,
   },
   /**
    * el-table入参，el-table的事件也是通过它传入

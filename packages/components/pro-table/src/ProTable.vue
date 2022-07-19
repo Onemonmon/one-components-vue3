@@ -1,26 +1,29 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, useSlots, watch } from "vue";
+import { computed, onMounted, Ref, ref, useSlots, watch } from "vue";
 import ProTableColumn from "./ProTableColumn.vue";
-import proTableProps from "./ProTable";
+import proTableProps, { ProTableInstance } from "./ProTable";
 import ProTabaleToolbar from "./ProTabaleToolbar.vue";
 import useColumns from "./hooks/useColumns";
 import useSourceData from "./hooks/useSourceData";
 import useEditable from "./hooks/useEditable";
+import useTableInstance from "./hooks/useTableInstance";
 import type { TablePropsType } from "@components/shared/src";
 
 const props = defineProps(proTableProps);
 const slots = useSlots();
-
-const innerTableProps = computed<TablePropsType>(() => ({
-  size: "large",
-  ...props.tableProps,
-  rowKey: "$rowKey",
-}));
-
+const innerTableRef = ref<ProTableInstance | null>(null);
 /**
  * 获取处理表格数据
  */
-const { sourceData, pageParams, innerPaginationProps } = useSourceData(props);
+const {
+  sourceData,
+  pageParams,
+  columnParmas,
+  innerPaginationProps,
+  getTableDataByParams,
+  handleSortChange,
+  handleFilterChange,
+} = useSourceData(props);
 /**
  * 解析处理表格表头
  */
@@ -30,6 +33,18 @@ const { innerColumns, flatColumns, settingKeys, defaultCheckedKeys } =
  * 处理编辑表格
  */
 const innerEditableConfig = useEditable(props);
+/**
+ * 处理表格实例
+ */
+useTableInstance(props, innerTableRef, columnParmas, getTableDataByParams);
+
+const innerTableProps = computed<TablePropsType>(() => ({
+  size: "large",
+  "onSort-change": handleSortChange,
+  "onFilter-change": handleFilterChange,
+  ...props.tableProps,
+  rowKey: "$rowKey",
+}));
 </script>
 
 <template>
@@ -42,16 +57,23 @@ const innerEditableConfig = useEditable(props);
           :columns="innerColumns"
           :settingKeys="settingKeys"
           :defaultCheckedKeys="defaultCheckedKeys"
+          @reload-data="() => innerTableRef && innerTableRef.reloadData()"
+          @clear="() => innerTableRef && innerTableRef.clear()"
         />
       </div>
     </div>
     <div class="pro-table__body" v-loading="sourceData.loading">
-      <el-table v-bind="innerTableProps" :data="sourceData.data">
+      <el-table
+        ref="innerTableRef"
+        v-bind="innerTableProps"
+        :data="sourceData.data"
+      >
         <pro-table-column
           v-bind="column"
           :pageParams="pageParams"
           :slots="slots"
           :editableConfig="innerEditableConfig"
+          :requestOnColumnChange="requestOnColumnChange"
           :key="column.prop"
           v-for="column in innerColumns"
         />

@@ -4,6 +4,7 @@
 <script lang="ts" setup>
 import { ref, reactive, computed, onMounted } from "vue";
 import { ElMessage } from "element-plus";
+import type { ProTableInstance } from "one-components-vue3";
 
 const options = ref([
   { label: "抽烟", value: "01" },
@@ -45,8 +46,7 @@ const columns = computed(() => [
         prop: "info.age",
         label: "年龄",
         editable: false,
-        sortable: true,
-        hideBySetting: true,
+        sortable: "custom",
         width: 100,
       },
       {
@@ -54,7 +54,6 @@ const columns = computed(() => [
         label: "余额",
         formatConfig: { formatType: "money" },
         fieldProps: { type: "number" },
-        hideInTable: hideInTable.value,
         width: 160,
       },
       {
@@ -116,6 +115,7 @@ const columns = computed(() => [
 
 const params = reactive({ id: "001" });
 const tableProps = reactive({});
+const tableRef = ref<ProTableInstance | null>(null);
 const editableConfig = reactive({
   editable: true,
   async onSave(row) {
@@ -126,16 +126,18 @@ const editableConfig = reactive({
     console.log(row, key, value);
   },
 });
-const getTableData = async ({ id }) => {
+const getTableData = async (params) => {
+  console.log("获取表格数据，参数：", params);
+  console.log("表格实例：", tableRef);
   const res = await new Promise((resolve) => {
     setTimeout(() => {
       const data = new Array(10).fill(0).map((n, i) => ({
         id: i,
-        name: "张三" + i + id,
-        address: "深圳" + i + id,
+        name: "张三" + i,
+        address: "深圳" + i + params.id,
         info: {
-          age: 22 + i,
-          gender: "female",
+          age: Math.floor(Math.random() * 100),
+          gender: Math.random() > 0.5 ? "female" : "male",
           money: 1314520,
           hobby: ["01", "02"],
         },
@@ -153,7 +155,6 @@ const getTableData = async ({ id }) => {
 onMounted(async () => {
   setTimeout(() => {
     // params.id = "002";
-    hideInTable.value = true;
   }, 2000);
 });
 </script>
@@ -163,7 +164,9 @@ onMounted(async () => {
     :columns="columns"
     :params="params"
     :request="getTableData"
+    :requestOnColumnChange="true"
     :tableProps="tableProps"
+    :getTableRef="(ref) => (tableRef = ref)"
     :editableConfig="editableConfig"
   >
     <template #toolbar>

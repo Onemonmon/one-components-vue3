@@ -3,15 +3,34 @@ export default { name: "ProTableColumn" };
 </script>
 
 <script lang="ts" setup>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import ProTableFormItem from "./ProTableFormItem.vue";
 import proTableColumnProps from "./ProTableColumn";
 import ProTableOperationColumn from "./ProTableOperationColumn.vue";
 import CustomRender from "../../common/custom-render/src/CustomRender.vue";
-import { getValueByComplexKey } from "@components/shared/src";
+import {
+  getValueByComplexKey,
+  TableColumnPropsType,
+} from "@components/shared/src";
 
 const props = defineProps(proTableColumnProps);
 const isColumnHide = computed(() => props.hideInTable || props.hideBySetting);
+const handleDefaultFilter = (
+  value: any,
+  row: any,
+  column: TableColumnPropsType
+) => {
+  const property = column.property as string;
+  return getValueByComplexKey(row, property) === value;
+};
+const elTableColumnProps = computed(() => ({
+  columnKey: props.prop,
+  filterMethod:
+    props.columnProps.filters && !props.requestOnColumnChange
+      ? handleDefaultFilter
+      : undefined,
+  ...props.columnProps,
+}));
 </script>
 
 <template>
@@ -33,7 +52,7 @@ const isColumnHide = computed(() => props.hideInTable || props.hideBySetting);
       v-bind="columnProps"
       v-else-if="columnProps.type === 'selection'"
     />
-    <el-table-column v-bind="columnProps" :key="prop" v-else>
+    <el-table-column v-bind="elTableColumnProps" :key="prop" v-else>
       <template #header="scope" v-if="columnHeaderSlotName">
         <custom-render
           :slot="slots[columnHeaderSlotName!]"
@@ -57,6 +76,7 @@ const isColumnHide = computed(() => props.hideInTable || props.hideBySetting);
             :pageParams="pageParams"
             :slots="slots"
             :editableConfig="editableConfig"
+            :requestOnColumnChange="requestOnColumnChange"
             :key="column.prop"
             v-for="column in children"
           />

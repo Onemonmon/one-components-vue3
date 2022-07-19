@@ -142,6 +142,12 @@ const proTableColumnProps = {
     type: Object as PropType<InnerEditableConfigType>,
     default: () => ({}),
   },
+  /**
+   * 当表头排序、过滤改变时触发request
+   */
+  requestOnColumnChange: {
+    type: Boolean,
+  },
   ...proTableCustomColumnProps,
 };
 

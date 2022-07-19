@@ -1,20 +1,12 @@
 import {
+  extend,
   getRandomKey,
   getValueByComplexKey,
-  hasOwn,
   isArray,
 } from "@components/shared/src";
 import cloneDeep from "lodash/cloneDeep";
-import {
-  computed,
-  effectScope,
-  onBeforeMount,
-  onMounted,
-  reactive,
-  ref,
-  watch,
-} from "vue";
-import type { ProTablePropsType, RequestTableDataFunction } from "../ProTable";
+import { computed, reactive, ref, watch } from "vue";
+import type { ProTablePropsType } from "../ProTable";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -40,12 +32,37 @@ const useSourceData = (props: ProTablePropsType) => {
     pageSizes: [10, 20, 30, 50],
     ...props.paginationProps,
   }));
+  // 处理过滤条件产生的参数
+  const columnParmas = ref<any>({});
+  const handleSortChange = ({ column, prop, order }: any) => {
+    if (props.requestOnColumnChange) {
+      columnParmas.value = { sortProp: prop, sortOrder: order };
+      pageParams.pageNum = 1;
+      if (props.tableProps && props.tableProps["onSort-change"]) {
+        props.tableProps["onSort-change"]({ column, prop, order });
+      }
+    }
+  };
+  const handleFilterChange = (filters: any) => {
+    if (props.requestOnColumnChange) {
+      const key = Object.keys(filters)[0];
+      columnParmas.value = { ...columnParmas.value, [key]: filters[key] };
+      pageParams.pageNum = 1;
+      if (props.tableProps && props.tableProps["onFilter-change"]) {
+        props.tableProps["onFilter-change"](filters);
+      }
+    }
+  };
   // 处理参数 外部入参params + 内部分页pageParams
   const getRequestParams = () => {
-    if (props.paginationProps === false) {
-      return { ...props.params };
+    const requestParams = extend({}, props.params);
+    if (props.requestOnColumnChange) {
+      extend(requestParams, columnParmas.value);
     }
-    return { ...props.params, ...pageParams };
+    if (props.paginationProps === false) {
+      return requestParams;
+    }
+    return extend(requestParams, pageParams);
   };
   // 获取$rowKey
   const getRowKey = (row: any) => {
@@ -95,11 +112,10 @@ const useSourceData = (props: ProTablePropsType) => {
       sourceData.loading = false;
     }
   };
-  watch(
-    () => props.params,
-    () => getTableDataByParams(),
-    { immediate: true, deep: true }
-  );
+  watch([() => props.params, columnParmas], () => getTableDataByParams(), {
+    immediate: true,
+    deep: true,
+  });
   // 分页改变 1.重新获取远程数据 2.重新切割本地数据
   watch(pageParams, ({ pageNum, pageSize }) => {
     if (rawSourceData.value && isArray(rawSourceData.value)) {
@@ -115,7 +131,11 @@ const useSourceData = (props: ProTablePropsType) => {
   return {
     sourceData,
     pageParams,
+    columnParmas,
     innerPaginationProps,
+    getTableDataByParams,
+    handleSortChange,
+    handleFilterChange,
   };
 };
 
