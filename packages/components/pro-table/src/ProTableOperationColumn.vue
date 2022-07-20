@@ -1,7 +1,12 @@
 <script lang="ts" setup>
-import { computed, isReactive, PropType, ref, watch } from "vue";
+import { inject, PropType, Ref, ref, watch } from "vue";
 import cloneDeep from "lodash/cloneDeep";
-import type { TableColumnPropsType } from "@components/shared/src";
+import Schema from "async-validator";
+import {
+  getValueByComplexKey,
+  TableColumnPropsType,
+} from "@components/shared/src";
+import { ElMessage, FormItemRule } from "element-plus";
 import type { ProTableOperationColumnPropsType } from "./ProTableColumn";
 import type { InnerEditableConfigType } from "./ProTable";
 
@@ -22,14 +27,13 @@ const props = defineProps({
     >,
     required: true,
   },
-  /**
-   * 编辑表格配置
-   */
-  editableConfig: {
-    type: Object as PropType<InnerEditableConfigType>,
-    required: true,
-  },
 });
+
+const editableConfig = inject("editableConfig", {} as InnerEditableConfigType);
+const validatorRules = inject(
+  "validatorRules",
+  {} as Ref<Record<string, FormItemRule[]>>
+);
 
 const backupMap = new Map();
 const innerOperationsFn = ref<(row: any) => ProTableOperationColumnPropsType[]>(
@@ -38,23 +42,57 @@ const innerOperationsFn = ref<(row: any) => ProTableOperationColumnPropsType[]>(
 const saveLoading = ref(false);
 
 const handleEdit = (row: any) => {
-  props.editableConfig.editableKeys.add(row.$rowKey);
+  editableConfig.editableKeys.add(row.$rowKey);
   backupMap.set(row.$rowKey, cloneDeep(row));
 };
 const handleCancel = (row: any) => {
   Object.assign(row, backupMap.get(row.$rowKey));
-  props.editableConfig.editableKeys.delete(row.$rowKey);
+  editableConfig.editableKeys.delete(row.$rowKey);
+};
+// 获取需要校验的值
+const getValidatorFieldValues = (row: any) => {
+  let fieldValues: any = undefined;
+  for (const key in validatorRules.value) {
+    fieldValues = fieldValues || {};
+    fieldValues[key] = getValueByComplexKey(row, key);
+  }
+  return fieldValues;
 };
 const handleSave = async (row: any) => {
+  const fieldValues = getValidatorFieldValues(row);
+  // 校验值
+  if (fieldValues) {
+    const validator = new Schema(validatorRules.value);
+    try {
+      await new Promise((resolve, reject) => {
+        validator.validate(fieldValues, (error: any) => {
+          error ? reject(error) : resolve("");
+        });
+      });
+    } catch (error: any) {
+      // 校验有错误，组装错误信息
+      let errorMessage = `<div style="line-height: 20px">`;
+      error.forEach((n: any) => {
+        errorMessage += `<p>${n.message}</p>`;
+      });
+      errorMessage += "</div>";
+      ElMessage({
+        dangerouslyUseHTMLString: true,
+        message: errorMessage,
+        type: "warning",
+      });
+      return;
+    }
+  }
   saveLoading.value = true;
-  await props.editableConfig.onSave(row);
+  await editableConfig.onSave(row);
   saveLoading.value = false;
-  props.editableConfig.editableKeys.delete(row.$rowKey);
+  editableConfig.editableKeys.delete(row.$rowKey);
   backupMap.delete(row.$rowKey);
 };
 
 watch(
-  () => props.editableConfig,
+  () => editableConfig,
   (val) => {
     const { editable, editableKeys } = val;
     if (editable) {

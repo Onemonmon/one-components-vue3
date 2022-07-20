@@ -1,4 +1,4 @@
-import { reactive, toRefs, watch } from "vue";
+import { reactive, Ref, watch } from "vue";
 import type { PropsHasOptionType } from "@components/shared/src";
 
 /**
@@ -39,4 +39,20 @@ export const useOptions = (props: PropsHasOptionType) => {
     }
   );
   return requestOptions;
+};
+
+/**
+ * 触发校验
+ */
+const createValidate = (props: any, trigger: string, innerValue: Ref<any>) => {
+  return () => {
+    props.onValidate &&
+      props.onValidate(trigger, innerValue && innerValue.value);
+  };
+};
+export const useValidate = (props: any, innerValue: Ref<any>) => {
+  const handleChange = createValidate(props, "change", innerValue);
+  const handleInput = createValidate(props, "change", innerValue);
+  const handleBlur = createValidate(props, "blur", innerValue);
+  return { handleChange, handleInput, handleBlur };
 };

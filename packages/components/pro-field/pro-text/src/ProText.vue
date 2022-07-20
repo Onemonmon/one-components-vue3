@@ -108,8 +108,7 @@ const formatByType = (text: number) => {
         ...(formatConfig.dot !== true ? formatConfig.dot.style : {}),
       }"
       v-if="formatConfig.dot && !isTextEmpty(value)"
-    />
-    {{ displayValues }}
+    />{{ displayValues }}
   </div>
 </template>
 
@@ -120,7 +119,7 @@ const formatByType = (text: number) => {
   font-size: 14px;
 
   .dot {
-    display: block;
+    display: inline-block;
     width: 10px;
     min-width: 10px;
     height: 10px;

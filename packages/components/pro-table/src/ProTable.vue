@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, Ref, ref, useSlots, watch } from "vue";
+import { computed, onMounted, provide, Ref, ref, useSlots, watch } from "vue";
 import ProTableColumn from "./ProTableColumn.vue";
 import proTableProps, { ProTableInstance } from "./ProTable";
 import ProTabaleToolbar from "./ProTabaleToolbar.vue";
@@ -27,8 +27,13 @@ const {
 /**
  * 解析处理表格表头
  */
-const { innerColumns, flatColumns, settingKeys, defaultCheckedKeys } =
-  useColumns(props);
+const {
+  innerColumns,
+  flatColumns,
+  validatorRules,
+  settingKeys,
+  defaultCheckedKeys,
+} = useColumns(props);
 /**
  * 处理编辑表格
  */
@@ -45,6 +50,10 @@ const innerTableProps = computed<TablePropsType>(() => ({
   ...props.tableProps,
   rowKey: "$rowKey",
 }));
+
+// provide
+provide("validatorRules", validatorRules);
+provide("editableConfig", innerEditableConfig);
 </script>
 
 <template>
@@ -72,7 +81,6 @@ const innerTableProps = computed<TablePropsType>(() => ({
           v-bind="column"
           :pageParams="pageParams"
           :slots="slots"
-          :editableConfig="innerEditableConfig"
           :requestOnColumnChange="requestOnColumnChange"
           :key="column.prop"
           v-for="column in innerColumns"
@@ -127,6 +135,21 @@ const innerTableProps = computed<TablePropsType>(() => ({
       }
       .el-input-number {
         width: 100%;
+      }
+      .cell {
+        display: flex;
+        align-items: center;
+        .pro-text-container {
+          display: contents;
+        }
+      }
+      .cell.el-tooltip {
+        .pro-text-container {
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
     }
   }

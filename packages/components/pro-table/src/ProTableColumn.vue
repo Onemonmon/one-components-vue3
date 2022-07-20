@@ -8,6 +8,7 @@ import ProTableFormItem from "./ProTableFormItem.vue";
 import proTableColumnProps from "./ProTableColumn";
 import ProTableOperationColumn from "./ProTableOperationColumn.vue";
 import CustomRender from "../../common/custom-render/src/CustomRender.vue";
+import { InfoFilled } from "@element-plus/icons-vue";
 import {
   getValueByComplexKey,
   TableColumnPropsType,
@@ -38,7 +39,6 @@ const elTableColumnProps = computed(() => ({
     <pro-table-operation-column
       :columnProps="columnProps"
       :operations="operations"
-      :editableConfig="editableConfig"
       v-if="columnProps.type === 'operations' && operations"
     />
     <el-table-column
@@ -59,6 +59,12 @@ const elTableColumnProps = computed(() => ({
           :scope="{ ...scope, prop: columnProps.prop }"
         />
       </template>
+      <template #header v-else-if="tip">
+        {{ label }}
+        <el-tooltip raw-content :content="tip" placement="top">
+          <el-icon class="column-header-tip-icon"><InfoFilled /></el-icon>
+        </el-tooltip>
+      </template>
       <template #default="scope" v-if="columnDefaultSlotName">
         <custom-render
           :slot="slots[columnDefaultSlotName!]"
@@ -69,13 +75,12 @@ const elTableColumnProps = computed(() => ({
           }"
         />
       </template>
-      <template #default="{ row }">
+      <template #default="{ row }" v-else>
         <template v-if="children && children.length">
           <pro-table-column
             v-bind="column"
             :pageParams="pageParams"
             :slots="slots"
-            :editableConfig="editableConfig"
             :requestOnColumnChange="requestOnColumnChange"
             :key="column.prop"
             v-for="column in children"
@@ -86,8 +91,8 @@ const elTableColumnProps = computed(() => ({
           :prop="columnProps.prop"
           :valueType="valueType"
           :fieldProps="fieldProps"
+          :copyable="copyable"
           :editable="editable"
-          :editableConfig="editableConfig"
           :formatConfig="formatConfig"
           :options="options"
           :params="params"
@@ -99,4 +104,9 @@ const elTableColumnProps = computed(() => ({
   </template>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.column-header-tip-icon {
+  vertical-align: -2px;
+  cursor: pointer;
+}
+</style>

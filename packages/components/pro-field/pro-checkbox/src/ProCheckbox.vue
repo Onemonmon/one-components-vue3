@@ -3,7 +3,7 @@ import { computed, reactive, watch } from "vue";
 import { useModelValue } from "@components/shared/src";
 import { ProText } from "../../pro-text";
 import proCheckboxProps, { ProCheckboxValueType } from "./ProCheckbox";
-import { useOptions } from "../../hooks";
+import { useOptions, useValidate } from "../../hooks";
 
 const props = defineProps(proCheckboxProps);
 const emits = defineEmits(["update:modelValue"]);
@@ -15,6 +15,7 @@ const innerFieldProps = computed<any>(() => ({
   checkbox: props.fieldProps.checkbox,
   checkboxGroup: props.fieldProps.checkboxGroup,
 }));
+const { handleChange } = useValidate(props, innerValue);
 const requestOptions = useOptions(props);
 const allValue = computed(() => requestOptions.options.map((n) => n.value));
 // 选项改变
@@ -32,6 +33,7 @@ const handleCheckAllChange = (value: any) => {
   checkAllStatus.checked = value;
   checkAllStatus.indeterminate = false;
   innerValue.value = value ? allValue.value : [];
+  handleChange();
 };
 </script>
 
@@ -48,6 +50,7 @@ const handleCheckAllChange = (value: any) => {
     <el-checkbox-group
       v-model="innerValue"
       v-bind="innerFieldProps.checkboxGroup"
+      :onChange="handleChange"
     >
       <component
         v-bind="innerFieldProps.checkbox"

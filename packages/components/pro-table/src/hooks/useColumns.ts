@@ -1,8 +1,10 @@
 import { ref, watch } from "vue";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
+import { isArray } from "@components/shared/src";
 import type { ProTablePropsType } from "../ProTable";
 import type { InnerProTableColumnPropsType } from "../ProTableColumn";
+import type { FormItemRule } from "element-plus";
 
 /**
  * 解析表格列 { prop, label, valueType, ... } 转换成 { columnProps: { prop, label, ... }, valueType, ... }
@@ -12,6 +14,7 @@ const notNeedKeys = ["selection", "expand"];
 const parseColumns = (
   columns: any[],
   flatColumns: any[],
+  validatorRules: Record<string, FormItemRule[]>,
   settingKeys: string[], // 获取列设置中的所有key
   defaultCheckedKeys: string[],
   parentEditable: boolean = true,
@@ -21,6 +24,9 @@ const parseColumns = (
     const {
       valueType = "text",
       fieldProps,
+      formProps, // 这边应该要收集需要表单校验的项和表单校验内容
+      tip,
+      copyable,
       options,
       params,
       request,
@@ -38,10 +44,17 @@ const parseColumns = (
       console.error("表格列的prop为必填属性");
       return [];
     }
+    // 收集表格内部的校验规则
+    if (!hideInTable && formProps && formProps.rules) {
+      validatorRules[columnProps.prop] = isArray(formProps.rules)
+        ? formProps.rules
+        : [formProps.rules];
+    }
     if (children && children.length) {
       parseColumns(
         children,
         flatColumns,
+        validatorRules,
         settingKeys,
         defaultCheckedKeys,
         editable,
@@ -53,6 +66,9 @@ const parseColumns = (
       prop: columnProps.prop,
       valueType,
       fieldProps,
+      formProps,
+      tip,
+      copyable,
       options,
       params,
       request,
@@ -95,6 +111,8 @@ const useColumns = (props: ProTablePropsType) => {
   const innerColumns = ref<any[]>([]);
   // 将列扁平化
   const flatColumns = ref<any[]>([]);
+  // 表格字段校验规则
+  const validatorRules = ref<Record<string, FormItemRule[]>>({});
   // 列设置所有树节点的keys
   const settingKeys = ref<string[]>([]);
   // 默认展示的列集合
@@ -104,15 +122,20 @@ const useColumns = (props: ProTablePropsType) => {
     (val) => {
       const cloneColumns = cloneDeep(val);
       const _flatColumns: any[] = [];
+      const _validatorRules: Record<string, FormItemRule[]> = {};
       const _settingKeys: string[] = [];
       const _defaultCheckedKeys: string[] = [];
       innerColumns.value = parseColumns(
         cloneColumns,
         _flatColumns,
+        _validatorRules,
         _settingKeys,
         _defaultCheckedKeys
       );
       flatColumns.value = _flatColumns;
+      if (!isEqual(validatorRules.value, _validatorRules)) {
+        validatorRules.value = _validatorRules;
+      }
       if (!isEqual(settingKeys.value, _settingKeys)) {
         settingKeys.value = _settingKeys;
       }
@@ -123,7 +146,13 @@ const useColumns = (props: ProTablePropsType) => {
     { immediate: true, deep: true }
   );
 
-  return { innerColumns, flatColumns, settingKeys, defaultCheckedKeys };
+  return {
+    innerColumns,
+    flatColumns,
+    validatorRules,
+    settingKeys,
+    defaultCheckedKeys,
+  };
 };
 
 export default useColumns;

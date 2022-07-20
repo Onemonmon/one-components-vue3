@@ -2,13 +2,13 @@ import type { ExtractPropTypes, PropType } from "vue";
 import {
   ButtonPropsType,
   FormatConfigType,
+  FormItemPropsType,
   propsHasOptions,
   TableColumnPropsType,
   ValueType,
   WithOtherAttrs,
 } from "@components/shared/src";
 import type { ProFieldPropsType } from "@components/components/pro-field";
-import type { InnerEditableConfigType } from "./ProTable";
 
 // 某些valueType对应的组件需要选项
 const proTableCustomColumnProps = {
@@ -24,6 +24,24 @@ const proTableCustomColumnProps = {
    */
   fieldProps: {
     type: Object as PropType<ProFieldPropsType>,
+  },
+  /**
+   * el-form-item入参，为筛选表单 和 编辑表格校验服务
+   */
+  formProps: {
+    type: Object as PropType<FormItemPropsType>,
+  },
+  /**
+   * 表头提示信息
+   */
+  tip: {
+    type: String,
+  },
+  /**
+   * 表格内容是否可复制粘贴
+   */
+  copyable: {
+    type: Boolean,
   },
   /**
    * 当前表头列数据是否可编辑
@@ -133,13 +151,6 @@ const proTableColumnProps = {
    */
   slots: {
     type: Object,
-    default: () => ({}),
-  },
-  /**
-   * 编辑表格配置
-   */
-  editableConfig: {
-    type: Object as PropType<InnerEditableConfigType>,
     default: () => ({}),
   },
   /**

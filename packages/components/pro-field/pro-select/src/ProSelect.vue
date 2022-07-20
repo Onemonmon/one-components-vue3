@@ -6,7 +6,7 @@ import proSelectProps, {
   ProSelectValueType,
   ProSelectFieldPropsType,
 } from "./ProSelect";
-import { useOptions } from "../../hooks";
+import { useOptions, useValidate } from "../../hooks";
 
 const props = defineProps(proSelectProps);
 const emits = defineEmits(["update:modelValue"]);
@@ -19,6 +19,7 @@ const innerFieldProps = computed<ProSelectFieldPropsType>(() => ({
   collapseTagsTooltip: true,
   ...props.fieldProps,
 }));
+const { handleChange } = useValidate(props, innerValue);
 const requestOptions = useOptions(props);
 </script>
 
@@ -27,6 +28,7 @@ const requestOptions = useOptions(props);
     class="pro-select-container"
     v-model="innerValue"
     v-bind="innerFieldProps"
+    :onChange="handleChange"
     :loading="requestOptions.loading"
     v-if="editable"
   >

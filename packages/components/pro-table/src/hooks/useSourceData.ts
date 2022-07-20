@@ -37,7 +37,6 @@ const useSourceData = (props: ProTablePropsType) => {
   const handleSortChange = ({ column, prop, order }: any) => {
     if (props.requestOnColumnChange) {
       columnParmas.value = { sortProp: prop, sortOrder: order };
-      pageParams.pageNum = 1;
       if (props.tableProps && props.tableProps["onSort-change"]) {
         props.tableProps["onSort-change"]({ column, prop, order });
       }
@@ -47,23 +46,22 @@ const useSourceData = (props: ProTablePropsType) => {
     if (props.requestOnColumnChange) {
       const key = Object.keys(filters)[0];
       columnParmas.value = { ...columnParmas.value, [key]: filters[key] };
-      pageParams.pageNum = 1;
       if (props.tableProps && props.tableProps["onFilter-change"]) {
         props.tableProps["onFilter-change"](filters);
       }
     }
   };
   // 处理参数 外部入参params + 内部分页pageParams
-  const getRequestParams = () => {
-    const requestParams = extend({}, props.params);
+  const requestParams = computed(() => {
+    const newParams = extend({}, props.params);
     if (props.requestOnColumnChange) {
-      extend(requestParams, columnParmas.value);
+      extend(newParams, columnParmas.value);
     }
     if (props.paginationProps === false) {
-      return requestParams;
+      return newParams;
     }
-    return extend(requestParams, pageParams);
-  };
+    return extend(newParams, pageParams);
+  });
   // 获取$rowKey
   const getRowKey = (row: any) => {
     const rowKey = props.tableProps && props.tableProps.rowKey;
@@ -92,6 +90,10 @@ const useSourceData = (props: ProTablePropsType) => {
         setRowKey(data);
         sourceData.data = getTableDataByRange(data, 0, pageParams.pageSize);
         sourceData.total = data.length;
+        // 重新获取静态表格数据时，页码重置
+        if (props.paginationProps !== false) {
+          pageParams.pageNum = 1;
+        }
       }
     },
     { immediate: true }
@@ -101,10 +103,9 @@ const useSourceData = (props: ProTablePropsType) => {
     if (!props.request || rawSourceData.value) {
       return;
     }
-    const requestParams = getRequestParams();
     sourceData.loading = true;
     try {
-      const res = await props.request(requestParams);
+      const res = await props.request(requestParams.value);
       setRowKey(res.data);
       sourceData.data = res.data;
       sourceData.total = res.total || 0;
@@ -112,22 +113,33 @@ const useSourceData = (props: ProTablePropsType) => {
       sourceData.loading = false;
     }
   };
-  watch([() => props.params, columnParmas], () => getTableDataByParams(), {
-    immediate: true,
-    deep: true,
-  });
-  // 分页改变 1.重新获取远程数据 2.重新切割本地数据
-  watch(pageParams, ({ pageNum, pageSize }) => {
-    if (rawSourceData.value && isArray(rawSourceData.value)) {
-      sourceData.data = getTableDataByRange(
-        rawSourceData.value,
-        0 + (pageNum - 1) * pageSize,
-        pageSize
-      );
-    } else {
+  // 1.重新获取远程数据 2.重新切割本地数据
+  watch(
+    requestParams,
+    (newVal, oldVal = {}) => {
+      const { pageNum, pageSize } = newVal;
+      if (
+        rawSourceData.value &&
+        isArray(rawSourceData.value) &&
+        props.paginationProps !== false
+      ) {
+        sourceData.data = getTableDataByRange(
+          rawSourceData.value,
+          0 + (pageNum - 1) * pageSize,
+          pageSize
+        );
+        return;
+      }
+      const { pageNum: prevPageNum, pageSize: prevPageSize } = oldVal;
+      // 当请求参数改变（非pageParams改变引起，则需要重置pageNum）
+      if (pageNum === prevPageNum && pageSize === prevPageSize) {
+        pageParams.pageNum = 1;
+        return;
+      }
       getTableDataByParams();
-    }
-  });
+    },
+    { immediate: true, deep: true }
+  );
   return {
     sourceData,
     pageParams,

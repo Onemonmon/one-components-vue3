@@ -46,6 +46,12 @@ const proRadioProps = {
   formatConfig: {
     type: Object as PropType<FormatConfigType>,
   },
+  /**
+   * 触发校验
+   */
+  onValidate: {
+    type: Function as PropType<(trigger: string, value: any) => void>,
+  },
   ...propsHasOptions,
 };
 
