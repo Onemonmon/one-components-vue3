@@ -4,7 +4,7 @@ import type {
   TablePropsType,
   WithOtherAttrs,
 } from "@components/shared/src";
-import type { ProTableColumnPropsType } from "./ProTableColumn";
+// import type { ProTableColumnPropsType } from "./ProTableColumn";
 
 export type RequestTableDataFunction = (
   params?: any
@@ -65,10 +65,14 @@ export type EditableConfigType = Partial<
 
 const proTableProps = {
   /**
+   * 表格标题
+   */
+  title: { type: String },
+  /**
    * 表格列配置
    */
   columns: {
-    type: Array as PropType<ProTableColumnPropsType[]>,
+    type: Array as PropType<any[]>, // ProTableColumnPropsType
     default: () => [],
   },
   /**
@@ -107,6 +111,13 @@ const proTableProps = {
   paginationProps: {
     type: [Object, Boolean] as PropType<ElPaginationPropsType | false>,
     default: undefined,
+  },
+  /**
+   * 表格自带工具栏配置
+   */
+  toolbarConfig: {
+    type: [Object, Boolean] as PropType<any | false>,
+    default: () => ({}),
   },
   /**
    * 编辑表格配置

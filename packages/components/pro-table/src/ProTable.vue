@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed, onMounted, provide, Ref, ref, useSlots, watch } from "vue";
+import { computed, provide, ref, useSlots } from "vue";
 import ProTableColumn from "./ProTableColumn.vue";
 import proTableProps, { ProTableInstance } from "./ProTable";
-import ProTabaleToolbar from "./ProTabaleToolbar.vue";
+import ProTableToolbar from "./ProTableToolbar.vue";
 import useColumns from "./hooks/useColumns";
 import useSourceData from "./hooks/useSourceData";
 import useEditable from "./hooks/useEditable";
@@ -59,15 +59,18 @@ provide("editableConfig", innerEditableConfig);
 <template>
   <div class="pro-table-container" v-if="innerColumns.length">
     <div class="pro-table__header">
-      <div class="pro-table__header-title">表格标题</div>
+      <div class="pro-table__header-title">
+        <slot name="title">{{ title }}</slot>
+      </div>
       <div class="pro-table__header-toolbar">
         <slot name="toolbar"></slot>
-        <pro-tabale-toolbar
+        <pro-table-toolbar
           :columns="innerColumns"
           :settingKeys="settingKeys"
           :defaultCheckedKeys="defaultCheckedKeys"
           @reload-data="() => innerTableRef && innerTableRef.reloadData()"
           @clear="() => innerTableRef && innerTableRef.clear()"
+          v-if="toolbarConfig !== false"
         />
       </div>
     </div>
@@ -120,6 +123,9 @@ provide("editableConfig", innerEditableConfig);
   }
   .pro-table__body {
     :deep(.el-table) {
+      thead th.el-table__cell {
+        background-color: var(--el-fill-color-light);
+      }
       .el-table-column--selection {
         .cell {
           line-height: 1;

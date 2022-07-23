@@ -1,4 +1,6 @@
-### 基本使用
+### 基本使用 2
+
+当传入 request 函数时，表格会自动调用 request 请求数据，同时会为 request 传入分页参数、params 参数、表头过滤参数（requestOnColumnChange=true 时）
 
 ```vue
 <script lang="ts" setup>
@@ -11,8 +13,6 @@ const options = ref([
   { label: "喝酒", value: "02" },
   { label: "烫头", value: "03" },
 ]);
-const hideInTable = ref(false);
-
 const columns = computed(() => [
   {
     prop: "selection",
@@ -30,26 +30,20 @@ const columns = computed(() => [
     label: "姓名",
     tip: "<span style='color: red;'>这是姓名鸭！</span>",
     formatConfig: { textFormat: (text) => "我是" + text },
-    formProps: { rules: { required: true, message: "请输入姓名！" } },
-    // copyable: true,
     showOverflowTooltip: true,
-    width: 140,
   },
   {
     prop: "address",
     label: "地址",
-    columnDefaultSlotName: "address",
-    width: 120,
+    width: 80,
   },
   {
     prop: "info",
     label: "信息",
-    columnHeaderSlotName: "info",
     children: [
       {
         prop: "info.age",
         label: "年龄",
-        editable: false,
         sortable: "custom",
         width: 100,
       },
@@ -57,18 +51,6 @@ const columns = computed(() => [
         prop: "info.money",
         label: "余额",
         formatConfig: { formatType: "money" },
-        fieldProps: { type: "number" },
-        formProps: {
-          rules: [
-            { type: "number", required: true, message: "请输入余额！" },
-            {
-              type: "number",
-              min: 100,
-              max: 100000,
-              message: "余额需在100到100000之间！",
-            },
-          ],
-        },
         copyable: true,
         width: 160,
       },
@@ -83,24 +65,15 @@ const columns = computed(() => [
           { text: "男", value: "male" },
           { text: "女", value: "female" },
         ],
-        fieldProps: { type: "button" },
         valueType: "radio",
-        width: 140,
+        width: 100,
       },
       {
         prop: "info.hobby",
         label: "爱好",
         options: options.value,
-        fieldProps: { checkAll: true },
-        formProps: {
-          rules: {
-            type: "array",
-            required: true,
-            message: "请选择至少一个爱好！",
-          },
-        },
         valueType: "checkbox",
-        width: 330,
+        width: 120,
       },
     ],
   },
@@ -109,9 +82,8 @@ const columns = computed(() => [
     label: "专业",
     formatConfig: { color: "green", dot: true },
     options: options.value,
-    formProps: { rules: { required: true, message: "请选择专业！" } },
     valueType: "select",
-    width: 120,
+    width: 100,
   },
   {
     prop: "operations",
@@ -123,7 +95,7 @@ const columns = computed(() => [
         key: "detail",
         label: "查看",
         onClick() {
-          console.log(row);
+          ElMessage({ message: row.name });
         },
       },
       {
@@ -133,34 +105,21 @@ const columns = computed(() => [
         hide: () => row.id < 7,
       },
     ],
-    width: 180,
+    width: 120,
   },
 ]);
 
-const params = reactive({ id: "001" });
-const tableProps = reactive({});
-const tableRef = ref<ProTableInstance | null>(null);
-const editableConfig = reactive({
-  editable: true,
-  async onSave(row) {
-    await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
-    ElMessage({ message: "保存成功", type: "success" });
-  },
-  onValuesChange(row, key, value) {
-    console.log(row, key, value);
-  },
-});
+const params = reactive({ outterParam: "001" });
 const getTableData = async (params) => {
   console.log("获取表格数据，参数：", params);
-  console.log("表格实例：", tableRef);
   const res = await new Promise((resolve) => {
     setTimeout(() => {
       const data = new Array(10).fill(0).map((n, i) => {
         const random = Math.random();
         return {
           id: i,
-          name: "张三" + params.id + Math.floor(random * 100),
-          address: "深圳" + i + params.id,
+          name: "张三" + i + (i === 0 ? "很长很长很长很长很长很长的姓名" : ""),
+          address: "深圳" + i,
           info: {
             age: Math.floor(random * 100),
             gender: random > 0.5 ? "female" : "male",
@@ -175,36 +134,26 @@ const getTableData = async (params) => {
   });
   return {
     data: res,
-    total: 30,
+    total: Math.floor(Math.random() * 100),
   };
 };
-
 const handleChangeParams = () => {
-  params.id = "002";
+  params.outterParam = `${Math.floor(Math.random() * 100)}`;
 };
 </script>
 
 <template>
   <pro-table
+    title="表格标题"
     :columns="columns"
     :params="params"
     :request="getTableData"
     :requestOnColumnChange="true"
-    :tableProps="tableProps"
-    :getTableRef="(ref) => (tableRef = ref)"
-    :editableConfig="editableConfig"
   >
     <template #toolbar>
-      <el-button type="primary" @click="handleChangeParams"
-        >重新获取数据</el-button
-      >
-      <el-button type="primary">管理</el-button>
-    </template>
-    <template #info>
-      <el-tag type="success">信息</el-tag><el-tag type="success">信息</el-tag>
-    </template>
-    <template #address="{ value }">
-      <el-button type="primary" size="small">{{ value }}</el-button>
+      <el-button type="primary" @click="handleChangeParams">
+        重新获取数据
+      </el-button>
     </template>
   </pro-table>
 </template>

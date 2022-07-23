@@ -84,11 +84,14 @@ const handleSave = async (row: any) => {
       return;
     }
   }
-  saveLoading.value = true;
-  await editableConfig.onSave(row);
-  saveLoading.value = false;
-  editableConfig.editableKeys.delete(row.$rowKey);
-  backupMap.delete(row.$rowKey);
+  try {
+    saveLoading.value = true;
+    await editableConfig.onSave(row);
+    editableConfig.editableKeys.delete(row.$rowKey);
+    backupMap.delete(row.$rowKey);
+  } finally {
+    saveLoading.value = false;
+  }
 };
 
 watch(

@@ -8,6 +8,9 @@ export default defineComponent({
     scope: { type: Object, default: () => ({}) },
   },
   render() {
+    if (!this.slot) {
+      return "error type for slot";
+    }
     return h(Fragment, this.slot(this.scope));
   },
 });

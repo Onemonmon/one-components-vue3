@@ -112,8 +112,11 @@ export type ProTableCustomColumnPropsType = Omit<
   children?: ProTableColumnPropsType[];
 };
 
-export type ProTableColumnPropsType = WithOtherAttrs<
-  ProTableCustomColumnPropsType & Omit<TableColumnPropsType, "class" | "style">
+export type ProTableColumnPropsType = Partial<
+  WithOtherAttrs<
+    ProTableCustomColumnPropsType &
+      Omit<TableColumnPropsType, "class" | "style">
+  >
 >;
 
 const proTableColumnProps = {

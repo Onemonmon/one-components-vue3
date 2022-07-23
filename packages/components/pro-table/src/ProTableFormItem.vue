@@ -130,20 +130,23 @@ const rowProxy = new Proxy(props.row, {
 // 校验表单值
 const handleValidate = (trigger: string, value: any) => {
   const { prop } = props;
+  let curValidatorRules = validatorRules.value[prop];
+  if (!curValidatorRules) {
+    return;
+  }
   // blur会触发所有校验，change不会触发blur校验
-  let curValidatorRules = validatorRules.value[props.prop];
   if (trigger === "change") {
     curValidatorRules = curValidatorRules.filter((n) => n.trigger !== "blur");
   }
-  let _isError = false;
   if (curValidatorRules.length) {
+    let _isError = false;
     const validator = new Schema({ [prop]: curValidatorRules });
     validator.validate(
       { [prop]: toRaw(value) },
       (error) => (_isError = error !== null)
     );
+    isError.value !== _isError && (isError.value = _isError);
   }
-  isError.value !== _isError && (isError.value = _isError);
 };
 </script>
 
@@ -198,7 +201,8 @@ const handleValidate = (trigger: string, value: any) => {
   :deep(.el-input__wrapper) {
     box-shadow: 0 0 0 1px var(--el-color-danger) inset;
   }
-  :deep(.el-checkbox__inner) {
+  :deep(.el-checkbox__inner),
+  :deep(.el-checkbox-button__inner) {
     border-color: var(--el-color-danger);
   }
 }

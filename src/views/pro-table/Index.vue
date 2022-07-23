@@ -1,7 +1,13 @@
 <script lang="ts" setup>
-import BasicMd from "./ProTableBasic.md";
+import DataMd from "./ProTableData.md";
+import RequestMd from "./ProTableRequest.md";
+import SlotMd from "./ProTableSlot.md";
+import EditMd from "./ProTableEdit.md";
 </script>
 
 <template>
-  <BasicMd />
+  <DataMd />
+  <RequestMd />
+  <SlotMd />
+  <EditMd />
 </template>

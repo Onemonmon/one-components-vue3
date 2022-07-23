@@ -132,7 +132,11 @@ const useSourceData = (props: ProTablePropsType) => {
       }
       const { pageNum: prevPageNum, pageSize: prevPageSize } = oldVal;
       // 当请求参数改变（非pageParams改变引起，则需要重置pageNum）
-      if (pageNum === prevPageNum && pageSize === prevPageSize) {
+      if (
+        pageNum === prevPageNum &&
+        pageNum !== 1 &&
+        pageSize === prevPageSize
+      ) {
         pageParams.pageNum = 1;
         return;
       }

@@ -8,3 +8,4 @@ ProTable.install = function (app: App) {
 export { ProTable };
 
 export * from "./src/ProTable";
+export * from "./src/ProTableColumn";

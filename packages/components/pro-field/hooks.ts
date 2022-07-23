@@ -54,5 +54,6 @@ export const useValidate = (props: any, innerValue: Ref<any>) => {
   const handleChange = createValidate(props, "change", innerValue);
   const handleInput = createValidate(props, "change", innerValue);
   const handleBlur = createValidate(props, "blur", innerValue);
-  return { handleChange, handleInput, handleBlur };
+  const handleClear = createValidate(props, "change", innerValue);
+  return { handleChange, handleInput, handleBlur, handleClear };
 };
