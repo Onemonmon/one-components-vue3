@@ -11,11 +11,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["esnext", "dom"],
-    "types": [
-      "element-plus/global",
-      "@types/web-bluetooth/index",
-      "one-components-vue3/dist/global"
-    ],
+    "types": ["element-plus/global", "@types/web-bluetooth/index"],
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],

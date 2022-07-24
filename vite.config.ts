@@ -18,6 +18,7 @@ export default defineConfig({
     vue({ include: [/\.vue$/, /\.md$/] }),
     dts({ include: "packages" }),
   ],
+  base: "/one-pro-components",
   build: {
     lib: {
       entry: resolvePath("./packages/index.ts"),

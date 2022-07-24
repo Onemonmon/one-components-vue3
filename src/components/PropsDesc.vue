@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import { ProTableColumnPropsType } from "one-components-vue3";
 
 defineProps<{
   title: string;
@@ -12,7 +11,7 @@ defineProps<{
     default: string;
   }[];
 }>();
-const columns = ref<ProTableColumnPropsType[]>([
+const columns = ref<any[]>([
   {
     prop: "prop",
     label: "属性",
