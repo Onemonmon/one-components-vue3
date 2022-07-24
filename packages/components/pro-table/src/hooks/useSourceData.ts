@@ -5,8 +5,9 @@ import {
   isArray,
 } from "@components/shared/src";
 import cloneDeep from "lodash/cloneDeep";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, reactive, ref, toRaw, watch } from "vue";
 import type { ProTablePropsType } from "../ProTable";
+import type { ProQueryFilterPropsType } from "../../../pro-form";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -51,6 +52,15 @@ const useSourceData = (props: ProTablePropsType) => {
       }
     }
   };
+  // 筛选表单参数
+  const qureyFilterParams = ref<any>({});
+  const innerProQueryFilterProps = reactive<ProQueryFilterPropsType>({
+    ...props.proQueryFilterProps,
+    async onSubmit(model) {
+      qureyFilterParams.value = model;
+      await getTableDataByParams();
+    },
+  });
   // 处理参数 外部入参params + 内部分页pageParams
   const requestParams = computed(() => {
     const newParams = extend({}, props.params);
@@ -99,20 +109,21 @@ const useSourceData = (props: ProTablePropsType) => {
     { immediate: true }
   );
   // 通过request获取表格数据
-  const getTableDataByParams = async () => {
+  async function getTableDataByParams() {
     if (!props.request || rawSourceData.value) {
       return;
     }
     sourceData.loading = true;
     try {
-      const res = await props.request(requestParams.value);
+      const params = { ...qureyFilterParams.value, ...requestParams.value };
+      const res = await props.request(params);
       setRowKey(res.data);
       sourceData.data = res.data;
       sourceData.total = res.total || 0;
     } finally {
       sourceData.loading = false;
     }
-  };
+  }
   // 1.重新获取远程数据 2.重新切割本地数据
   watch(
     requestParams,
@@ -148,6 +159,7 @@ const useSourceData = (props: ProTablePropsType) => {
     sourceData,
     pageParams,
     columnParmas,
+    innerProQueryFilterProps,
     innerPaginationProps,
     getTableDataByParams,
     handleSortChange,

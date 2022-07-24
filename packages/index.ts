@@ -2,6 +2,7 @@ import { App } from "vue";
 import {
   CustomRender,
   ProTable,
+  ProQueryFilter,
   ProInput,
   ProRadio,
   ProCheckbox,
@@ -12,6 +13,7 @@ import {
 const components: Record<string, any> = {
   CustomRender,
   ProTable,
+  ProQueryFilter,
   ProInput,
   ProRadio,
   ProCheckbox,

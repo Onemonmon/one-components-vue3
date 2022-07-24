@@ -139,6 +139,7 @@ onMounted(() => {
     title="表格标题"
     :columns="columns"
     :tableProps="tableProps"
+    :proQueryFilterProps="false"
     :getTableRef="(ref) => (tableRef = ref)"
   />
 </template>

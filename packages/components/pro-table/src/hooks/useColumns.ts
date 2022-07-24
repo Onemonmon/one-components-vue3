@@ -38,6 +38,11 @@ const parseColumns = (
       hideBySetting,
       children,
       operations,
+      // proQueryFilterColumn
+      queryFilterProp,
+      queryFilterSlotName,
+      span,
+      hideInForm,
       ...columnProps
     } = columns[i];
     if (columnProps.prop === undefined) {
@@ -81,13 +86,19 @@ const parseColumns = (
       hideInSetting: !columnProps.label || !columnProps.prop || hideInTable,
       // 点击列设置中的节点后会设置为true，然后隐藏对应表格列
       hideBySetting: hideBySetting || parentHideBySetting,
-      children,
       columnProps,
       operations,
+      span,
+      hideInForm,
     } as InnerProTableColumnPropsType;
+    children && (newColumn.children = children);
     // 这些列不需要扁平
-    if (!notNeedFlatProps.includes(columnProps.type)) {
-      flatColumns.push(newColumn);
+    if (!notNeedFlatProps.includes(columnProps.type) && !newColumn.children) {
+      flatColumns.push({
+        ...newColumn,
+        ...(queryFilterProp && { prop: queryFilterProp }),
+        ...(queryFilterSlotName && { slotName: queryFilterSlotName }),
+      });
     }
     if (!notNeedKeys.includes(columnProps.type) && !hideInTable) {
       settingKeys.push(columnProps.prop);

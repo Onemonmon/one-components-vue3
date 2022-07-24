@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, provide, ref, useSlots } from "vue";
+import { ProQueryFilter } from "../../pro-form";
 import ProTableColumn from "./ProTableColumn.vue";
 import proTableProps, { ProTableInstance } from "./ProTable";
 import ProTableToolbar from "./ProTableToolbar.vue";
@@ -19,6 +20,7 @@ const {
   sourceData,
   pageParams,
   columnParmas,
+  innerProQueryFilterProps,
   innerPaginationProps,
   getTableDataByParams,
   handleSortChange,
@@ -58,6 +60,11 @@ provide("editableConfig", innerEditableConfig);
 
 <template>
   <div class="pro-table-container" v-if="innerColumns.length">
+    <pro-query-filter
+      v-bind="innerProQueryFilterProps"
+      :columns="flatColumns"
+      v-if="proQueryFilterProps !== false"
+    />
     <div class="pro-table__header">
       <div class="pro-table__header-title">
         <slot name="title">{{ title }}</slot>

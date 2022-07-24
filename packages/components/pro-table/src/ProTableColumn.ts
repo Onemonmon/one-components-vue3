@@ -94,6 +94,36 @@ const proTableCustomColumnProps = {
       (row: any) => ProTableOperationColumnPropsType[]
     >,
   },
+  /**
+   * 以下这些是ProQueryFilter的参数
+   */
+  /**
+   * 当筛选表单的参数字段与表格不同时使用
+   */
+  queryFilterProp: {
+    type: String,
+  },
+  /**
+   * 筛选表单列内容插槽名称
+   */
+  queryFilterSlotName: {
+    type: String,
+  },
+  /**
+   * 所占列数
+   */
+  span: {
+    type: Number,
+    default: 8,
+  },
+  /**
+   * 在筛选表单中不显示
+   */
+  hideInForm: {
+    type: [Function, Boolean] as PropType<
+      boolean | ((...args: any[]) => boolean)
+    >,
+  },
   ...propsHasOptions,
 };
 

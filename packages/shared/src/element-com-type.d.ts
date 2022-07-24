@@ -10,6 +10,7 @@ import {
   ElCheckbox,
   ElCheckboxGroup,
   ElButton,
+  ElForm,
   ElFormItem,
 } from "element-plus";
 
@@ -45,5 +46,7 @@ export type CheckboxGroupPropsType = InstanceType<
 export type SelectPropsType = InstanceType<typeof ElSelect>["$props"];
 
 export type ButtonPropsType = InstanceType<typeof ElButton>["$props"];
+
+export type FormPropsType = InstanceType<typeof ElForm>["$props"];
 
 export type FormItemPropsType = InstanceType<typeof ElFormItem>["$props"];

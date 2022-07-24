@@ -30,11 +30,20 @@ const columns = computed(() => [
     label: "姓名",
     tip: "<span style='color: red;'>这是姓名鸭！</span>",
     formatConfig: { textFormat: (text) => "我是" + text },
+    formProps: {
+      rules: {
+        type: "string",
+        required: true,
+        message: "请输入姓名！",
+        trigger: "blur",
+      },
+    },
     showOverflowTooltip: true,
   },
   {
     prop: "address",
     label: "地址",
+    hideInForm: true,
     width: 80,
   },
   {
@@ -43,14 +52,18 @@ const columns = computed(() => [
     children: [
       {
         prop: "info.age",
+        queryFilterProp: "age",
         label: "年龄",
         sortable: "custom",
+        fieldProps: { type: "number", min: 1, max: 150 },
         width: 100,
       },
       {
         prop: "info.money",
+        queryFilterProp: "money",
         label: "余额",
         formatConfig: { formatType: "money" },
+        fieldProps: { type: "number" },
         copyable: true,
         width: 160,
       },
@@ -65,13 +78,16 @@ const columns = computed(() => [
           { text: "男", value: "male" },
           { text: "女", value: "female" },
         ],
+        hideInForm: true,
         valueType: "radio",
         width: 100,
       },
       {
         prop: "info.hobby",
+        queryFilterProp: "hobby",
         label: "爱好",
         options: options.value,
+        hideInForm: (model) => model.age > 70,
         valueType: "checkbox",
         width: 120,
       },
@@ -148,6 +164,7 @@ const handleChangeParams = () => {
     :columns="columns"
     :params="params"
     :request="getTableData"
+    :proQueryFilterProps="{ initialValues: { name: '张三' } }"
     :requestOnColumnChange="true"
   >
     <template #toolbar>

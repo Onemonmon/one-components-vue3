@@ -4,6 +4,7 @@ import type {
   TablePropsType,
   WithOtherAttrs,
 } from "@components/shared/src";
+import type { ProQueryFilterPropsType } from "../../pro-form";
 // import type { ProTableColumnPropsType } from "./ProTableColumn";
 
 export type RequestTableDataFunction = (
@@ -104,6 +105,13 @@ const proTableProps = {
    */
   tableProps: {
     type: Object as PropType<TablePropsType>,
+  },
+  /**
+   * pro-query-filer入参
+   */
+  proQueryFilterProps: {
+    type: [Object, Boolean] as PropType<ProQueryFilterPropsType | false>,
+    default: undefined,
   },
   /**
    * 表格分页配置，传入false则取消分页功能

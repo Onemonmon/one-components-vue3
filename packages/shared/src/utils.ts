@@ -28,7 +28,8 @@ const componentsMap: Record<ValueType, string> = {
 };
 
 // 根据valueType的值返回对应组件
-export const getComponentByType = (type: ValueType) => componentsMap[type];
+export const getComponentByType = (type: ValueType = "text") =>
+  componentsMap[type];
 
 // 根据prop获取value 如：{ info: { age: 18 } } prop: info.age => 18
 export const getValueByComplexKey = (

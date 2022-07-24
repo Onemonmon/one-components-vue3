@@ -162,6 +162,7 @@ const getTableData = async () => {
     title="可编辑表格"
     :columns="columns"
     :request="getTableData"
+    :proQueryFilterProps="false"
     :editableConfig="editableConfig"
   />
 </template>

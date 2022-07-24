@@ -22,9 +22,11 @@ const allValue = computed(() => requestOptions.options.map((n) => n.value));
 watch(
   innerValue,
   (val) => {
-    checkAllStatus.checked = val.length === requestOptions.options.length;
-    checkAllStatus.indeterminate =
-      val.length > 0 && val.length < requestOptions.options.length;
+    if (innerFieldProps.value.checkAll) {
+      checkAllStatus.checked = val.length === requestOptions.options.length;
+      checkAllStatus.indeterminate =
+        val.length > 0 && val.length < requestOptions.options.length;
+    }
   },
   { immediate: true }
 );

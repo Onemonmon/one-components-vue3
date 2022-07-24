@@ -9,15 +9,10 @@ const routes: RouteRecordRaw[] = [
     component: BasicLayout,
     children: [
       {
-        path: "/pro-components",
-        name: "高级组件",
+        path: "/basic-components",
+        name: "基础组件",
         component: DemoLayout,
         children: [
-          {
-            path: "/pro-table",
-            name: "ProTable 高级表格",
-            component: () => import("@/views/pro-table/Index.vue"),
-          },
           {
             path: "/pro-field/pro-input",
             name: "ProInput 输入框",
@@ -42,6 +37,24 @@ const routes: RouteRecordRaw[] = [
             path: "/pro-field/pro-text",
             name: "ProText 文本",
             component: () => import("@/views/pro-field/pro-text/Index.vue"),
+          },
+        ],
+      },
+      {
+        path: "/pro-components",
+        name: "高级组件",
+        component: DemoLayout,
+        children: [
+          {
+            path: "/pro-table",
+            name: "ProTable 高级表格",
+            component: () => import("@/views/pro-table/Index.vue"),
+          },
+          {
+            path: "/pro-query-filter",
+            name: "ProQueryFiler 筛选器",
+            component: () =>
+              import("@/views/pro-form/pro-query-filter/Index.vue"),
           },
         ],
       },
