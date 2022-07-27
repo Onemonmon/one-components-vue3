@@ -65,4 +65,6 @@ export type OptionNodeType = {
 /**
  * 数据类型
  */
-export type Data = Record<string, any>;
+export type Data = {
+  [x: string]: any;
+};

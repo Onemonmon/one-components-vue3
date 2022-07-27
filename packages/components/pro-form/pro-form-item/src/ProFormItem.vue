@@ -1,24 +1,46 @@
 <script lang="ts" setup>
 import { watch, onUnmounted, computed } from "vue";
-import { getComponentByType, hasOwn } from "@components/shared/src";
+import { extend, getComponentByType, hasOwn } from "@components/shared/src";
 import { InfoFilled } from "@element-plus/icons-vue";
 import proFormItemProps from "./ProFormItem";
 import CustomRender from "../../../common/custom-render/src/CustomRender.vue";
+import isEqual from "lodash/isEqual";
 
 const props = defineProps(proFormItemProps);
 
 const ComponentName = getComponentByType(props.valueType);
 
 const innerParams = computed(() => {
-  const dep: any = {};
-  props.dependencies &&
-    props.dependencies.forEach((n) => (dep[n] = props.model![n]));
-  return { ...dep, ...props.params };
-});
-onUnmounted(() => {
-  if (hasOwn(props.model!, props.prop!)) {
-    props.model![props.prop!] = undefined;
+  if (props.dependencies) {
+    const dep: any = {};
+    props.dependencies.forEach((n) => (dep[n] = props.model[n]));
+    return extend(dep, props.params);
   }
+  return props.params;
+});
+
+if (props.dependencies) {
+  const dependencies = props.dependencies || [];
+  const computedModel = computed(() => ({ ...props.model }));
+  watch(computedModel, (newValue, oldValue) => {
+    const changedKeys = [];
+    for (let key in newValue) {
+      if (!isEqual(newValue[key], oldValue[key])) {
+        changedKeys.push(key);
+      }
+    }
+    if (
+      !changedKeys.includes(props.prop) &&
+      new Set(changedKeys.concat(dependencies)).size <
+        changedKeys.length + dependencies.length
+    ) {
+      delete props.model[props.prop];
+    }
+  });
+}
+
+onUnmounted(() => {
+  delete props.model[props.prop];
 });
 </script>
 
@@ -39,11 +61,14 @@ onUnmounted(() => {
       </el-tooltip>
     </template>
     <template #default v-if="defaultSlotName">
-      <custom-render :slot="slots[defaultSlotName!]" :scope="{ model, prop }" />
+      <custom-render
+        :slot="slots[defaultSlotName!]"
+        :scope="{ model, prop, editable, options }"
+      />
     </template>
     <template #default v-else>
       <component
-        v-model="model![prop!]"
+        v-model="model[prop]"
         :fieldProps="fieldProps"
         :formatConfig="formatConfig"
         :editable="editable"

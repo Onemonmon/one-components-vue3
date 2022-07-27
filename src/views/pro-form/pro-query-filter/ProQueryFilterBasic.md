@@ -49,9 +49,6 @@ const columns = ref([
     label: "爱好",
     dependencies: ["gender"],
     request: ({ gender }) => (gender === "male" ? maleOptions : femaleOptions),
-    formProps: {
-      rules: { type: "array", required: true, message: "请选择爱好！" },
-    },
     valueType: "checkbox",
     width: 240,
   },

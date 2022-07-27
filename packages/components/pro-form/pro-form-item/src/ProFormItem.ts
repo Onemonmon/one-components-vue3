@@ -15,14 +15,14 @@ const proFormItemProps = {
    */
   model: {
     type: Object as PropType<Data>,
-    defalut: () => ({}),
-    required: true,
+    default: () => ({}),
   },
   /**
    * 表单项字段
    */
   prop: {
     type: String,
+    default: "",
     required: true,
   },
   /**
