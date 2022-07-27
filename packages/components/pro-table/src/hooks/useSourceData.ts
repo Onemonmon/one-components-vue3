@@ -20,7 +20,19 @@ const getTableDataByRange = (
   return data.slice(start, start + length);
 };
 
-const useSourceData = (props: ProTablePropsType) => {
+const getRealProp = (
+  propToRequestPropMap: Map<string, string>,
+  prop: string
+) => {
+  return propToRequestPropMap.has(prop)
+    ? (propToRequestPropMap.get(prop) as string)
+    : prop;
+};
+
+const useSourceData = (
+  props: ProTablePropsType,
+  propToRequestPropMap: Map<string, string>
+) => {
   const sourceData = reactive({ data: [] as any[], total: 0, loading: false });
   // 原生表格数据
   const rawSourceData = ref<any[]>();
@@ -37,7 +49,8 @@ const useSourceData = (props: ProTablePropsType) => {
   const columnParmas = ref<any>({});
   const handleSortChange = ({ column, prop, order }: any) => {
     if (props.requestOnColumnChange) {
-      columnParmas.value = { sortProp: prop, sortOrder: order };
+      const newProp = getRealProp(propToRequestPropMap, prop);
+      columnParmas.value = { sortProp: newProp, sortOrder: order };
       if (props.tableProps && props.tableProps["onSort-change"]) {
         props.tableProps["onSort-change"]({ column, prop, order });
       }
@@ -45,15 +58,14 @@ const useSourceData = (props: ProTablePropsType) => {
   };
   const handleFilterChange = (filters: any) => {
     if (props.requestOnColumnChange) {
-      const key = Object.keys(filters)[0];
-      columnParmas.value = { ...columnParmas.value, [key]: filters[key] };
+      const prop = Object.keys(filters)[0];
+      const newProp = getRealProp(propToRequestPropMap, prop);
+      columnParmas.value = { ...columnParmas.value, [newProp]: filters[prop] };
       if (props.tableProps && props.tableProps["onFilter-change"]) {
         props.tableProps["onFilter-change"](filters);
       }
     }
   };
-  // 筛选表单参数
-  const qureyFilterParams = ref<any>({});
   const innerProQueryFilterProps = reactive<ProQueryFilterPropsType>({
     ...props.proQueryFilterProps,
     async onSubmit(model) {
@@ -61,6 +73,8 @@ const useSourceData = (props: ProTablePropsType) => {
       await getTableDataByParams();
     },
   });
+  // 筛选表单参数
+  const qureyFilterParams = ref<any>(innerProQueryFilterProps.initialValues);
   // 处理参数 外部入参params + 内部分页pageParams
   const requestParams = computed(() => {
     const newParams = extend({}, props.params);

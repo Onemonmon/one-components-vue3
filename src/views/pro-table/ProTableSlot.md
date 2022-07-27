@@ -16,6 +16,8 @@ const columns = computed(() => [
     label: "姓名",
     tip: "<span style='color: red;'>这是姓名鸭！</span>",
     formatConfig: { textFormat: (text) => "我是" + text },
+    qfLabelSlotName: "nameLabel",
+    qfDefaultSlotName: "nameDefault",
     showOverflowTooltip: true,
   },
   {
@@ -23,6 +25,7 @@ const columns = computed(() => [
     label: "地址",
     columnHeaderSlotName: "addressHeader",
     columnDefaultSlotName: "addressDefault",
+    qfHideInForm: true,
     width: 160,
   },
   {
@@ -30,6 +33,7 @@ const columns = computed(() => [
     label: "年龄",
     editable: false,
     sortable: true,
+    qfHideInForm: true,
     width: 100,
   },
   {
@@ -123,12 +127,7 @@ const handleChangeParams = () => {
 </script>
 
 <template>
-  <pro-table
-    :columns="columns"
-    :params="params"
-    :request="getTableData"
-    :proQueryFilterProps="false"
-  >
+  <pro-table :columns="columns" :params="params" :request="getTableData">
     <template #title>
       <el-badge :value="12">
         <el-button link>自定义表格标题</el-button>
@@ -138,6 +137,13 @@ const handleChangeParams = () => {
       <el-button type="primary" @click="handleChangeParams">
         重新获取数据
       </el-button>
+    </template>
+    <template #nameLabel>姓名插槽</template>
+    <template #nameDefault="{ model, prop }">
+      <pro-input v-model="model[prop]">
+        <template #prepend>Http://</template>
+        <template #append>.com</template>
+      </pro-input>
     </template>
     <template #addressHeader>
       <el-link type="primary" :underline="false">自定义表头名称</el-link>

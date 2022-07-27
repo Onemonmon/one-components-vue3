@@ -128,6 +128,7 @@ const handleReset = () => {
       ref="treeRef"
       node-key="prop"
       show-checkbox
+      default-expand-all
       :data="columns"
       :filter-node-method="filterNode"
       :onCheck-change="handleCheckChange"

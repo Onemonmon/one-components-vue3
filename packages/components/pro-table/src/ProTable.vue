@@ -14,6 +14,17 @@ const props = defineProps(proTableProps);
 const slots = useSlots();
 const innerTableRef = ref<ProTableInstance | null>(null);
 /**
+ * 解析处理表格表头
+ */
+const {
+  innerColumns,
+  flatColumns,
+  validatorRules,
+  settingKeys,
+  defaultCheckedKeys,
+  propToRequestPropMap,
+} = useColumns(props);
+/**
  * 获取处理表格数据
  */
 const {
@@ -25,17 +36,7 @@ const {
   getTableDataByParams,
   handleSortChange,
   handleFilterChange,
-} = useSourceData(props);
-/**
- * 解析处理表格表头
- */
-const {
-  innerColumns,
-  flatColumns,
-  validatorRules,
-  settingKeys,
-  defaultCheckedKeys,
-} = useColumns(props);
+} = useSourceData(props, propToRequestPropMap);
 /**
  * 处理编辑表格
  */
@@ -63,6 +64,7 @@ provide("editableConfig", innerEditableConfig);
     <pro-query-filter
       v-bind="innerProQueryFilterProps"
       :columns="flatColumns"
+      :slots="slots"
       v-if="proQueryFilterProps !== false"
     />
     <div class="pro-table__header">

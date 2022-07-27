@@ -46,6 +46,7 @@ const columns = ref<any[]>([
     :title="title"
     :columns="columns"
     :tableProps="{ data }"
+    :proQueryFilterProps="false"
     :paginationProps="false"
     :toolbarConfig="false"
   />

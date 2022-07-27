@@ -1,6 +1,7 @@
 ### 基本使用 1
 
-传入 tableProps.data，表格内部会自动进行前端分页
+传入 tableProps.data，表格内部会自动进行前端分页.
+设置 column.hideBySetting, 可以在表格中默认隐藏该列, 通过点击列设置树中的对应列再展示
 
 ```vue
 <script lang="ts" setup>
@@ -35,11 +36,13 @@ const columns = computed(() => [
   {
     prop: "address",
     label: "地址",
+    hideBySetting: true,
     width: 80,
   },
   {
     prop: "info",
     label: "信息",
+    hideBySetting: true,
     children: [
       {
         prop: "info.age",

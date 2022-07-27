@@ -1,22 +1,17 @@
 <script lang="ts" setup>
-import { computed, ref, toRaw, watch } from "vue";
+import { computed, ref, toRaw, useSlots, watch } from "vue";
 import proQueryFilterProps, { ProFormInstance } from "./ProQueryFilter";
 import ProFormItem from "../../pro-form-item/src/ProFormItem.vue";
 
 const props = defineProps(proQueryFilterProps);
+const slots = props.slots || useSlots();
 const model = ref<any>({ ...props.initialValues });
-let oldModel = { ...props.initialValues };
 watch(
   () => props.initialValues,
   (val) => {
     model.value = { ...val };
   }
 );
-watch(model, (val) => {
-  const rawValue = toRaw(val);
-  props.onValuesChange && props.onValuesChange(rawValue, oldModel);
-  oldModel = rawValue;
-});
 const innerFormRef = ref<ProFormInstance>();
 const innerFormProps = computed(() => ({
   labelWidth: 100,
@@ -34,7 +29,8 @@ const handleSubmit = async () => {
   try {
     await innerFormRef.value.validate();
     submitLoading.value = true;
-    await (props.onSubmit && props.onSubmit(toRaw(model.value)));
+    const rawValue = toRaw(model.value);
+    await (props.onSubmit && props.onSubmit(rawValue));
   } catch (error) {
     console.log("error message: ", error);
   } finally {
@@ -60,7 +56,7 @@ const handleSubmit = async () => {
               : column.hideInForm !== true
           "
         >
-          <pro-form-item v-bind="column" :model="model" />
+          <pro-form-item v-bind="column" :model="model" :slots="slots" />
         </el-col>
       </template>
       <el-col :span="8" key="query-footer">

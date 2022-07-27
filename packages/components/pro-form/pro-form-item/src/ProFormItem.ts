@@ -19,24 +19,30 @@ const proFormItemProps = {
     required: true,
   },
   /**
-   * 当前列字段
+   * 表单项字段
    */
   prop: {
     type: String,
     required: true,
   },
   /**
-   * 列名
+   * 表单项名称
    */
   label: {
     type: String,
   },
   /**
-   * 当前列的单元格渲染的组件类型
+   * 表单项渲染的组件类型
    */
   valueType: {
     type: String as PropType<ValueType>,
     default: "text",
+  },
+  /**
+   * 表单项依赖的其他表单项
+   */
+  dependencies: {
+    type: Array as PropType<string[]>,
   },
   /**
    * valueType对应的组件的原生入参
@@ -57,7 +63,19 @@ const proFormItemProps = {
     type: String,
   },
   /**
-   * 当前表头列数据是否可编辑
+   * el-form-item label插槽名称
+   */
+  labelSlotName: {
+    type: String,
+  },
+  /**
+   * el-form-item default插槽名称
+   */
+  defaultSlotName: {
+    type: String,
+  },
+  /**
+   * 表单项是否可编辑
    */
   editable: {
     type: Boolean,
@@ -70,11 +88,18 @@ const proFormItemProps = {
     type: Object as PropType<FormatConfigType>,
     default: () => ({}),
   },
+  /**
+   * 表单插槽
+   */
+  slots: {
+    type: Object,
+    default: () => ({}),
+  },
   ...propsHasOptions,
 };
 
 export type ProFormItemPropsType = WithOtherAttrs<
-  Partial<ExtractPropTypes<typeof proFormItemProps>>
+  Partial<Omit<ExtractPropTypes<typeof proFormItemProps>, "model" | "slots">>
 >;
 
 export default proFormItemProps;

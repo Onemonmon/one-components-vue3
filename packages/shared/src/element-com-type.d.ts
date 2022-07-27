@@ -14,11 +14,11 @@ import {
   ElFormItem,
 } from "element-plus";
 
-export type WithOtherAttrs<T> = T &
-  Record<string, any> & {
-    style?: CSSCounterStyleRule;
-    className?: string;
-  };
+export type WithOtherAttrs<T> = T & {
+  style?: CSSCounterStyleRule;
+  className?: string;
+  [x: string]: any;
+};
 
 export type TablePropsType = InstanceType<typeof ElTable>["$props"];
 

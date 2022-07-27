@@ -1,10 +1,13 @@
-import { ref, watch } from "vue";
+import { capitalize, ref, watch } from "vue";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
-import { isArray } from "@components/shared/src";
 import type { ProTablePropsType } from "../ProTable";
-import type { InnerProTableColumnPropsType } from "../ProTableColumn";
+import type {
+  InnerProTableColumnPropsType,
+  ProTableColumnPropsType,
+} from "../ProTableColumn";
 import type { FormItemRule } from "element-plus";
+import { stringify } from "querystring";
 
 /**
  * 解析表格列 { prop, label, valueType, ... } 转换成 { columnProps: { prop, label, ... }, valueType, ... }
@@ -17,11 +20,13 @@ const parseColumns = (
   validatorRules: Record<string, FormItemRule[]>,
   settingKeys: string[], // 获取列设置中的所有key
   defaultCheckedKeys: string[],
+  propToRequestPropMap: Map<string, string>,
   parentEditable: boolean = true,
   parentHideBySetting: boolean = false
 ) => {
   for (let i = 0; i < columns.length; i++) {
     const {
+      requestProp,
       valueType = "text",
       fieldProps,
       formProps, // 这边应该要收集需要表单校验的项和表单校验内容
@@ -38,20 +43,23 @@ const parseColumns = (
       hideBySetting,
       children,
       operations,
-      // proQueryFilterColumn
-      queryFilterProp,
-      queryFilterSlotName,
-      span,
-      hideInForm,
+      // 以下参数只有过滤器用到
+      qfLabelSlotName,
+      qfDefaultSlotName,
+      qfSpan,
+      qfHideInForm,
       ...columnProps
-    } = columns[i];
+    } = columns[i] as ProTableColumnPropsType;
     if (columnProps.prop === undefined) {
       console.error("表格列的prop为必填属性");
       return [];
     }
+    if (requestProp) {
+      propToRequestPropMap.set(columnProps.prop, requestProp);
+    }
     // 收集表格内部的校验规则
     if (!hideInTable && formProps && formProps.rules) {
-      validatorRules[columnProps.prop] = isArray(formProps.rules)
+      validatorRules[columnProps.prop] = Array.isArray(formProps.rules)
         ? formProps.rules
         : [formProps.rules];
     }
@@ -62,6 +70,7 @@ const parseColumns = (
         validatorRules,
         settingKeys,
         defaultCheckedKeys,
+        propToRequestPropMap,
         editable,
         hideBySetting
       );
@@ -69,6 +78,7 @@ const parseColumns = (
     const newColumn = {
       label: columnProps.label,
       prop: columnProps.prop,
+      requestProp,
       valueType,
       fieldProps,
       formProps,
@@ -88,26 +98,28 @@ const parseColumns = (
       hideBySetting: hideBySetting || parentHideBySetting,
       columnProps,
       operations,
-      span,
-      hideInForm,
     } as InnerProTableColumnPropsType;
     children && (newColumn.children = children);
     // 这些列不需要扁平
-    if (!notNeedFlatProps.includes(columnProps.type) && !newColumn.children) {
-      flatColumns.push({
-        ...newColumn,
-        ...(queryFilterProp && { prop: queryFilterProp }),
-        ...(queryFilterSlotName && { slotName: queryFilterSlotName }),
-      });
+    const columnType = columnProps.type || "";
+    if (!notNeedFlatProps.includes(columnType) && !children) {
+      // qf开头的参数只有过滤器用到
+      const qfProps: any = {
+        prop: requestProp || columnProps.prop,
+        labelSlotName: qfLabelSlotName,
+        defaultSlotName: qfDefaultSlotName,
+        span: qfSpan,
+        hideInForm: qfHideInForm,
+      };
+      flatColumns.push({ ...newColumn, ...qfProps });
     }
-    if (!notNeedKeys.includes(columnProps.type) && !hideInTable) {
+    if (!notNeedKeys.includes(columnType) && !hideInTable) {
       settingKeys.push(columnProps.prop);
       // 注：当父级没设置hideBySetting，但子级设置了hideBySetting=true，那么父级不应被选中
       if (!newColumn.hideBySetting) {
         if (
-          !newColumn.children ||
-          (newColumn.children &&
-            newColumn.children.filter((n) => n.hideBySetting).length === 0)
+          !children ||
+          (children && children.filter((n) => n.hideBySetting).length === 0)
         ) {
           defaultCheckedKeys.push(columnProps.prop);
         }
@@ -120,7 +132,7 @@ const parseColumns = (
 
 const useColumns = (props: ProTablePropsType) => {
   const innerColumns = ref<any[]>([]);
-  // 将列扁平化
+  // 将列扁平化,顾过滤器使用
   const flatColumns = ref<any[]>([]);
   // 表格字段校验规则
   const validatorRules = ref<Record<string, FormItemRule[]>>({});
@@ -128,6 +140,7 @@ const useColumns = (props: ProTablePropsType) => {
   const settingKeys = ref<string[]>([]);
   // 默认展示的列集合
   const defaultCheckedKeys = ref<string[]>([]);
+  const propToRequestPropMap: Map<string, string> = new Map();
   watch(
     () => props.columns,
     (val) => {
@@ -141,7 +154,8 @@ const useColumns = (props: ProTablePropsType) => {
         _flatColumns,
         _validatorRules,
         _settingKeys,
-        _defaultCheckedKeys
+        _defaultCheckedKeys,
+        propToRequestPropMap
       );
       flatColumns.value = _flatColumns;
       if (!isEqual(validatorRules.value, _validatorRules)) {
@@ -163,6 +177,7 @@ const useColumns = (props: ProTablePropsType) => {
     validatorRules,
     settingKeys,
     defaultCheckedKeys,
+    propToRequestPropMap,
   };
 };
 

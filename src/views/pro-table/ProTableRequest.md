@@ -52,15 +52,16 @@ const columns = computed(() => [
     children: [
       {
         prop: "info.age",
-        queryFilterProp: "age",
+        requestProp: "age",
         label: "年龄",
         sortable: "custom",
         fieldProps: { type: "number", min: 1, max: 150 },
+        qfHideInForm: true,
         width: 100,
       },
       {
         prop: "info.money",
-        queryFilterProp: "money",
+        requestProp: "money",
         label: "余额",
         formatConfig: { formatType: "money" },
         fieldProps: { type: "number" },
@@ -69,6 +70,7 @@ const columns = computed(() => [
       },
       {
         prop: "info.gender",
+        requestProp: "gender",
         label: "性别",
         request: () => [
           { label: "男", value: "male" },
@@ -78,16 +80,16 @@ const columns = computed(() => [
           { text: "男", value: "male" },
           { text: "女", value: "female" },
         ],
-        hideInForm: true,
+        qfHideInForm: true,
         valueType: "radio",
         width: 100,
       },
       {
         prop: "info.hobby",
-        queryFilterProp: "hobby",
+        requestProp: "hobby",
         label: "爱好",
         options: options.value,
-        hideInForm: (model) => model.age > 70,
+        qfHideInForm: (model) => model.money > 1000,
         valueType: "checkbox",
         width: 120,
       },

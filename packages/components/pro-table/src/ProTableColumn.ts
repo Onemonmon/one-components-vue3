@@ -13,6 +13,12 @@ import type { ProFieldPropsType } from "@components/components/pro-field";
 // 某些valueType对应的组件需要选项
 const proTableCustomColumnProps = {
   /**
+   * 当请求接口的参数字段与表格prop不同时使用
+   */
+  requestProp: {
+    type: String,
+  },
+  /**
    * 当前表头列的单元格渲染的组件类型
    */
   valueType: {
@@ -94,32 +100,30 @@ const proTableCustomColumnProps = {
       (row: any) => ProTableOperationColumnPropsType[]
     >,
   },
+  // 以下参数只有过滤器用到
   /**
-   * 以下这些是ProQueryFilter的参数
+   * 筛选表单列label插槽名称
    */
-  /**
-   * 当筛选表单的参数字段与表格不同时使用
-   */
-  queryFilterProp: {
+  qfLabelSlotName: {
     type: String,
   },
   /**
    * 筛选表单列内容插槽名称
    */
-  queryFilterSlotName: {
+  qfDefaultSlotName: {
     type: String,
   },
   /**
-   * 所占列数
+   * 筛选表单列所占列数
    */
-  span: {
+  qfSpan: {
     type: Number,
     default: 8,
   },
   /**
    * 在筛选表单中不显示
    */
-  hideInForm: {
+  qfHideInForm: {
     type: [Function, Boolean] as PropType<
       boolean | ((...args: any[]) => boolean)
     >,

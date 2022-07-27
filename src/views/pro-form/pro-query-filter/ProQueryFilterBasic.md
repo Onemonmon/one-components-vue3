@@ -7,25 +7,22 @@ import { ElMessage } from "element-plus";
 import type { OptionNodeType } from "one-components-vue3";
 
 const inputValue = ref(["01"]);
-const options = ref<OptionNodeType[]>([
+const maleOptions: OptionNodeType[] = [
   { label: "抽烟", value: "01" },
   { label: "喝酒", value: "02" },
   { label: "烫头", value: "03" },
-]);
+];
+const femaleOptions: OptionNodeType[] = [
+  { label: "逛街", value: "04" },
+  { label: "包包", value: "05" },
+  { label: "化妆", value: "06" },
+];
 const initialValues = ref({});
 const columns = ref([
   {
     prop: "name",
-    label: "姓名",
-    tip: "<span style='color: red;'>这是姓名鸭！</span>",
-    formProps: {
-      rules: {
-        type: "string",
-        required: true,
-        message: "请输入姓名！",
-        trigger: "blur",
-      },
-    },
+    labelSlotName: "nameLabel",
+    defaultSlotName: "nameDefault",
     minWidth: 120,
   },
   {
@@ -40,7 +37,7 @@ const columns = ref([
   {
     prop: "gender",
     label: "性别",
-    request: () => [
+    options: [
       { label: "男", value: "male" },
       { label: "女", value: "female" },
     ],
@@ -50,24 +47,26 @@ const columns = ref([
   {
     prop: "hobby",
     label: "爱好",
-    options: options.value,
+    dependencies: ["gender"],
+    request: ({ gender }) => (gender === "male" ? maleOptions : femaleOptions),
     formProps: {
       rules: { type: "array", required: true, message: "请选择爱好！" },
     },
-    hideInForm: (model) => model.gender === "female",
     valueType: "checkbox",
     width: 240,
   },
   {
     prop: "major",
     label: "专业",
-    options: options.value,
+    options: maleOptions,
     fieldProps: { clearable: false },
+    hideInForm: (model) => model.gender === "female",
     valueType: "select",
     width: 140,
   },
 ]);
 const handleSubmit = async (model) => {
+  console.log("表单值:", model);
   try {
     await new Promise((resolve, reject) =>
       setTimeout(() => {
@@ -98,6 +97,14 @@ onMounted(() => {
     :columns="columns"
     :initialValues="initialValues"
     :onSubmit="handleSubmit"
-  />
+  >
+    <template #nameLabel>姓名插槽</template>
+    <template #nameDefault="{ model, prop }">
+      <pro-input v-model="model[prop]">
+        <template #prepend>Http://</template>
+        <template #append>.com</template>
+      </pro-input>
+    </template>
+  </pro-query-filter>
 </template>
 ```

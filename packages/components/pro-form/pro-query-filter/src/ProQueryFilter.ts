@@ -63,6 +63,12 @@ const proQueryFilterProps = {
   onValuesChange: {
     type: Function as PropType<(newValue: any, oldValue: any) => void>,
   },
+  /**
+   * 插槽
+   */
+  slots: {
+    type: Object,
+  },
 };
 
 export type ProQueryFilterPropsType = WithOtherAttrs<
