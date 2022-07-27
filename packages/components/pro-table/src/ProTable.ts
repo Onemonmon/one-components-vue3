@@ -32,7 +32,7 @@ export type ProTableInstance = {
 /**
  * 表格编辑态配置
  */
-export type EditableKeysType = (string | number)[];
+export type EditableKeyType = string | number;
 export type InnerEditableConfigType = {
   /**
    * 当前表格是否可编辑
@@ -41,19 +41,27 @@ export type InnerEditableConfigType = {
   /**
    * 当前可编辑行的rowKey的Set集合
    */
-  editableKeys: Set<EditableKeysType>;
+  editableKeys: Set<EditableKeyType>;
+  /**
+   * 新增一行时的默认数据
+   */
+  defaultCreateRow?: Record<string, any>;
+  /**
+   * 是否展示新增一行按钮
+   */
+  showCreateButton?: boolean;
   /**
    * editableKeys改变时触发
    */
-  onEditableKeysChange: (editableKeys: EditableKeysType) => void;
+  onEditableKeysChange?: (editableKeys: EditableKeyType[]) => void;
   /**
    * 点击保存时触发
    */
-  onSave: (row: any) => Promise<any> | any;
+  onSave?: (row: any) => Promise<any> | any;
   /**
    * 当前可编辑行数据变化时触发
    */
-  onValuesChange: (row: any, prop: string, value: any) => void;
+  onValuesChange?: (row: any, prop: string, value: any) => void;
 };
 export type EditableConfigType = Partial<
   Omit<InnerEditableConfigType, "editableKeys">
@@ -61,7 +69,7 @@ export type EditableConfigType = Partial<
   /**
    * 当前可编辑行的rowKey的集合
    */
-  editableKeys?: EditableKeysType;
+  editableKeys?: EditableKeyType[];
 };
 
 const proTableProps = {

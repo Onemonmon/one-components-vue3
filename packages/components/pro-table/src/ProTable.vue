@@ -40,7 +40,7 @@ const {
 /**
  * 处理编辑表格
  */
-const innerEditableConfig = useEditable(props);
+const { innerEditableConfig, handleAddNewRow } = useEditable(props, sourceData);
 /**
  * 处理表格实例
  */
@@ -55,6 +55,7 @@ const innerTableProps = computed<TablePropsType>(() => ({
 }));
 
 // provide
+provide("sourceData", sourceData);
 provide("validatorRules", validatorRules);
 provide("editableConfig", innerEditableConfig);
 </script>
@@ -98,6 +99,16 @@ provide("editableConfig", innerEditableConfig);
           v-for="column in innerColumns"
         />
       </el-table>
+      <div
+        class="create-button-wrapper"
+        v-if="
+          innerEditableConfig.editable && innerEditableConfig.showCreateButton
+        "
+      >
+        <el-button size="large" @click="handleAddNewRow">
+          新增一行数据
+        </el-button>
+      </div>
     </div>
     <div class="pro-table__footer" v-if="paginationProps !== false">
       <el-pagination
@@ -165,6 +176,14 @@ provide("editableConfig", innerEditableConfig);
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+      }
+    }
+
+    .create-button-wrapper {
+      margin-top: 10px;
+      .el-button {
+        width: 100%;
+        border-style: dashed;
       }
     }
   }

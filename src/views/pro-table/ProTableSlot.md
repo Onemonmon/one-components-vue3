@@ -127,7 +127,12 @@ const handleChangeParams = () => {
 </script>
 
 <template>
-  <pro-table :columns="columns" :params="params" :request="getTableData">
+  <pro-table
+    :columns="columns"
+    :params="params"
+    :request="getTableData"
+    :tableProps="{ rowKey: 'id' }"
+  >
     <template #title>
       <el-badge :value="12">
         <el-button link>自定义表格标题</el-button>

@@ -111,7 +111,7 @@ const columns = computed(() => [
     width: 120,
   },
 ]);
-const tableProps = reactive({ data: [] });
+const tableProps = reactive({ rowKey: "id", data: [] });
 const tableRef = ref<ProTableInstance | null>(null);
 const getTableData = async () => {
   const data = new Array(30).fill(0).map((n, i) => {

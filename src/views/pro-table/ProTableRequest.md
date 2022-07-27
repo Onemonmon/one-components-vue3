@@ -166,6 +166,7 @@ const handleChangeParams = () => {
     :columns="columns"
     :params="params"
     :request="getTableData"
+    :tableProps="{ rowKey: 'id' }"
     :proQueryFilterProps="{ initialValues: { name: '张三' } }"
     :requestOnColumnChange="true"
   >

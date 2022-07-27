@@ -46,7 +46,6 @@ const columns = computed(() => [
         type: "number",
         required: true,
         message: "请输入余额！",
-        trigger: "blur",
       },
     },
     copyable: true,
@@ -128,8 +127,13 @@ const handleValuesChange = (row, key, value) => {
 };
 const editableConfig = reactive({
   editable: true,
+  editableKeys: [1, 2, 3],
+  defaultCreateRow: { age: 18, gender: "male", major: "01" },
   onSave: handleSave,
   onValuesChange: handleValuesChange,
+  onEditableKeysChange(keys) {
+    editableConfig.editableKeys = keys;
+  },
 });
 const getTableData = async () => {
   const res = await new Promise((resolve) => {
@@ -162,6 +166,7 @@ const getTableData = async () => {
     title="可编辑表格"
     :columns="columns"
     :request="getTableData"
+    :tableProps="{ rowKey: 'id' }"
     :proQueryFilterProps="false"
     :editableConfig="editableConfig"
   />

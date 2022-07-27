@@ -29,6 +29,7 @@ const props = defineProps({
   },
 });
 
+const sourceData = inject("sourceData", { data: [] as any[] });
 const editableConfig = inject("editableConfig", {} as InnerEditableConfigType);
 const validatorRules = inject(
   "validatorRules",
@@ -39,14 +40,17 @@ const backupMap = new Map();
 const innerOperationsFn = ref<(row: any) => ProTableOperationColumnPropsType[]>(
   () => []
 );
-const saveLoading = ref(false);
 
 const handleEdit = (row: any) => {
   editableConfig.editableKeys.add(row.$rowKey);
   backupMap.set(row.$rowKey, cloneDeep(row));
 };
 const handleCancel = (row: any) => {
-  Object.assign(row, backupMap.get(row.$rowKey));
+  if (row.$isNew) {
+    sourceData.data = sourceData.data.filter((n) => n.$rowKey !== row.$rowKey);
+  } else {
+    Object.assign(row, backupMap.get(row.$rowKey));
+  }
   editableConfig.editableKeys.delete(row.$rowKey);
 };
 // 获取需要校验的值
@@ -73,6 +77,7 @@ const handleSave = async (row: any) => {
       // 校验有错误，组装错误信息
       let errorMessage = `<div style="line-height: 20px">`;
       error.forEach((n: any) => {
+        row[`$${n.field}Error`] = true;
         errorMessage += `<p>${n.message}</p>`;
       });
       errorMessage += "</div>";
@@ -85,12 +90,15 @@ const handleSave = async (row: any) => {
     }
   }
   try {
-    saveLoading.value = true;
-    await editableConfig.onSave(row);
+    row.$loading = true;
+    if (editableConfig.onSave) {
+      await editableConfig.onSave(row);
+    }
+    delete row.$isNew;
     editableConfig.editableKeys.delete(row.$rowKey);
     backupMap.delete(row.$rowKey);
   } finally {
-    saveLoading.value = false;
+    delete row.$loading;
   }
 };
 
@@ -114,7 +122,7 @@ watch(
             key: "save",
             label: "保存",
             hide: !isEditing,
-            loading: saveLoading.value,
+            loading: row.$loading,
             onClick: () => handleSave(row),
           },
           {

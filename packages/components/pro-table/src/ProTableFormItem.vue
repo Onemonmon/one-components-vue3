@@ -121,7 +121,9 @@ const rowProxy = new Proxy(props.row, {
     const oldValue = getValueByComplexKey(target, key as string);
     if (!isEqual(oldValue, value)) {
       setValueByComplexKey(target, key as string, value);
-      editableConfig.onValuesChange(target, key as string, value);
+      if (editableConfig.onValuesChange) {
+        editableConfig.onValuesChange(target, key as string, value);
+      }
     }
     return true;
   },
@@ -145,6 +147,7 @@ const handleValidate = (trigger: string, value: any) => {
       { [prop]: toRaw(value) },
       (error) => (_isError = error !== null)
     );
+    !_isError && delete props.row[`$${prop}Error`];
     isError.value !== _isError && (isError.value = _isError);
   }
 };
@@ -153,7 +156,7 @@ const handleValidate = (trigger: string, value: any) => {
 <template>
   <component
     v-model="rowProxy[prop]"
-    :class="{ is_Error: isError }"
+    :class="{ is_Error: isError || rowProxy[`$${prop}Error`] }"
     :id="`${id}`"
     :fieldProps="fieldProps"
     :editable="innerEditable"
