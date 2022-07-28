@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build-docs": "vue-tsc --noEmit && vite build --mode=docs",
     "preview": "vite preview"
   },
   "devDependencies": {
