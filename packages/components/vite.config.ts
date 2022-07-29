@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 import dts from "vite-plugin-dts";
+import { visualizer } from "rollup-plugin-visualizer";
 
 const resolvePath = (path: string) => resolve(__dirname, path);
 
@@ -13,7 +14,7 @@ export default ({ mode }: any) => {
         "@components": resolvePath("src"),
       },
     },
-    plugins: [vue(), dts({ include: "src" })],
+    plugins: [vue(), dts({ include: "src" }), __ANALYZER__ && visualizer()],
     build: {
       lib: {
         entry: resolvePath("src/index.ts"),
@@ -22,7 +23,7 @@ export default ({ mode }: any) => {
       },
       rollupOptions: {
         input: "src/index.ts",
-        external: ["vue", "element-plus"],
+        external: ["vue", "element-plus", "async-validator"],
         output: {
           globals: {
             vue: "Vue",

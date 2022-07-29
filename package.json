@@ -8,18 +8,19 @@
     "@types/web-bluetooth": "^0.0.14",
     "@vitejs/plugin-vue": "^3.0.0",
     "marked": "^4.0.18",
+    "rollup-plugin-visualizer": "^5.7.1",
     "sass": "^1.49.9",
     "type-fest": "^2.16.0",
     "typescript": "^4.4.4",
     "vite": "^3.0.0",
-    "vue-tsc": "^0.38.5",
-    "vite-plugin-dts": "^1.4.0"
+    "vite-plugin-dts": "^1.4.0",
+    "vue-tsc": "^0.38.5"
   },
   "dependencies": {
-    "vue": "3.2.37",
     "@element-plus/icons-vue": "^2.0.6",
-    "element-plus": "^2.2.9",
     "clipboard": "^2.0.11",
-    "lodash": "^4.17.21"
+    "element-plus": "^2.2.9",
+    "lodash": "^4.17.21",
+    "vue": "3.2.37"
   }
 }

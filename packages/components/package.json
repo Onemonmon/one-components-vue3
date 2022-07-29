@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build",
+    "analyzer": "vue-tsc --noEmit --skipLibCheck && vite build --mode=analyzer",
     "preview": "vite preview"
   },
   "author": "onemonmon",

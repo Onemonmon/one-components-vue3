@@ -5,20 +5,21 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit --skipLibCheck && vite build",
+    "analyzer": "vue-tsc --noEmit --skipLibCheck && vite build --mode=analyzer",
     "preview": "vite preview"
   },
   "author": "onemonmon",
   "license": "ISC",
   "dependencies": {
+    "@element-plus/icons-vue": "^2.0.6",
+    "clipboard": "^2.0.11",
+    "element-plus": "^2.2.9",
     "highlight.js": "^11.6.0",
+    "lodash": "^4.17.21",
     "one-components-vue3": "workspace:*",
     "vue": "3.2.37",
-    "vue-router": "^4.1.3",
-    "@element-plus/icons-vue": "^2.0.6",
-    "element-plus": "^2.2.9",
-    "clipboard": "^2.0.11",
-    "lodash": "^4.17.21"
+    "vue-router": "^4.1.3"
   },
   "devDependencies": {
     "@highlightjs/vue-plugin": "^2.1.0",
