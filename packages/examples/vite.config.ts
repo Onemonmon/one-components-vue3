@@ -13,7 +13,7 @@ export default defineConfig({
   },
   plugins: [md(), vue({ include: [/\.vue$/, /\.md$/] })],
   build: {
-    outDir: "docs",
+    outDir: "../../docs",
     rollupOptions: {},
   },
   base: "/one-components-vue3-docs",
