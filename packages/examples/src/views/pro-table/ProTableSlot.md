@@ -118,7 +118,7 @@ const getTableData = async (params) => {
   });
   return {
     data: res,
-    total: Math.floor(Math.random() * 100),
+    total: 100,
   };
 };
 const handleChangeParams = () => {

@@ -1,9 +1,16 @@
 <script lang="ts" setup>
 import { computed, nextTick, PropType, reactive, ref, unref, watch } from "vue";
 import { Refresh, Brush, Setting } from "@element-plus/icons-vue";
-import { ClickOutside as vClickOutside } from "element-plus";
+import {
+  ClickOutside as vClickOutside,
+  ElTree,
+  ElCheckbox,
+  ElTooltip,
+  ElPopover,
+  ElIcon,
+  ElButton,
+} from "element-plus";
 import type { ProTableColumnPropsType } from "./ProTableColumn";
-import type { ProTableInstance } from "./ProTable";
 
 const props = defineProps({
   /**

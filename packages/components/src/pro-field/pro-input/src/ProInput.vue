@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from "vue";
+import { ElInput, ElInputNumber } from "element-plus";
 import { useModelValue } from "@components/shared";
 import { useValidate } from "../../hooks";
 import { ProText } from "../../pro-text";
@@ -16,6 +17,9 @@ const innerFieldProps = computed<any>(() => ({
   controlsPosition: "right",
   ...props.fieldProps,
 }));
+const ComponentName = computed(() =>
+  innerFieldProps.value.type === "number" ? ElInputNumber : ElInput
+);
 </script>
 
 <template>
@@ -25,7 +29,7 @@ const innerFieldProps = computed<any>(() => ({
     v-bind="innerFieldProps"
     :onInput="handleInput"
     :onBlur="handleBlur"
-    :is="innerFieldProps.type === 'number' ? 'el-input-number' : 'el-input'"
+    :is="ComponentName"
     v-if="editable"
   >
     <template #prefix v-if="$slots.prefix">

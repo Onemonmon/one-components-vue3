@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from "vue";
+import { ElRadio, ElRadioButton, ElRadioGroup } from "element-plus";
 import { useModelValue } from "@components/shared";
 import { ProText } from "../../pro-text";
 import proRadioProps, { ProRadioValueType } from "./ProRadio";
@@ -14,6 +15,9 @@ const innerFieldProps = computed<any>(() => ({
   radioGroup: props.fieldProps.radioGroup,
 }));
 const requestOptions = useOptions(props);
+const ComponentName = computed(() =>
+  innerFieldProps.value.type === "button" ? ElRadioButton : ElRadio
+);
 </script>
 
 <template>
@@ -26,7 +30,7 @@ const requestOptions = useOptions(props);
     <component
       v-bind="innerFieldProps.radio"
       :label="option.value"
-      :is="innerFieldProps.type === 'button' ? 'el-radio-button' : 'el-radio'"
+      :is="ComponentName"
       :key="option.value"
       v-for="option in requestOptions.options"
     >

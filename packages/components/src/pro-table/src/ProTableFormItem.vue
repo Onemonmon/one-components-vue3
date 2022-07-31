@@ -20,7 +20,7 @@ import {
   getRandomKey,
 } from "@components/shared";
 import { CopyDocument, Check } from "@element-plus/icons-vue";
-import { ElMessage, FormItemRule } from "element-plus";
+import { ElMessage, FormItemRule, ElIcon } from "element-plus";
 import isEqual from "lodash/isEqual";
 import ClipboardJS from "clipboard";
 import Schema from "async-validator";

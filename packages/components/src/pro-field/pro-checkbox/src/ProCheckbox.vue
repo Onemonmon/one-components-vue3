@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, reactive, watch } from "vue";
+import { ElCheckbox, ElCheckboxGroup, ElCheckboxButton } from "element-plus";
 import { useModelValue } from "@components/shared";
 import { ProText } from "../../pro-text";
 import proCheckboxProps, { ProCheckboxValueType } from "./ProCheckbox";
@@ -37,6 +38,9 @@ const handleCheckAllChange = (value: any) => {
   innerValue.value = value ? allValue.value : [];
   handleChange();
 };
+const ComponentName = computed(() =>
+  innerFieldProps.value.type === "button" ? ElCheckboxButton : ElCheckbox
+);
 </script>
 
 <template>
@@ -57,11 +61,7 @@ const handleCheckAllChange = (value: any) => {
       <component
         v-bind="innerFieldProps.checkbox"
         :label="option.value"
-        :is="
-          innerFieldProps.type === 'button'
-            ? 'el-checkbox-button'
-            : 'el-checkbox'
-        "
+        :is="ComponentName"
         :key="option.value"
         v-for="option in requestOptions.options"
       >

@@ -1,4 +1,4 @@
-import { capitalize, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import type { ProTablePropsType } from "../ProTable";
@@ -7,7 +7,6 @@ import type {
   ProTableColumnPropsType,
 } from "../ProTableColumn";
 import type { FormItemRule } from "element-plus";
-import { stringify } from "querystring";
 
 /**
  * 解析表格列 { prop, label, valueType, ... } 转换成 { columnProps: { prop, label, ... }, valueType, ... }

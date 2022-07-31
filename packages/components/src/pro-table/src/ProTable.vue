@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, provide, ref, useSlots } from "vue";
 import { ProQueryFilter } from "../../pro-form";
+import { ElTable, ElPagination } from "element-plus";
 import ProTableColumn from "./ProTableColumn.vue";
 import proTableProps, { ProTableInstance } from "./ProTable";
 import ProTableToolbar from "./ProTableToolbar.vue";

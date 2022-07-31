@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from "vue";
+import { ElSelect, ElOption, ElOptionGroup } from "element-plus";
 import { useModelValue } from "@components/shared";
 import { ProText } from "../../pro-text";
 import proSelectProps, {

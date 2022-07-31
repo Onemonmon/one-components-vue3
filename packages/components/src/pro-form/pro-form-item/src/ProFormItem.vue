@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { watch, onUnmounted, computed } from "vue";
-import { extend, getComponentByType, hasOwn } from "@components/shared";
+import { extend, getComponentByType } from "@components/shared";
+import { ElFormItem, ElTooltip, ElIcon } from "element-plus";
 import { InfoFilled } from "@element-plus/icons-vue";
 import proFormItemProps from "./ProFormItem";
 import CustomRender from "../../../common/custom-render/src/CustomRender.vue";

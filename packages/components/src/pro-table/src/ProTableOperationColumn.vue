@@ -3,7 +3,7 @@ import { inject, PropType, Ref, ref, watch } from "vue";
 import cloneDeep from "lodash/cloneDeep";
 import Schema from "async-validator";
 import { getValueByComplexKey, TableColumnPropsType } from "@components/shared";
-import { ElMessage, FormItemRule } from "element-plus";
+import { ElMessage, FormItemRule, ElTableColumn, ElButton } from "element-plus";
 import type { ProTableOperationColumnPropsType } from "./ProTableColumn";
 import type { InnerEditableConfigType } from "./ProTable";
 

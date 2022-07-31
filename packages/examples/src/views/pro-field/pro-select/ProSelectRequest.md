@@ -33,6 +33,7 @@ const getOptions = async ({ id }: ParamsType) => {
   <el-space>
     <el-button
       :loading="loading"
+      :style="{ marginRight: '12px' }"
       @click="params.id = `${Math.floor(Math.random() * 10000)}`"
     >
       重新请求
