@@ -5,7 +5,7 @@ import { ElFormItem, ElTooltip, ElIcon } from "element-plus";
 import { InfoFilled } from "@element-plus/icons-vue";
 import proFormItemProps from "./ProFormItem";
 import CustomRender from "../../../common/custom-render/src/CustomRender.vue";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "lodash-es";
 
 const props = defineProps(proFormItemProps);
 

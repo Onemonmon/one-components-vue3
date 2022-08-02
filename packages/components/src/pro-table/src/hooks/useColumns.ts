@@ -1,6 +1,5 @@
 import { ref, watch } from "vue";
-import cloneDeep from "lodash/cloneDeep";
-import isEqual from "lodash/isEqual";
+import { isEqual, cloneDeep } from "lodash-es";
 import type { ProTablePropsType } from "../ProTable";
 import type {
   InnerProTableColumnPropsType,

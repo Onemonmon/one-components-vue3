@@ -23,7 +23,7 @@ export default ({ mode }: any) => {
       },
       rollupOptions: {
         input: "src/index.ts",
-        external: ["vue", "element-plus", "async-validator"],
+        external: ["vue", "element-plus", "async-validator", "lodash-es"],
         output: {
           globals: {
             vue: "Vue",

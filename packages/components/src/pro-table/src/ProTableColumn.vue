@@ -3,7 +3,7 @@ export default { name: "ProTableColumn" };
 </script>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, inject } from "vue";
 import { ElTableColumn } from "element-plus";
 import ProTableFormItem from "./ProTableFormItem.vue";
 import proTableColumnProps from "./ProTableColumn";
@@ -22,10 +22,15 @@ const handleDefaultFilter = (
   const property = column.property as string;
   return getValueByComplexKey(row, property) === value;
 };
+
+const requestOnColumnChange = inject("requestOnColumnChange", false);
+const pageParams = inject("pageParams", { pageNum: 1, pageSize: 10 });
+const slots = inject("slots", {} as any);
+
 const elTableColumnProps = computed(() => ({
   columnKey: props.prop,
   filterMethod:
-    props.columnProps.filters && !props.requestOnColumnChange
+    props.columnProps.filters && !requestOnColumnChange
       ? handleDefaultFilter
       : undefined,
   ...props.columnProps,
@@ -77,9 +82,6 @@ const elTableColumnProps = computed(() => ({
         <template v-if="children && children.length">
           <pro-table-column
             v-bind="column"
-            :pageParams="pageParams"
-            :slots="slots"
-            :requestOnColumnChange="requestOnColumnChange"
             :key="column.prop"
             v-for="column in children"
           />

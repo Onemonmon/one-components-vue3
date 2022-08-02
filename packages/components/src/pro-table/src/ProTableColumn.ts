@@ -168,33 +168,12 @@ const proTableColumnProps = {
   hideInSetting: {
     type: Boolean,
   },
-  // 以下属性需要单独为组件传入
   /**
    * el-table-column 的入参
    */
   columnProps: {
     type: Object as PropType<TableColumnPropsType>,
     default: () => ({}),
-  },
-  /**
-   * 表格分页参数，type=index时使用
-   */
-  pageParams: {
-    type: Object as PropType<{ pageNum: number; pageSize: number }>,
-    default: () => ({ pageNum: 1, pageSize: 10 }),
-  },
-  /**
-   * 表格插槽
-   */
-  slots: {
-    type: Object,
-    default: () => ({}),
-  },
-  /**
-   * 当表头排序、过滤改变时触发request
-   */
-  requestOnColumnChange: {
-    type: Boolean,
   },
   ...proTableCustomColumnProps,
 };

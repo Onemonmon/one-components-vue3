@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, provide, ref, useSlots } from "vue";
 import { ProQueryFilter } from "../../pro-form";
-import { ElTable, ElPagination } from "element-plus";
+import { ElTable, ElPagination, ElButton } from "element-plus";
 import ProTableColumn from "./ProTableColumn.vue";
 import proTableProps, { ProTableInstance } from "./ProTable";
 import ProTableToolbar from "./ProTableToolbar.vue";
@@ -59,6 +59,9 @@ const innerTableProps = computed<TablePropsType>(() => ({
 provide("sourceData", sourceData);
 provide("validatorRules", validatorRules);
 provide("editableConfig", innerEditableConfig);
+provide("pageParams", pageParams);
+provide("slots", slots);
+provide("requestOnColumnChange", props.requestOnColumnChange);
 </script>
 
 <template>
@@ -93,9 +96,6 @@ provide("editableConfig", innerEditableConfig);
       >
         <pro-table-column
           v-bind="column"
-          :pageParams="pageParams"
-          :slots="slots"
-          :requestOnColumnChange="requestOnColumnChange"
           :key="column.prop"
           v-for="column in innerColumns"
         />
@@ -125,6 +125,8 @@ provide("editableConfig", innerEditableConfig);
 
 <style lang="scss" scoped>
 .pro-table-container {
+  padding: 20px;
+
   .pro-table__header {
     display: flex;
     align-items: center;

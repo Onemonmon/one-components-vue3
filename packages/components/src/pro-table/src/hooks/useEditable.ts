@@ -1,5 +1,5 @@
 import { getRandomKey } from "@components/shared";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "lodash-es";
 import { watch, reactive } from "vue";
 import type { InnerEditableConfigType, ProTablePropsType } from "../ProTable";
 

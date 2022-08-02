@@ -21,7 +21,7 @@ import {
 } from "@components/shared";
 import { CopyDocument, Check } from "@element-plus/icons-vue";
 import { ElMessage, FormItemRule, ElIcon } from "element-plus";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "lodash-es";
 import ClipboardJS from "clipboard";
 import Schema from "async-validator";
 import type { ProFieldPropsType } from "@components/pro-field";

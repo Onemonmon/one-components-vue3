@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { inject, PropType, Ref, ref, watch } from "vue";
-import cloneDeep from "lodash/cloneDeep";
+import { cloneDeep } from "lodash-es";
 import Schema from "async-validator";
 import { getValueByComplexKey, TableColumnPropsType } from "@components/shared";
 import { ElMessage, FormItemRule, ElTableColumn, ElButton } from "element-plus";

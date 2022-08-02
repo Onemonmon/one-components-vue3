@@ -4,7 +4,7 @@ import {
   getValueByComplexKey,
   isArray,
 } from "@components/shared";
-import cloneDeep from "lodash/cloneDeep";
+import { cloneDeep } from "lodash-es";
 import { computed, reactive, ref, toRaw, watch } from "vue";
 import type { ProTablePropsType } from "../ProTable";
 import type { ProQueryFilterPropsType } from "../../../pro-form";
