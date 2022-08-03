@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { name: "ProInput" };
+</script>
+
 <script lang="ts" setup>
 import { computed } from "vue";
 import { ElInput, ElInputNumber } from "element-plus";

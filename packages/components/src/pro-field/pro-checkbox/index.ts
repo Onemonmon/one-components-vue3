@@ -1,9 +1,8 @@
-import type { App } from "vue";
-import ProCheckbox from "./src/ProCheckbox.vue";
+import { withInstall } from "@components/shared";
+import _ProCheckbox from "./src/ProCheckbox.vue";
 
-ProCheckbox.install = function (app: App) {
-  app.component("ProCheckbox", ProCheckbox);
-};
+const ProCheckbox = withInstall(_ProCheckbox);
 
-export { ProCheckbox };
+export { ProCheckbox, ProCheckbox as default };
+
 export * from "./src/ProCheckbox";

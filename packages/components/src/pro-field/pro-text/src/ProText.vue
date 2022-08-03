@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { name: "ProSelect" };
+</script>
+
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import proTextProps, { ProTextValueType } from "./ProText";

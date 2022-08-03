@@ -4,7 +4,7 @@ export default { name: "ProTableColumn" };
 
 <script lang="ts" setup>
 import { computed, inject } from "vue";
-import { ElTableColumn } from "element-plus";
+import { ElTableColumn, ElIcon, ElTooltip } from "element-plus";
 import ProTableFormItem from "./ProTableFormItem.vue";
 import proTableColumnProps from "./ProTableColumn";
 import ProTableOperationColumn from "./ProTableOperationColumn.vue";

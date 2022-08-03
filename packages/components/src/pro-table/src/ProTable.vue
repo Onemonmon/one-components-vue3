@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { name: "ProTable" };
+</script>
+
 <script lang="ts" setup>
 import { computed, provide, ref, useSlots } from "vue";
 import { ProQueryFilter } from "../../pro-form";

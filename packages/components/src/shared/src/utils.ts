@@ -1,3 +1,4 @@
+import type { App } from "vue";
 import type { Data, ValueType } from "./type";
 
 export const isObject = (target: any) =>
@@ -74,3 +75,10 @@ export const setValueByComplexKey = (
 export const extend = Object.assign;
 
 export const EMPTY_OBJ = {};
+
+export const withInstall = (main: any) => {
+  main.install = (app: App) => {
+    app.component(main.name, main);
+  };
+  return main;
+};

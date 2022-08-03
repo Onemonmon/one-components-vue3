@@ -1,9 +1,8 @@
-import type { App } from "vue";
-import ProSelect from "./src/ProSelect.vue";
+import { withInstall } from "@components/shared";
+import _ProSelect from "./src/ProSelect.vue";
 
-ProSelect.install = function (app: App) {
-  app.component("ProSelect", ProSelect);
-};
+const ProSelect = withInstall(_ProSelect);
 
-export { ProSelect };
+export { ProSelect, ProSelect as default };
+
 export * from "./src/ProSelect";

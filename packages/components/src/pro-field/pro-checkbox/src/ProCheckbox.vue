@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { name: "ProCheckbox" };
+</script>
+
 <script lang="ts" setup>
 import { computed, reactive, watch } from "vue";
 import { ElCheckbox, ElCheckboxGroup, ElCheckboxButton } from "element-plus";

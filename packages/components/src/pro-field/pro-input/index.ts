@@ -1,9 +1,7 @@
-import type { App } from "vue";
-import ProInput from "./src/ProInput.vue";
+import { withInstall } from "@components/shared";
+import _ProInput from "./src/ProInput.vue";
 
-ProInput.install = function (app: App) {
-  app.component("ProInput", ProInput);
-};
+const ProInput = withInstall(_ProInput);
 
-export { ProInput };
+export { ProInput, ProInput as default };
 export * from "./src/ProInput";

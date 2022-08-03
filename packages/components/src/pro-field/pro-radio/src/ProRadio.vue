@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { name: "ProRadio" };
+</script>
+
 <script lang="ts" setup>
 import { computed } from "vue";
 import { ElRadio, ElRadioButton, ElRadioGroup } from "element-plus";

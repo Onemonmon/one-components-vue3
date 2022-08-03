@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { name: "ProQueryFilter" };
+</script>
+
 <script lang="ts" setup>
 import { computed, ref, toRaw, useSlots, watch } from "vue";
 import { ElForm, ElFormItem, ElRow, ElCol, ElButton } from "element-plus";

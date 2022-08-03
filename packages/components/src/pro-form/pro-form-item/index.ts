@@ -1,10 +1,8 @@
-import type { App } from "vue";
-import ProFormItem from "./src/ProFormItem.vue";
+import { withInstall } from "@components/shared";
+import _ProFormItem from "./src/ProFormItem.vue";
 
-ProFormItem.install = function (app: App) {
-  app.component("ProFormItem", ProFormItem);
-};
+const ProFormItem = withInstall(_ProFormItem);
 
-export { ProFormItem };
+export { ProFormItem, ProFormItem as default };
 
 export * from "./src/ProFormItem";

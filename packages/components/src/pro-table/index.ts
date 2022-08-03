@@ -1,11 +1,9 @@
-import type { App } from "vue";
-import ProTable from "./src/ProTable.vue";
+import { withInstall } from "@components/shared";
+import _ProTable from "./src/ProTable.vue";
 
-ProTable.install = function (app: App) {
-  app.component("ProTable", ProTable);
-};
+const ProTable = withInstall(_ProTable);
 
-export { ProTable };
+export { ProTable, ProTable as default };
 
 export * from "./src/ProTable";
 export * from "./src/ProTableColumn";

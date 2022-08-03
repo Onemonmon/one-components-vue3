@@ -1,9 +1,8 @@
-import type { App } from "vue";
-import ProText from "./src/ProText.vue";
+import { withInstall } from "@components/shared";
+import _ProText from "./src/ProText.vue";
 
-ProText.install = function (app: App) {
-  app.component("ProText", ProText);
-};
+const ProText = withInstall(_ProText);
 
-export { ProText };
+export { ProText, ProText as default };
+
 export * from "./src/ProText";

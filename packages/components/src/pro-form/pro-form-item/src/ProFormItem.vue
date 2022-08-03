@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { name: "ProFormItem" };
+</script>
+
 <script lang="ts" setup>
 import { watch, onUnmounted, computed } from "vue";
 import { extend, getComponentByType } from "@components/shared";
