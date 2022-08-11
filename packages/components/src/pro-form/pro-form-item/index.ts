@@ -1,7 +1,8 @@
-import { withInstall } from "@components/shared";
+import { withInstall, WithInstallType } from "@components/shared";
 import _ProFormItem from "./src/ProFormItem.vue";
 
-const ProFormItem = withInstall(_ProFormItem);
+const ProFormItem: WithInstallType<typeof _ProFormItem> =
+  withInstall(_ProFormItem);
 
 export { ProFormItem, ProFormItem as default };
 

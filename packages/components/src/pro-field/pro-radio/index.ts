@@ -1,7 +1,7 @@
-import { withInstall } from "@components/shared";
+import { withInstall, WithInstallType } from "@components/shared";
 import _ProRadio from "./src/ProRadio.vue";
 
-const ProRadio = withInstall(_ProRadio);
+const ProRadio: WithInstallType<typeof _ProRadio> = withInstall(_ProRadio);
 
 export { ProRadio, ProRadio as default };
 

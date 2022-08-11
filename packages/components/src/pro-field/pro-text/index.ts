@@ -1,7 +1,7 @@
-import { withInstall } from "@components/shared";
+import { withInstall, WithInstallType } from "@components/shared";
 import _ProText from "./src/ProText.vue";
 
-const ProText = withInstall(_ProText);
+const ProText: WithInstallType<typeof _ProText> = withInstall(_ProText);
 
 export { ProText, ProText as default };
 

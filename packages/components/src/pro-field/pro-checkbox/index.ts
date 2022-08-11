@@ -1,7 +1,8 @@
-import { withInstall } from "@components/shared";
+import { withInstall, WithInstallType } from "@components/shared";
 import _ProCheckbox from "./src/ProCheckbox.vue";
 
-const ProCheckbox = withInstall(_ProCheckbox);
+const ProCheckbox: WithInstallType<typeof _ProCheckbox> =
+  withInstall(_ProCheckbox);
 
 export { ProCheckbox, ProCheckbox as default };
 

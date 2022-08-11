@@ -48,16 +48,19 @@ const deps = [
   "option-group",
   "message",
   "loading",
+  "dialog",
+  "drawer",
+  "space",
 ];
 const sideEffects = deps.map(
   (n) => `element-plus/es/components/${n}/style/css`
 );
 
-function resolveComponent(name) {
+function resolveComponent(name, options) {
   if (name.match(/^Pro[A-Z]/)) {
     return {
       name,
-      from: "one-components-vue3/dist/one-components.es.js",
+      from: options.from || "one-components-vue3/dist/one-components.es.js",
       sideEffects,
     };
   }

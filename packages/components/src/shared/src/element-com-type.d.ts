@@ -14,6 +14,10 @@ import {
   ElFormItem,
 } from "element-plus";
 
+export type WithInstallType<T> = T & {
+  install: Function;
+};
+
 export type WithOtherAttrs<T> = T & {
   style?: CSSCounterStyleRule;
   className?: string;
