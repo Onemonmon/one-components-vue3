@@ -110,24 +110,27 @@ const innerEditable = computed(
 watch(innerEditable, (val) => !val && (isError.value = false));
 
 const ComponentName = getComponentByType(props.valueType);
-const rowProxy = new Proxy(props.row, {
-  get(target, key) {
-    if (key === "__v_isRef") {
-      return target.__v_isRef;
-    }
-    return getValueByComplexKey(target, key as string);
-  },
-  set(target, key, value) {
-    const oldValue = getValueByComplexKey(target, key as string);
-    if (!isEqual(oldValue, value)) {
-      setValueByComplexKey(target, key as string, value);
-      if (editableConfig.onValuesChange) {
-        editableConfig.onValuesChange(target, key as string, value);
-      }
-    }
-    return true;
-  },
-});
+const rowProxy = computed(
+  () =>
+    new Proxy(props.row, {
+      get(target, key) {
+        if (key === "__v_isRef") {
+          return target.__v_isRef;
+        }
+        return getValueByComplexKey(target, key as string);
+      },
+      set(target, key, value) {
+        const oldValue = getValueByComplexKey(target, key as string);
+        if (!isEqual(oldValue, value)) {
+          setValueByComplexKey(target, key as string, value);
+          if (editableConfig.onValuesChange) {
+            editableConfig.onValuesChange(target, key as string, value);
+          }
+        }
+        return true;
+      },
+    })
+);
 
 // 校验表单值
 const handleValidate = (trigger: string, value: any) => {

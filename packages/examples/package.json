@@ -14,7 +14,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.6",
     "clipboard": "^2.0.11",
-    "element-plus": "^2.2.9",
+    "element-plus": "^2.2.12",
     "highlight.js": "^11.6.0",
     "lodash": "^4.17.21",
     "one-components-vue3": "workspace:*",
@@ -31,8 +31,7 @@
     "marked": "^4.0.18",
     "sass": "^1.49.9",
     "type-fest": "^2.16.0",
-    "typescript": "^4.4.4",
-    "unplugin-element-plus": "^0.4.1",
+    "typescript": "^4.7.4",
     "unplugin-vue-components": "^0.21.2",
     "vite": "^3.0.0",
     "vue-tsc": "^0.38.5"

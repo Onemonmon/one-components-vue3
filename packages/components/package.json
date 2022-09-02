@@ -5,11 +5,11 @@
   "files": [
     "dist"
   ],
-  "typings": "dist/index.d.ts",
+  "typings": "dist/src/index.d.ts",
   "main": "dist/one-components.umd.js",
   "module": "dist/one-components.es.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "vue-tsc --noEmit --skipLibCheck && vite build --watch",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build",
     "analyzer": "vue-tsc --noEmit --skipLibCheck && vite build --mode=analyzer",
     "preview": "vite preview"

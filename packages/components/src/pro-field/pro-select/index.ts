@@ -1,8 +1,10 @@
-import { withInstall, WithInstallType } from "@components/shared";
-import _ProSelect from "./src/ProSelect.vue";
+import type { App } from "vue";
+import ProSelect from "./src/ProSelect.vue";
 
-const ProSelect: WithInstallType<typeof _ProSelect> = withInstall(_ProSelect);
+ProSelect.install = function (app: App) {
+  app.component("ProSelect", ProSelect);
+};
 
-export { ProSelect, ProSelect as default };
+export { ProSelect };
 
 export * from "./src/ProSelect";

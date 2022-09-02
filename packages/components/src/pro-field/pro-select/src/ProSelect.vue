@@ -64,5 +64,3 @@ const requestOptions = useOptions(props);
     v-else
   />
 </template>
-
-<style lang="scss" scoped></style>

@@ -51,7 +51,7 @@ const { innerEditableConfig, handleAddNewRow } = useEditable(props, sourceData);
  */
 useTableInstance(props, innerTableRef, columnParmas, getTableDataByParams);
 
-const innerTableProps = computed<TablePropsType>(() => ({
+const innerTableProps = computed<any>(() => ({
   size: "large",
   "onSort-change": handleSortChange,
   "onFilter-change": handleFilterChange,

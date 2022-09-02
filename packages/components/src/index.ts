@@ -8,7 +8,7 @@ import {
 } from "./pro-field";
 import { ProTable } from "./pro-table";
 import { ProQueryFilter } from "./pro-form";
-import { App } from "vue";
+import type { App } from "vue";
 
 const components: Record<string, any> = {
   CustomRender,

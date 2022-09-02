@@ -26,7 +26,7 @@ export default ({ mode }: any) => {
         external: ["vue", "element-plus", "async-validator", "lodash-es"],
         output: {
           globals: {
-            vue: "Vue",
+            vue: "vue",
           },
         },
       },

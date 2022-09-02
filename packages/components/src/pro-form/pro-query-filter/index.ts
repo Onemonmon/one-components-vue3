@@ -1,9 +1,10 @@
-import { withInstall, WithInstallType } from "@components/shared";
-import _ProQueryFilter from "./src/ProQueryFilter.vue";
+import type { App } from "vue";
+import ProQueryFilter from "./src/ProQueryFilter.vue";
 
-const ProQueryFilter: WithInstallType<typeof _ProQueryFilter> =
-  withInstall(_ProQueryFilter);
+ProQueryFilter.install = function (app: App) {
+  app.component("ProQueryFilter", ProQueryFilter);
+};
 
-export { ProQueryFilter, ProQueryFilter as default };
+export { ProQueryFilter };
 
 export * from "./src/ProQueryFilter";
